@@ -464,3 +464,142 @@
 //// #. 배열 이름은 메모리의 위치만 지정할 뿐이기 때문에 값을 저장할 수 없다.
 //// #. arrayOne의 모든 원소를 arrayTwo에 대입하려면 한 개씩 직접 대입해 줘야 한다.
 //}
+
+/* --- < 문자열( Character Array, String ) > --- */
+
+/*
+< 문자열 > : 문자들로 이루어진 집합을 말한다.
+	#. 문자( Character ) + 배열( Array )
+	#. 문자 리터럴 : 작은 따옴표로 둘러 싸여 있다. 'a'
+	#. 문자열 리터럴 : 큰 따옴표로 둘러 싸여 있다. "Hello"
+*/
+
+//#include <iostream>
+//
+//struct Student
+//{
+//	char name[10];
+//	int num;
+//	int score;
+//};
+//
+//int main()
+//{
+//// 1. Default
+//	char c[6]{ 'R','i','v','e','r','\0' }; // #. 문자열을 한 문자씩('')입력 받을 때는 널값을 넣어야만 한다.
+//	c[0] = 'M'; c[1] = 'o'; c[2] = 'n'; c[3] = 'e'; c[4] = 'y'; c[5] = '\0';
+//	
+//	char std[6]{ "River" };	// #. 문자열 리터럴("")에는 \0 널값이 포함되어 있다.
+//	std::cout << c << std::endl;
+//	std::cout << std << std::endl;
+//
+//// 2. std::cin
+//	Student tom;
+//	std::cout << "Input : ";
+//	std::cin >> tom.name >> tom.num >> tom.score;
+//// #. std::cin은 스페이스바, 엔터로 문자열을 구분하여 입력받는다.
+//	
+//	std::cout << tom.name << std::endl;
+//	std::cout << tom.num << std::endl;
+//	std::cout << tom.score << std::endl;
+//
+//// 3. 주소
+//	char myText[20]{ "Greetings!" };
+//// #. 문자열은 모두 메모리 공간을 할당 받는다.
+//// #. 컴파일러는 이 메모리 공간에 접근하여 해당 문자열을 출력해준다.
+//	std::cout << myText << " : " << &myText << std::endl;
+//	std::cout << "Greetings!" << " : " << &"Greetings!" << std::endl;
+//
+//// 4. 포인터
+//	char nameOne[10]{ "River" };
+//	char* pointer{ nameOne };
+//// #. 배열의 이름은 해당 배열의 첫번째 원소 주소값을 가리킨다.
+//// #. 그러므로 nameOne과 &nameOne[0]의 출력 결과는 같다.
+//	std::cout << nameOne << " : " << &nameOne << " : " << &nameOne[0] << std::endl;
+//
+//// #. pointer는 nameOne의 주소값을 저장한다. 문자열의 주소값은 저장된 문자열을 출력해 준다.
+//	std::cout << pointer << " : " << &pointer << " : " << (pointer + 0) << std::endl;
+//
+//// #. nameOne은 문자 배열의 크기를, nameOne[0]은 문자 배열의 첫번째 메모리 공간의 크기를,
+//// #. &nameOne은 할당된 메모리 공간의 크기를, &nameOne[0]도 동일한 메모리 공간의 크기를 출력한다.
+//	std::cout << sizeof nameOne << " : " << sizeof nameOne[0] << " : " 
+//		<< sizeof & nameOne << " : " << sizeof & nameOne[0] << std::endl;
+//
+//// 5. const char* 
+//	const char* name = "River";
+//// #. "River"는 만들어 질 때 메모리 공간을 할당받는다.
+//// #. name은 이 메모리 공간을 가리킨다.
+//// #. "River"는 rvalue( 무명 객체 )이기 때문에 해당 라인이 지나면 지워진다.
+//// #. 때문에 일반 포인터가 아닌 상수 포인터로 가리켜야 한다.
+//	std::cout << name << " : " << (void*)name << std::endl;
+//}
+
+/* --- < 문자열 스트림( String Stream ) > --- */
+
+/*
+< stream > : 입출력을 추상화해서 나타내어 준다.
+
+< sstream( string ) > : 문자열로부터 입력을 받는다.
+	#. ostring stream : 문자열 포맷을 조합하여 저장할 때 사용한다.
+	#. string stream : 문자열에서 내가 원하는 자료형의 데이터를 추출할 때 사용한다.
+	#. istring stream : 문자열 포맷을 parsing할 때 사용한다.
+		#. parsing : 일련의 문자열을 의미있는 token( 어휘 분석의 단위 )으로 분해하고 그것들로 이루어진 Parse tree를 만드는 과정
+
+< istream( input ) > : 사용자로부터 입력 받는다.
+
+< ifstream( file ) > : 파일로부터 입력 받는다.
+*/
+
+//#include <iostream>
+//#include <sstream>
+//
+//int main()
+//{	
+// #. 다양한 형식의 변수들을 하나의 객체에 저장할 수 있다.
+//	int number{ 1 };
+//	char name[]{ "River" };
+//	float average{ 90.1f };
+//
+//// #. ostringstream클래스로 객체 oss를 만들고 그 안에 변수와 문자열을 저장해 준다.
+//	std::ostringstream oss;
+//	oss << number << "번 학생 " << name << "는 평균 " << average << "입니다.";
+//
+//// #. str()함수를 이용하여 객체 안에 있는 값을 문자열로 출력할 수 있다.
+//	std::cout << oss.str() << std::endl;
+//}
+
+//#include <iostream>
+//#include <sstream>
+//#include <string>
+//
+//int main()
+//{
+//	int n;
+//	std::stringstream ss;
+//	ss.str("12 345 6789 0 -12 a");
+//// #. stringstream클래스의 객체 ss를 만든다.
+//// #. str()함수를 사용해 문자열을 집어 넣는다.
+//
+//	for (int i = 0; i < 5; i++)
+//	{	// #. 문자열 중 int형식으로 변환되는 문자만 int 형식으로 꺼낸다.
+//		ss >> n;
+//		std::cout << n << std::endl;
+//	}
+//}
+
+//#include <iostream>
+//#include <sstream>
+//
+//int main()
+//{	
+// #. istringstream클래스의 객체 iss를 만든다.
+//	std::istringstream iss("test 123 123hah ahha");
+//	std::string str1, str2, str3;
+//	int num;
+//
+//	std::cout << iss.str() << std::endl;
+//	
+//// #. 스페이스바, 탭으로 구분하여 각 변수에 저장한다.
+//	iss >> str1 >> num >> str2 >> str3;
+//	std::cout << str1 << " : " << str2 << " : " << str3 << " : " << num;
+//}
