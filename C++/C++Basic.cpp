@@ -603,3 +603,180 @@
 //	iss >> str1 >> num >> str2 >> str3;
 //	std::cout << str1 << " : " << str2 << " : " << str3 << " : " << num;
 //}
+
+/* ----- < 함수 > ----- */
+//
+//
+//
+//
+//
+/* --- < 함수( Function ) > --- */
+
+/*
+< 함수 > : 여러개의 명령어로된 집합으로 이러한 집합에 이름을 붙인 것
+
+< 매개 변수 > : 함수가 수행할 명령에 필요한 것들
+	#. < Callee > : 매개 변수, 함수 정의에 열거된 이름
+	#. < Caller > : 인자, 함수 호출에 넘겨줄 값
+
+< 매개 변수 기본값( Default ) > : 함수가 매개 변수로 인자를 받지 못하였을 경우 기본값을 자동 대입
+	#. 매개 변수에 ( = 0 )을 기입하면 실행된다.
+		=> < void Func(int a = 0); > : 기본값 설정은 함수 선언에만 있어도 작동한다.
+	#. 기본값을 제공하는 매개 변수는 맨 뒤의 매개 변수부터 작성해야 한다.
+		=> < void func(int a, int b = 1, int c = 0); >
+
+< 가변 인자 > : 매개 변수로 어떤 인자든 올 수 있게 하는 기능
+	#. < ... > : 말줄임표를 통해 사용할 수 있다.
+		=> void Func(int num, ...);
+		=> 첫 번째 매개 변수는 고정 매개 변수를 작성한 뒤 가변인자를 작성
+
+< 재귀 호출 > : 내가 나를 부르는 함수
+	#. < Base Case > : 더 이상 자를 수 없는 가장 작은 문제가 있어야 한다.
+	#. < Recursive Case > : 문제를 작은 집합으로 나눌 수 있어야 한다.
+*/
+
+//#include <iostream>
+//
+//struct Song
+//{
+//	std::string name;
+//	int trackNum;
+//	int price;
+//};
+//
+//Song Input(std::string name, int trackNum, int price)
+//{	// #. Song타입을 반환하고 매개 변수 3개를 받는 함수를 정의한다.
+//	Song cd;
+//
+//	cd.name = name;
+//	cd.trackNum = trackNum;
+//	cd.price = price;
+//
+//	// #. Song타입의 객체를 반환한다.
+//	return cd;
+//}
+//
+ //int Sum(int a = 2, int b = 1)
+//{	// #. 매개 변수( Callee )에 기본값을 지정하여 인자를 전달받지 못해도 정상 작동한다.
+//	return a + b;
+//}
+// 
+//int main()
+//{
+//	Song Twice;
+//
+//	std::cout << "트랙 정보를 입력하세요." << std::endl;
+//	std::string name;
+//	int trackNum;
+//	int price;
+//
+//	std::cin >> name >> trackNum >> price;
+//
+//// #. 함수의 반환타입에 맞추어 Song타입의 객체 Twice가 반환값을 받는다.
+//// #. 매개 변수( Callee )에 전달할 인자( Caller )의 타입을 맞추어 전달한다.
+//	Twice = Input(name, trackNum, price);
+//}
+
+//#include <iostream>
+//#include <stdarg.h>
+//// #. 매개변수 가변인자를 사용하려면 stdarg.h 헤더파일이 필요하다.
+//
+//void function(int count, ...)
+//{	// #. count는 뒤에 올 매개변수의 갯수를 입력받는다.
+//	va_list params;
+//// #. 길이가 변할 수 있는 가변의 저장공간을 제공하는 타입이라고 볼 수있다.
+//// #. va_list타입으로 params라는 이름의 매개변수를 저장하는 메모리 공간을 만든다.
+//
+//	va_start(params, count);
+//// #. count갯수 만큼 params메모리 공간에 전달받은 매개변수 값을 초기화 해준다.
+//
+//	for (int i = 0; i < count; i++)
+//	{	// #. int타입으로 params변수에 있는 값을 출력한다.
+//		std::cout << va_arg(params, int);
+//	}	std::cout << std::endl;
+//}
+//
+//int main()
+//{
+//	function(1, 1);
+//	function(2, 2, 3);
+//}
+
+/* < 매개 변수 일치 > */
+
+/*
+< 함수 구분 > : 함수는 변수와 다르게 이름이 같아도 컴파일러가 구분할 수 있다.
+	#. 함수의 구분은 "이름"뿐만 아니라 "매개 변수"의 종류와 갯수도 포함된다.
+
+< 함수 다형성 > : 똑같은 이름의 함수를 여러개 선언 및 정의할 수 있다.
+	#. < 함수 오버로딩 > : 같은 이름의 함수를 여러개 쌓을( STACK ) 수 있다.
+		#. 매개 변수와는 다르게 반환 값이 다를 경우는 오버로딩이 적용되지 않는다.
+
+< Call Stack > : 함수가 호출될 때 RAM공간에 차곡차곡 쌓여지는 형태를 말한다.
+	#. 함수가 반환될 때는 쌓여진 마지막 함수부터 차례로 반환된다.
+
+< Stack > : 함수와 변수가 저장되는 RAM의 공간
+	#. RAM안에 할당된 STACK공간이 가득차서 넘칠 경우 Stack Overflow에러가 발생한다.
+*/
+
+//#include <iostream>		// < Title : default >
+//
+//void WhoAmI(int value) { std::cout << "나는 정수를 처리한다."; }
+//void WhoAmI(float value) { std::cout << "나는 소수를 처리한다."; }
+//void WhoAmI(char value) { std::cout << "나는 문자를 처리한다."; }
+//// #. 동일한 이름의 함수지만 Caller가 어떤 타입이냐에 따라 구분되어 함수가 호출된다.
+//
+//int main()
+//{
+//	WhoAmI(10.0f);
+//}
+
+/* --- < 재귀함수( Recursive Function ) > --- */
+
+/*
+< 재귀함수 > : 함수의 내부에서 자기 자신을 다시 호출하는 함수를 말한다.
+	#. < 분할 정복( Divide & Conquar ) > : 큰 문제를 잘라서 작은 문제로 만든다.
+		#. 간단해진 문제를 재귀적( Recursive )으로 해결한다.
+			=> 동일한 문제의 작은 집합을 가진 문제
+*/
+
+//#include <iostream>
+//
+//// 1. 팩토리얼
+//int Factor(int N)
+//{
+//	// Base-Case
+//	if (N == 1) { return 1; }
+//
+//	// Recursive-Case
+//	return N * Factor(N - 1);
+//}
+//// 2. 피보나치수열
+//int Fibo(int N)
+//{
+//	// Base-Case
+//	if (N <= 2) { return 1; }
+//
+//	// Recursive-Case
+//	return Fibo(N - 2) + Fibo(N - 1);
+//}
+//// 3. 하노이탑
+//void Move(char go, char end)
+//{
+//	std::cout << go << "를 " << end << "로 이동시킨다." << std::endl;
+//}
+//void Hanoi(char A, char B, char C, int N)
+//{
+//	if (N == 1) { Move(A, C); }
+//	else {
+//		Hanoi(A, C, B, N - 1);
+//		Move(A, C);
+//		Hanoi(B, A, C, N - 1);
+//	}
+//}
+//int main()
+//{
+//	std::cout << Factor(5) << std::endl;
+//	std::cout << Fibo(6) << std::endl;
+//	Hanoi('A', 'B', 'C', 4);
+//}
