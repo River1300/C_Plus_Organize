@@ -819,3 +819,150 @@
 		=> < Function(array); > : array라는 배열의 주소값을 무명의 객체에 저장한 뒤 Function함수의 매개 변수에 복사 대입한다.
 		=> 전달된 값이 주소 값이기 때문에 함수안에서 값이 바뀔 경우 함수밖에서도 값이 바뀐다.
 */
+
+/* ----- < 포인터 > ----- */
+//
+//
+//
+//
+//
+/* --- < 포인터 개요 > --- */
+
+/*
+< 포인터 > : 메모리 공간에 할당된 주소를 저장하는 변수
+	#. 프로그램에서 사용하는 단순 변수는 특정 메모리의 위치( 주소 )에 특정한 크기( 바이트 )로 저장된다.
+	#. 이러한 변수의 메모리 공간을 포인터가 "가리키어" 사용자가 변수의 주소에 직접 접근할 수 있게된다.
+*/
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int x{ 10 };
+//
+//// #. int 타입을 가리키는 포인터 변수 px (px point to integer)
+//// #. < ( * )포인터 연산자 > : * 기호 우측의 객체가 "포인터 변수" 라고 지정 (참조:Reference)
+//	int* px;
+//
+//// #. 포인터 변수 px에 x의 주소값을 대입 [px 는 x 를 참조]
+//// #. < ( & )주소 연산자 > : & 기호 우측 객체의 주소를 구함
+//	px = &x;
+//// < px = &100; > : 포인터 변수는 오직 주소 값만 저장할 수 있음, R_Value 는 저장 불가능
+//// R_Value : 값, 현재 식 이외에는 유지되지 않는 임시 값, 리터럴, 상수, 연산식 등
+//
+//// #. < ( * )역참조 연산자 > : * 기호 우측의 포인터 변수가 가리키는 곳의 값을 꺼내올 수 있다.
+//// #. 역참조 연산자를 통해 가리키는 곳의 값을 변경할 수 있다.
+//	std::cout << *px << std::endl;
+//
+//	*px = 1500;
+//	std::cout << px << " : " << *px << std::endl;
+//	std::cout << "-------------------------------------------------------------" << std::endl;
+//
+//	int* pointer{ nullptr };
+//	//pointer = &100;
+//	//const int number{ 10 };
+//	//pointer = &number;
+//	//pointer = &(30 + 50);
+//}
+
+/* --- < 포인터 연산 > --- */
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int x{ 1 };
+//	int* px{ &x };
+//
+//// #. 주소 + sizeof(int) * 1 : 주소 값은 type 의 크기 만큼 증가
+//// #. 역참조를 통한 연산은 리터럴 그대로 증감
+//	std::cout << px + 0 << " : " << px + 1 << " : " << px + 2 << std::endl;
+//	std::cout << *px + 9 << " : " << *px + 32 << " : " << *px + 192 << std::endl;
+//
+//	char s{ 'a' };
+//	char* ps{ &s };
+//
+//// #. char* 형은 문자를 표현하는 특수한 자료형이기 때문에 (void*)() 명시적 형변환이 필요
+//// #. 역참조는 형변환이 필요 없다.
+//	std::cout << (void*)(ps + 0) << " : " << (void*)(ps + 2) << std::endl;
+//	std::cout << *ps + 0 << " : " << *ps + 10 << " : " << *ps + 100 << std::endl;
+//	std::cout << "-------------------------------------------------------------" << std::endl;
+//
+//	char string[5]{ "Love" };
+//	char* pStr{ string };
+//
+//	std::cout << (void*)(pStr + 0) << " : " << (void*)(pStr + 1) << " : " << (void*)(pStr + 2)
+//		<< " : " << (void*)(pStr + 3) << std::endl;
+//	std::cout << *(pStr + 0) << " : " << *(pStr + 1) << " : " << *(pStr + 2) << " : " << *(pStr + 3) << std::endl;
+//}
+
+/* --- < void 포인터 > --- */
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int number{ 9 };
+//	float under{ 3.14f };
+//	char string{ 'Z' };
+//
+//// #. < void 포인터 > : 보이드 포인터는 어떠한 타입의 변수든 가리킬 수 있다.
+//// #. 다만, 가리킬 수 만 있을 뿐 역참조와 연산은 불가능 하다.
+//	void* pointer;
+//	pointer = &number;
+//	pointer = &under;
+//	pointer = &string;
+//
+//// #. 보이드 포인터를 역참조하기 위해서는 명시적 형변환이 필요하다.
+//// #. 먼저 포인터 타입을 지정해 주고 변환된 상태에서 역참조를 해준다.
+//	std::cout << pointer << " : " << *((char*)pointer) << std::endl;
+//}
+
+/* --- < nullptr > --- */
+
+//#include <iostream>
+//
+//void SameFunc(int A);
+//void SameFunc(int* A);
+//int main()
+//{
+//	int* p01{}, * p02{ 0 }, * p03{ NULL };
+//	std::cout << p01 << " : " << p02 << " : " << p03 << std::endl;
+//
+//// #. [0] 은 NULL포인터를 지칭하기도 하지만 정수 0을 지칭하기도 한다.
+//// #. 때문에 NULL포인터를 지칭하고 싶다면 nullptr을 사용하길 권장한다.
+//	SameFunc(0);
+//}
+//void SameFunc(int A)
+//{
+//	std::cout << "매개 변수로 0을 받을 경우 포인터 보다 정수를 우선 순위로 받는다."
+//		<< std::endl;
+//}
+//void SameFunc(int* A)
+//{
+//	std::cout << "NULL포인터를 받고자 한다면 nullptr로 입력하는 것이 좋다."
+//		<< std::endl;
+//}
+
+/* --- < 값의 분할 > --- */
+
+//#include <iostream>
+//
+//int main()
+//{
+//// 2진수 : 0000 0000 / 0000 0000 / 0000 0100 / 0000 0001
+//// 16진수:		0	 /		0	 /		4	 /		1
+//	int number{ 1025 };
+//	int* pointer{ &number };
+//
+//// #. int 형으로 가리킨 정수 값을 char 형으로 가리켜서 값을 1바이트 단위로 나누어 볼 수 있음
+//	char* cPoint{ (char*)pointer };
+//
+//	// 컴퓨터는 값을 뒤집어서 저장함 (Little-Endian)
+//	// 컴퓨터가 연산을 함에 있어서 더 빠르게 연산하기 위함
+//	for (int i = 0; i < 4; i++)
+//	{
+//		std::cout << (void*)cPoint << " : " << (int)*cPoint << std::endl;
+//		cPoint++;
+//	}
+//}
