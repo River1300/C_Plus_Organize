@@ -966,3 +966,140 @@
 //		cPoint++;
 //	}
 //}
+
+/* --- < 포인터의 포인터 > --- */
+
+/*
+< 포인터의 포인터 > : 포인터 변수의 주소값을 가리키는 포인터 변수
+	#. 배열이 각 배열 원소를 가리키기 때문에 배열 자체는 포인터라고 볼 수 있다.
+	#. 그러다면 배열을 가리키는 포인터는 포인터의 포인터라고 볼 수 있다.
+	#. 2차원 배열 또한 포인터의 포인터라고 볼 수 있다.
+*/
+
+//#include <iostream>
+//
+//void Swap1(int* p1, int* p2);
+//void Swap2(int** p1, int** p2);
+//
+//int main()
+//{
+//	int number{ 10 };
+//	int* pointer1{ &number };
+//	int** pointer2{ &pointer1 };
+//	int*** pointer3{ &pointer2 };
+//
+//	std::cout << number << " : " << *pointer1 << " : " << **pointer2 << " : "
+//		<< ***pointer3 << std::endl;
+//	std::cout << &number << " : " << pointer1 << " : " << *pointer2 << " : "
+//		<< **pointer3 << std::endl;
+//
+//	int num1{ 10 }, num2{ 20 };
+//	int* ptr1{ &num1 }, * ptr2{ &num2 };
+//
+//	std::cout << ptr1 << " : " << *ptr1 << " " << ptr2 << " : " << *ptr2 << std::endl;
+//
+//// #. ptr1, ptr2 가 가리키는 주소값과 p1, p2 의 주소값은 같은 값이지만 복사된 별개의 변수
+//// #. p1, p2 가 가리키는 주소값은 바뀌었지만 ptr1, ptr2 가 가리키는 주소값은 그대로 이다.
+//	Swap1(ptr1, ptr2);
+//	std::cout << ptr1 << " : " << *ptr1 << " " << ptr2 << " : " << *ptr2 << std::endl;
+//
+//// #. 더블 포인터로 ptr1, ptr2 의 자체 주소값을 매개 변수로 전달 받음
+//	Swap2(&ptr1, &ptr2);
+//	std::cout << ptr1 << " : " << *ptr1 << " " << ptr2 << " : " << *ptr2 << std::endl;
+//}
+//void Swap1(int* p1, int* p2)
+//{
+//	int* temp = p1; p1 = p2; p2 = temp;
+//}
+//void Swap2(int** p1, int** p2)
+//{
+//	int* temp = *p1; *p1 = *p2; *p2 = temp;
+//}
+
+//#include <iostream>
+//
+//// #. maxPtr, minPtr 이 가리키는 값을 지정하기 위해 더블 포인터로 매개 변수를 받음
+//void MaxAndMin(int* arr, int size, int** mxPtr, int** mnPtr);
+//int main()
+//{
+//	int* maxPtr{ nullptr }, * minPtr{ nullptr };
+//	int arr[5]{ 1,3,5,2,4 };
+//
+//	MaxAndMin(arr, sizeof(arr) / sizeof(int), &maxPtr, &minPtr);
+//
+//	std::cout << *maxPtr << " : " << *minPtr << std::endl;
+//}
+//void MaxAndMin(int* arr, int size, int** mxPtr, int** mnPtr)
+//{	// 가리키는 주소 값을 바꾸기 위해서는 (*)역참조 연산자 한 개
+//	// 내부 값을 비교할 때는 (*)역참조 연산자 두 개
+//	*mxPtr = *mnPtr = &arr[0];
+//	for (int i = 0; i < size; i++)
+//	{
+//		if (**mxPtr < arr[i])
+//			*mxPtr = &arr[i];
+//		if (**mnPtr > arr[i])
+//			*mnPtr = &arr[i];
+//	}
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int num1{ 10 }, num2{ 20 }, num3{ 30 };
+//
+//// #. 포인터 배열은 더블 포인터이기도 하다.
+//	int* arr1[3]{ &num1,&num2,&num3 };
+//	for (int i = 0; i < 3; i++)
+//	{	// []인덱스는 해당 배열 요소의 값을 출력해준다.
+//		// 때문에 포인터 배열이 가리키는 값, 즉 주소값을 출력한다.
+//		// 내부의 값을 출력하려면 (*)역참조 연산자를 활용해야 한다.
+//		std::cout << arr1[i] << " : " << *arr1[i] << std::endl;
+//	}
+//
+//	int* ptr1{ &num1 }, * ptr2{ &num2 }, * ptr3{ &num3 };
+//	int* arr2[3]{ ptr1,ptr2,ptr3 };
+//	for (int i = 0; i < 3; i++)
+//	{
+//		std::cout << arr2[i] << " : " << *arr2[i] << std::endl;
+//	}
+//
+//// #. 더블 포인터로 포인터 배열을 가리킴, 즉 같은 것을 가리킴
+//	int** dptr{ arr2 };
+//	for (int i = 0; i < 3; i++)
+//	{
+//		std::cout << dptr[i] << " : " << *dptr[i] << std::endl;
+//	}
+//}
+
+//#include <iostream>
+//
+//void Swap(int** array, int SIZE);
+//int main()
+//{
+//	const int SIZE{ 5 };
+//	int num1{ 5 }, num2{ 3 }, num3{ 9 }, num4{ 7 }, num5{ 1 };
+//	int* array[SIZE]{ &num1,&num2,&num3,&num4,&num5 };
+//
+//	Swap(array, SIZE);
+//
+//	for (int i = 0; i < SIZE; i++)
+//	{
+//		std::cout << *array[i] << " ";
+//	}
+//}
+//void Swap(int** array, int SIZE)
+//{
+//	for (int i = 0; i < SIZE; i++)
+//	{
+//		for (int j = i + 1; j < SIZE; j++)
+//		{
+//			if (*array[i] < *array[j])
+//			{
+//				int* temp = array[i];
+//				array[i] = array[j];
+//				array[j] = temp;
+//			}
+//		}
+//	}
+//}
