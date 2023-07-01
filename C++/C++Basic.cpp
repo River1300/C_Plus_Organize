@@ -1103,3 +1103,149 @@
 //		}
 //	}
 //}
+
+/* --- < 구조체 포인터 > --- */
+
+//#include <iostream>
+//
+//struct Status
+//{
+//	int HP; int MP;
+//};
+//int main()
+//{
+//	Status Knight{ 100,5 };
+//	Status Warload{ 65,55 };
+//
+//	Status* pK{ &Knight };
+//	Status* pW{ &Warload };
+//
+//// #. 구조체의 포인터는 (*포인터 이름) or ->화살표 연산자로 역참조를 할 수 있다.
+//// #. -> 화살표 연산자는 역참조 기능이 포함되어 있기 때문에 (*)를 같이 쓰면 않된다.
+//	std::cout << Knight.HP << " : " << (*pK).HP << " : " << pK->HP << std::endl;
+//	std::cout << Knight.MP << " : " << (*pK).MP << " : " << pK->MP << std::endl;
+//	std::cout << Warload.HP << " : " << (*pW).HP << " : " << pW->HP << std::endl;
+//	std::cout << Warload.MP << " : " << (*pW).MP << " : " << pW->MP << std::endl;
+//}
+
+/* --- < 함수 포인터 > --- */
+
+/*
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| 함수를 구분짖는 특징은 반환타입과 함수이름, 그리고 매개 변수라 할 수 있다.		    |
+| 이러한 특징을 통해서 함수 포인터를 만들 수 있다.										|
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+*/
+
+//#include <iostream>
+//
+//// #. 반환타입 + (*포인터 이름) + (매개 변수)으로 특정 함수를 포인터로 가리킬 수 있다.
+////		=> bool (*Comparison)(int, int);
+//
+//using Comparison = bool(*)(int, int);
+//// 함수 포인터 코드를 입력하기 불편하기 때문에 별칭을 사용한다.
+//
+//void Sort(int* scores, int size, Comparison f);
+//bool Ascending(int a, int b);
+//bool Descending(int a, int b);
+//int main()
+//{
+//	const int SIZE{ 5 };
+//	int scores[SIZE]{ 20,10,40,70,90 };
+//
+//	Sort(scores, SIZE, Ascending);
+//
+//	for (int i = 0; i < SIZE; i++)
+//	{
+//		std::cout << scores[i] << " ";
+//	}
+//}
+//void Sort(int* scores, int size, Comparison f)
+//{
+//	for (int i = 0; i < size; i++)
+//	{
+//		for (int j = i + 1; j < size; j++)
+//		{
+//			if (f(scores[i], scores[j]))
+//			{
+//				int temp = scores[i];
+//				scores[i] = scores[j];
+//				scores[j] = temp;
+//			}
+//		}
+//	}
+//}
+//bool Ascending(int a, int b)
+//{
+//	return a > b;
+//}
+//bool Descending(int a, int b)
+//{
+//	return a < b;
+//}
+
+//#include <iostream>
+//
+//using AddFunc = void(*)(int, int);
+//
+//void SimpleAdder(int n1, int n2);
+//void ShowString(std::string* str);
+//int main()
+//{
+//	std::string str{ "Function Pointer" };
+//	int num1{ 10 }, num2{ 20 };
+//
+//// #. 일반 포인터도 선언을 할 때 int, char, float등 가리킬 타입을 지정한다.
+//// #. 함수 포인터 역시 가리킬 함수의 특징을 입력하여 어떤 타입의 함수를 가리킬지 알려줘야 한다.
+//	void(*fptr1)(int, int) { SimpleAdder };
+//	void(*fptr2)(std::string*) { ShowString };
+//// #. 함수 포인터를 선언하고 해당 타입과 일치하는 함수를 가리켜 준다.
+//
+//	fptr1(num1, num2);
+//	fptr2(&str);
+//
+//	AddFunc f{ SimpleAdder };
+//	f(num1, num2);
+//}
+//void SimpleAdder(int n1, int n2)
+//{
+//	std::cout << n1 << " + " << n2 << " = " << n1 + n2 << std::endl;
+//}
+//void ShowString(std::string* str)
+//{
+//	std::cout << *str << std::endl;
+//}
+
+//#include <iostream>
+//using sosu = void(*)(int);
+//
+//void SoSu(int a);
+//int main()
+//{
+//	int num{};
+//	std::cout << "소수를 구할 범위";
+//	std::cin >> num;
+//
+//	void(*so)(int) { SoSu };
+//	so(num);
+//	sosu ss{ SoSu };
+//	ss(num);
+//}
+//void SoSu(int a)
+//{
+//	for (int i = 1; i <= a; i++)
+//	{
+//		int count{};
+//		for (int j = 1; j <= i; j++)
+//		{
+//			if (i % j == 0)
+//			{
+//				count++;
+//			}
+//		}
+//		if (count == 2)
+//		{
+//			std::cout << i << " ";
+//		}
+//	}
+//}
