@@ -1278,3 +1278,29 @@
 			=>>> fp is pointer to Function has int parameter return pointer to array of 10 pointer to integer
 			=>>> fp는 함수 포인터인데 배열에 대한 포인터를 반환하는데 그 배열은 10개의 정수임
 */
+
+/* --- < 상수( Constant ) > --- */
+
+/*
+< const 변수 > : 값을 변경할 수 없는 상수
+	#. 리터럴로 사용할 때 주로 사용된다.
+
+< const 매개변수 > : 함수 내부에서 매개변수의 값을 변경하지 않는다는 의미
+	#. Call By Value 에서는 복사가 일어나므로 큰 의미가 없다.
+	#. Call By Reference 와 같이 매개변수가 변경될 가능성이 있는 곳에서 주로 사용된다.
+
+< const 반환형 함수 > : 매개변수와 마찬가지로 반환형에 참조형이 사용될 때, 해당 반환값을 변경할 수 없다는 의미
+	#. 주로 R_Value 를 반환할 때 사용된다.
+
+< const 멤버함수 > : 멤버함수 내부에서 클래스의 값( 멤버변수 )을 수정하지 않는다는 의미
+	#. void PrintMember() const;
+	#. const int& GetNumber();
+
+< const 클래스 > : 멤버들의 값을 바꿀 수 없다는 의미
+	#. const Dog myDog;
+
+< const int* p1; > : 내부 값을 바꿀 수 없다는 의미
+	#. 상수를 가리킬 때 주로 사용한다.
+
+< int* const p1; > : 가리키는 주소 값을 바꿀 수 없다는 의미
+*/
