@@ -1249,3 +1249,32 @@
 //		}
 //	}
 //}
+
+/* --- < 복잡한 코드를 읽는 방법 > --- */
+
+/*
+<컴파일 원리> : 오른쪽 -> 왼쪽으로 해석
+			  => int x; => x라는 객체는 int형
+			  => a = b = 0;
+			  => const int a; => a is intType which is const a는 int형인데 상수이다.
+			  => int const a; => a int constant integer a는 상수형 정수이다. 위와 같은 의미
+			  => const int * a;  => a is pointer to int which is const  // 내부 값을 바꿀 수 없고
+			  => int * const a;  => a is constant pointer to int		// 가리키는 대상을 바꿀 수 없고
+
+			  => int* (*(*fp1)(int))[10];
+						=> 1. 식별자(Identifier)를 찾습니다.
+						=> 2. 식별자 오른쪽으로 읽으세요.
+								-> 괄호기호 )를 만나면 무조건 왼쪽으로~
+								-> 오른쪽으로 읽을 것이 없으면 끝
+						=> 3. 왼쪽으로 ~
+						=> 4. (*) : poiner to
+						=> 5. [] : array of
+						=> 6. (int) : Function has int parameter return
+			=> ex) int nums[3] : nums is array of 3 integer
+			=> ex) int *nums[3] : nums is array of 3 pointer to integer  // 원소가 3개인데 각각 포인터가 있음
+			=> ex) int (*nums)[3]; : nums is pointer to array of 3 integer  // 원소가 3개인 배열의 포인터
+			=> ex) const int * const p; : p is constant pointer to integer which is const  // p는 상수인데 int 포인터인데 그 int가 상수형
+			=> ex) int* (*(*fp1)(int))[10]; : fp1 is pointer to Function has integer parameter return pointer to array of 10 integer pointer to // fp1은 포인터인데 int를 반환하는 함수이고 그게 또 포인터 이고 그 포인터는 원소가 10개인 배열을 가리키고 이 모든게 int형 포인터이고
+			=>>> fp is pointer to Function has int parameter return pointer to array of 10 pointer to integer
+			=>>> fp는 함수 포인터인데 배열에 대한 포인터를 반환하는데 그 배열은 10개의 정수임
+*/
