@@ -1428,3 +1428,211 @@
 //// #. b는 Func()함수의 지역변수 a를 참조한다. 그런데 a가 사라졌다.
 //	int& b = Func();
 //}
+
+/* --- < 배열과 포인터 > --- */
+
+/*
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| 배열은 내부적으로는 포인터를 사용하고 있기 때문에 배열의 원소표기를 떼면 가장 앞 원소를   |
+| 가르키는 포인터로 취급할 수 있다.	배열은 메모리 공간에서 연속된 주소에 위치하고 있기		|
+| 때문에 포인터로 지정하고 포인터 연산을 통해서 배열의 각 원소를 순회할 수 있다.			|
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+< pointer = array + 1; > : 배열의 타입 크기( byte )를 +연산한다.
+	#. array는 &array[0]과 같은 주소를 가리키고 있다.
+	#. 그 뜻은 array + 1은 &array[1]과 같다는 의미다.
+
+< array > : 배열의 이름은 그 배열의 시작 주소라고 보아도 무방하다.
+*/
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int array[10]{ 1,2,3,4,5,6,7,8,9,10 };
+//	int* pArr{ nullptr };
+//
+//	int sum{};
+//	for (int i = 0, *pArr = array; i < 10; i++, pArr++)
+//	{
+//// sum += array[i];
+//// sum += *(array + i);
+//		sum += *pArr;
+//// #. pArr은 정수형 포인터( int* )라고 타입을 지정했기 때문에 pArr++는 int크기만큼 증가한다.
+//	}
+//	pArr = &array[1];
+//// #. 배열의 N번째 원소는 인덱스에 N을 넣어 가리킬 수 있다.
+//
+//	std::cout << sum << std::endl;
+//}
+
+/* --- < 2차원 배열의 포인터 > --- */
+
+/*
+< 2차원 배열 > : 메모리 상으론 1열로 정렬되어 있지만 컴파일러는 행과 열을 나누어 구분할 수 있다.
+	#. < int array[3][3]; > : array[0][0]배열에서 가로 행 + 1을 할 경우 array[1][0]이되고
+	#. array[0][0]배열에서 세로 열 + 1을 할 경우 array[0][1]이 된다.
+		#. 메모리 상으론 가로 행 + 1은 (4 * 3)byte를 더한 값이고
+		#. 메모리 상으로 세로 열 + 1은 4byte를 더한 값이다.
+*/
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int array1[3];
+//	int* pArr1{ array1 };
+//
+//	int array2[2][3]{};
+//	pArr1 = &array2[0][0];
+//// #. array2는 원소가 2개인데 그 원소의 값이 3칸의 배열인 2차원 배열이다.
+//// #. 포인터에게 배열안에 3개의 integer Type이 있는 배열이라고 알려줘야 한다.
+//// #. < pArr1 = array2; > : 포인터가 2차원 배열 전체를 가리키는 것 이기 때문에 에러가 발생한다.
+//	
+//	for (int i = 0; i < 2; i++)
+//	{
+//		for (int j = 0; j < 3; j++)
+//		{
+//			std::cout << &array2[i][j] << " ";
+//		}
+//		std::cout << std::endl;
+//	}
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int arr2D[3][3];
+//
+//	std::cout << arr2D << " : " << arr2D[0] << " : " << &arr2D[0][0] << std::endl;
+//	std::cout << arr2D[1] << " : " << &arr2D[1][0] << std::endl;
+//	std::cout << arr2D[2] << " : " << &arr2D[2][0] << std::endl;
+//
+//// #. arr2D는 배열 전체(3층에 3개의 홋수가 있는 아파트)를 의미한다.
+//// #. arr2D[0]은 첫 번째 요소를 가리키되 1행만을 의미 한다. [[0][0][0]]
+//	std::cout << sizeof(arr2D) << " : " << sizeof(arr2D[0]) << " : " << sizeof(arr2D[1])
+//		<< " : " << sizeof(arr2D[2]) << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	// 3층 2열
+//	int yier2[3][2];
+//	// 2층 3열
+//	int yier3[2][3];
+//
+//	// #. 2열이기 때문에 +1은 8바이트 증가
+//	std::cout << yier2 << " : " << yier2 + 1 << std::endl;
+//	// #. 3열이기 때문에 +1은 12바이트 증가
+//	std::cout << yier3 << " : " << yier3 + 1 << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int arr[3][4]{};
+//
+//// #. ptr point to array of four integer : ptr 은 4개의 정수 배열을 가리킨다.
+//// #. 원소의 값으로 4개의 배열을 갖고있는 2차원 배열을 가리킨다.
+//	int(*ptr)[4]{ arr };
+//
+//	for (int i = 0; i < 3; i++)
+//	{
+//		for (int j = 0; j < 4; j++)
+//		{
+//			std::cout << ptr[i][j] << " ";
+//		}
+//		std::cout << std::endl;
+//	}
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int num1{ 10 }, num2{ 20 }, num3{ 30 }, num4{ 40 };
+//	int* ptr1[4]{ &num1,&num2,&num3,&num4 };
+//	std::cout << *ptr1[0] << " " << *ptr1[1] << " " << *ptr1[2] << " " << *ptr1[3] << std::endl;
+//	std::cout << std::endl;
+//// #. 포인터 배열로 각각의 원소값을 주소값으로 저장한다.
+//// #. 즉 배열의 요소가 포인터로 이루어져있다.
+//
+//	int arr[2][4]{ 1,2,3,4,5,6,7,8 };
+//	int(*ptr2)[4]{ arr };
+//// #. 배열 포인터로 배열의 첫번째 주소를 가리킨다.
+//// #. 즉 특정 사이즈의 배열만을 가리킬 수 있는 포인터이다.
+//
+//	for (int i = 0; i < 2; i++)
+//	{
+//		for (int j = 0; j < 4; j++)
+//		{
+//			std::cout << ptr2[i][j] << " ";
+//		}
+//		std::cout << std::endl;
+//	}
+//}
+
+//#include <iostream>
+//
+//int main()
+//{	
+//// #. arr1은 1차원 배열, int형 포인터 변수로 이루어진 포인터 배열이다.
+//	int* arr1[5]{};
+//
+//// #. arr2은 2차원 배열, int형 포인터 변수로 이루어진 더블 포인터 배열, 행 길이는 5이다.
+//	int* arr2[3][5]{};
+//
+//// #. arr1은 int형 싱글 포인터 변수를 가리키므로 arr1의 포인터 형식은 int형 더블 포인터다.
+//	int** ptr1{ arr1 };
+//
+//// #. 2차원 배열의 경우 배열의 요소와 배열의 가로 길이를 통해서 포인터 형식이 결정된다.
+//	int* (*ptr2)[5]{ arr2 };
+//}
+
+//#include <iostream>
+//
+//void ComplexFuncOne(int** arr1, int* (*arr2)[5]);
+//void ComplexFuncTwo(int*** arr3, int*** (*arr4)[5]);
+//int main()
+//{
+//	int* arr1[3];		// #. 1차원 포인터 배열
+//	int* arr2[3][5];	// #. 2차원 포인터 배열
+//	int** arr3[5];		// #. 1차원 더블 포인터 배열
+//	int*** arr4[3][5];	// #. 2차원 트리플 포인터 배열
+//
+//	ComplexFuncOne(arr1, arr2);
+//	ComplexFuncTwo(arr3, arr4);
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int arr[3][2]{ {1,2},{3,4},{5,6} };
+//
+//	// arr[1][0] == 3 : arr[0][1] == 2
+//	std::cout << arr[1][0] << " " << arr[0][1] << std::endl;
+//
+//	// *(arr[2] + 1) == 6 : *(arr[1] + 1) == 4
+//	std::cout << *(arr[2] + 1) << " " << *(arr[1] + 1) << std::endl;
+//
+//	// (*(arr + 2))[0] == 5 : (*(arr + 0))[1] == 2
+//	std::cout << (*(arr + 2))[0] << " " << (*(arr + 0))[1] << std::endl;
+//
+//	// **arr == 1 : *(*(arr + 0) + 0) == 1
+//	std::cout << **arr << " " << *(*(arr + 0) + 0) << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int arr[2][2][2]{ 1,2,3,4,5,6,7,8 };
+//
+//	std::cout << arr[1][0][1] << " : " << (*(arr + 1))[0][1] << " : " << (*(arr[1] + 0))[1]
+//		<< " : " << *((arr[1][0]) + 1) << " : " << *(*(*(arr + 1) + 0) + 1) << " : " 
+//		<< *(arr[1][0] + 1) << std::endl;
+//}
