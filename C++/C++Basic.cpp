@@ -1727,3 +1727,170 @@
 //	// #. 3차원 배열의 포인터는 가리켜야 하는 원소가 [행][열]이다.
 //	int(*pArray)[3][4]{ array3D };
 //}
+
+/* --- < 배열의 매개 변수 > --- */
+
+//#include <iostream>
+//
+//// #. [][3] 행을 비워두고 열에 3개의 원소가 들어간다는 것을 명시하여 열이 3개인 2차원 배열을 받을 수 있게 된다.
+//int Sum(int input[][3], int row, int col)
+//{
+//	int sum{};
+//	for (int i = 0; i < row; i++)
+//	{
+//		for (int j = 0; j < col; j++)
+//		{
+//			sum += *(*input + j);
+//			//sum += input[i][j];
+//		}
+//		input++;
+//	}
+//	return sum;
+//}
+//int main()
+//{
+//	int array2D[2][3]{ 1,2,3,4,5,6 };
+//	std::cout << Sum(array2D, 2, 3) << std::endl;
+//}
+
+/* --- < 문자열 포인터 > --- */
+
+/*
+< char* pointer > : pointer는 문자열을 다루는 포인터지만, 시작 지점만 존재한다.
+	#. pointer가 문자열을 의미하려면 어디가 끝인지를 반드시 알아야만 한다.
+	#. 그 때문에 '\0'널 값을 문자열 마지막에 넣는 것이다.
+	#. char[]로 생성하면 배열로 메모리가 준비된 상태로 등록되지만
+	#. char*로 생성하면 상수로 만들어진다.
+*/
+
+//#include <iostream>
+//
+//int main()
+//{
+//	char words[6]{};
+//// #. 문자형 포인터 char* (문자열형 포인터 std::string*)
+//	char* pw;
+//
+//	for (int i = 0; i < 5; i++)
+//	{
+//		std::cin >> words[i];
+//	}
+//	pw = words;
+//
+//	std::cout << words << std::endl;
+//// #. 문자 배열을 가리키는 포인터는 예외적으로 
+//// #. (*) 역참조 없이도 포인터 이름으로 내부값을 출력할 수 있다.
+//	std::cout << pw << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	char words[6]{ "River" };
+//	char* pW{ &words[0] };
+//// #. char* pW{"River"};가 가리키는 값은 R_Value라 올 수 없다.
+//// #. R_Value( 무명 객체 )를 가리키려면 상수 포인터로 가리켜야 한다.
+//
+//	std::cout << words << std::endl;
+//	std::cout << pW << std::endl;
+//}
+
+//#include <iostream>		// < Title : const >
+//
+//int main()
+//{	
+//// char 타입의 크기로 12개의 항목으로 이루어진 data001 변수 선언
+//	char data001[12]{ 't','i','p','s','s','o','f','t',0 };				
+//// 문자열을 초깃값으로 저장하고 싶다면 널 값을 포함하여 ('')에 한 문자씩 입력
+//// 배열의 각 항목에 문자를 하나씩 대입하도록 명령어가 구성된다.
+//// 즉, Stack 메모리에 배열을 위한 공간이 마련되고 
+//// 배열의 각 항목에 1바이트 크기의 숫자 값을 대입하는 최소 9개의 명령어가 추가된다.
+//
+//	char data002[12]{ "tipssoft" };										
+//// ('')로 입력한 문자열은 읽기가 불편하여 ("")문자열 상수로 입력하기를 선호한다.
+//// tipssoft가 문자열 상수로 프로그램에 등록된다.
+//// 이는 문자를 한 개씩 대입하는 것이 아니라 
+//// 문자열 상수가 저장된 메모리 시작 주소를 이용해서 data002 변수에 
+//// 9바이트 크기의 메모리를 복사하는 명령어가 추가된다.
+//
+//	const char* pString{ "tipssoft" };
+//// #. < char* pString = "tipssoft"; > : 문자열 상수는 const char* 로 받아야 한다. 
+//// #. 문자열 상수는 *pString = 'k' 와 같이 문자의 수정이 불가능 하다.
+//// #. char[]문자 배열과는 다르게 char*포인터는 배열 상태로 메모리가 준비되지 않는다.
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int myInteger{ 5 };
+//	char myString[]{ "One_Two_Three" };
+//
+//// #. +5 만큼 앞에서 부터 이동한 뒤 그 이후 부터 문자열 출력
+//	std::cout << myString + 5 << std::endl;
+//	std::cout << myString + myInteger << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int myInteger{ 5 };
+//
+//	wchar_t myString[]{ L"는 정수 입니다." };
+//// #. 일반 문자형은 [char], 유니코드 문자형은 [wchar_t]
+//// #. wchar은 wide character의 약자이다.
+//// #. 문자열("")앞에 L은 유니코드 문자열을 알려주기 위한 표기
+//
+//// #. 유니코드는 여러 국가의 언어를 표현하기 때문에, 각 언어에 맞는 특성으로 변환해야 한다.
+//	std::locale myLocale("kor");
+//	std::wcout.imbue(myLocale);
+//
+//// #. 유니코드를 화면에 출력하려면 cout이 아닌 wcout을 사용해야 한다.
+//	std::wcout << myString << std::endl;
+//	std::wcout << myString + myInteger << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	char input[1000];
+//	std::cin >> input;
+//
+//// #. < strlen(변수) > : iostream 에서 제공하는 문자의 갯수를 세는 함수
+//	std::cout << strlen(input) << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	char myString[5]{ "test" };
+//
+//	// #. < size_t strlen(const char* str); > : 문자열의 갯수를 반환한다.(널 문자 제외)
+//	// #. string length의 약자
+//	std::cout << "length : " << strlen(myString) << std::endl;
+//	std::cout << "size : " << sizeof(myString) << std::endl;
+//
+//	char compareStr[5];
+//
+//	// #. < char* strcpy_s(char* destination, size_t size, const char* source); >
+//	// #. source의 문자열을 destination의 문자열로 size만큼 복사
+//	strcpy_s(compareStr, 5, "boy");
+//	std::cout << "Compare with " << compareStr << " : "
+//		<< strcmp(myString, compareStr) << std::endl;
+//
+//	// #. < int strcmp(const char* str1, const char* str2); >
+//	// #. str1과 str2의 문자열을 비교한다.
+//	// #. ( < 0 ) : str1이 더 작은 경우(아스키 코드상)
+//	// #. ( 0 ) : 두 문자열이 일치할 경우
+//	// #. ( > 0 ) : str1이 더 큰 경우(아스키 코드상)
+//	strcpy_s(compareStr, 5, "test");
+//	std::cout << "Compare with " << compareStr << " : "
+//		<< strcmp(myString, compareStr) << std::endl;
+//	strcpy_s(compareStr, 5, "word");
+//	std::cout << "Compare with " << compareStr << " : "
+//		<< strcmp(myString, compareStr) << std::endl;
+//}
