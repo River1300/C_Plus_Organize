@@ -2095,3 +2095,123 @@
 ////	 +7. Stack[main[allocated], MyFunction1[local], MyFunction2[local]]
 //	int local;
 //}
+
+/* --- < 동적 배열 > --- */
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int count{};
+//
+//	std::cout << "배열의 크기는 ? ";
+//	std::cin >> count;
+//	if (count <= 0)
+//	{
+//		std::cout << "배열의 크기는 0보다 커야 합니다." << std::endl;
+//		return 0;
+//	}
+//// #. 동적 할당을 활용하면 배열의 크기를 사용자로부터 입력받을 수 있다.
+//	int* pArray = new int[count] {};
+//
+//	for (int i = 0; i < count; i++)
+//	{
+//		std::cout << i + 1 << "번 째 배열 요소 : ";
+//		std::cin >> pArray[i];
+//	}
+//
+//	delete[] pArray;
+//	pArray = nullptr;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int count{};
+//
+//	std::cout << "몇 명의 친구가 있나요 : ";
+//	std::cin >> count;
+//	if (count <= 1)
+//	{
+//		std::cout << "친구의 수는 1보다 많아야 합니다." << std::endl;
+//		return 0;
+//	}
+//// #. 문자열 포인터 std::string* 사용
+//	std::string* pArray = new std::string[count]{};
+//	// 가장 긴 이름이 있는 배열 요소를 저장할 변수
+//	int longest{};
+//	// < size_t > : unsigned int로 비교한다.
+//	// unsigned int maxlen{};과 같은 뜻
+//	size_t maxlen{};
+//
+//	for (int i = 0; i < count; i++)
+//	{
+//		std::cout << "이름 " << i + 1 << "을 입력하세요 : ";
+//		std::cin >> pArray[i];
+//		if (pArray[i].size() > maxlen)
+//		{
+//			maxlen = pArray[i].size();
+//			longest = i;
+//		}
+//	}
+//	std::cout << std::endl;
+//	std::cout << "이름이 가장 긴 친구는 " << pArray[longest] << " 입니다." << std::endl;
+//
+//	delete[] pArray;
+//	pArray = nullptr;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int number{ 5 };
+//	int* p{ &number };
+//	std::cout << p << " : " << *p << std::endl;
+//// #. p는 number의 주소를 가지고 있습니다.
+//// #. *p는 역참조로 number의 값을 가져옵니다.
+//
+//	int** pp = &p;
+//	std::cout << pp << " : " << *pp << " : " << **pp << std::endl;
+//// #. pp는 p의 주소를 가지고 있습니다.
+//// #. *pp는 역참조로 p의 값을 가지고 있으니, number의 주소가 될겁니다.
+//// #. **pp는 p의 역참조가 number의 주소이므로 다시 역참조 해서 number의 값을 가지게 됩니다.
+//
+//	//int** dp{ && number };
+//// #. number : 값 5를 저장하고 있는 변수( L_Value )
+//// #. &number : number의 메모리 상의 주소값, 즉 0067FF7F4라는 리터럴( R_Value )
+//// #. &(&number) : &0067FF7F4이라는 표현이 되어 버려서 처리 불가능
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int row{ 2 };		// 2층(행)
+//	int col{ 3 };		// 3호(열)
+//
+//// #. 2차 배열을 포인터로 지정하는 방법 : int (*point)[3] = array;
+//// #. 2차 배열을 포인터로 가리키려면 1차원의 원소 크기를 지정해 줘야만 했다.
+//
+//// #. 가로 행에 값으로 지정된 세로 열 배열은 싱글 포인터로 가리킨다.
+//// #. 그러므로 더블 포인터로 가로 행의 크기를 먼저 지정해 준다.
+//	int** p = new int* [row];
+//
+//	for (int i = 0; i < row; i++)
+//	{	// #. 행을 만든 뒤 각 행 별로 열의 크기를 지정해 준다.
+//		p[i] = new int[col];
+//	}
+//
+//	p[0][0] = 1;
+//	p[0][1] = 2;
+//
+//// #. 동적 할당을 해제할 때에는 세로 열을 먼저 해제해야만 한다.
+//	for (int i = 0; i < row; i++)
+//	{
+//		delete[] p[i];
+//		p[i] = nullptr;
+//	}
+//	delete[] p;
+//	p = nullptr;
+//}
