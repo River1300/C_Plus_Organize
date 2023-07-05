@@ -1894,3 +1894,152 @@
 //	std::cout << "Compare with " << compareStr << " : "
 //		<< strcmp(myString, compareStr) << std::endl;
 //}
+
+/* ----- < 동적 메모리 관리 > ----- */
+//
+//
+//
+//
+//
+/* --- < 동적 할당 개요 > --- */
+
+/*
+< 자동 메모리 할당( Automatic Memory Allocation ) >
+	#. 지역 변수, 함수 매개변수등은 타입으로 객체를 만들면 자동으로 타입의 크기만큼 메모리가 배정된다.
+	#. 이 변수들의 생존주기는 블록{}에서 시작되고 블록에서 끝난다.
+	#. 메모리 공간을 얼마나 사용할 지 컴파일타임에 지정한다.
+
+< 정적 메모리 할당( Static Memory Allocation ) >
+	#. 한 번 만들어지면 끝까지 살아남는다는 의미로 정적이라고 부른다.
+	#. 즉 전역변수 및 정적변수들이 이런 형태가 된다.
+	#. 메모리 공간을 얼마나 사용할 지 컴파일타임에 지정한다.
+
+< 동적 메모리 할당( Dynamic Memory Allocation ) >
+	#. 동적 즉, 프로그래머가 필요할 때 만들고 제거할 수 있는 형태를 말한다.
+	#. 포인터의 핵심 기능이다.
+	#. 메모리 공간을 얼마나 사용할 지 런타임에 지정한다.
+*/
+
+//#include <iostream>
+//
+//int Factor(int);
+//
+//// main 함수가 스택 영역(Stack Area)에 저장된다.
+//int main()
+//{	
+//// #. Local Variable : 지역 변수가 스택 영역에 저장된다.
+//	int number{ 5 };
+//// #. < Stack Area > : 함수, 지역변수, 매개 변수가 타입을 지정하여 객체를 만든다.
+////		=> 만들어진 객체는 자동으로 타입의 크기만큼 메모리가 배정된다.
+////		=> 배정된 메모리는 블록{}에서 시작되고 끝난다.
+//	std::cout << Factor(number) << std::endl;
+//}
+//
+//// Factor 함수가 스택 영역에 저장된다.		ex) Stack[main[number], Factor[num]]
+//// #. 매개 변수 num 이 스택 영역에 저장된다.
+//int Factor(int num)
+//{
+//	if (num == 1)
+//	{
+//		return 1;
+//	}
+//	else
+//	{
+//		return num * Factor(num - 1);
+//	}
+//}
+
+//#include <iostream>
+//
+//int Increase(void);
+//int main()
+//{
+//	for (int i = 0; i < 10; i++)
+//	{
+//		std::cout << Increase() << std::endl;
+//	}
+//}
+//int Increase(void)
+//{	
+//// #. static 변수가 데이터 영역(Data Area)에 저장된다.		ex) Data[Increase[number]]
+//	static int number{ 1 };
+//// #. < Data Area > : 글로벌 변수, static 변수가 타입을 지정하여 객체를 만든다.
+////		=> 만들어진 객체는 자동으로 타입의 크기만큼 메모리가 배정된다.
+////		=> 배정된 메모리는 프로그램 시작될 때 생성되어 프로그램 종료시 사라진다.
+//	return number++;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{	
+//// #. Contiguous allocation
+//// #. 원소의 크기가 size인 원소를 num개 할당, 모든 원소를 0으로 초기화
+//	void* calloc(size_t num, size_t size);
+//// #. 확보된 메모리의 시작 주소를 buf포인터에 저장
+//// #. char형으로 20개의 원소를 할당하여 메모리 공간 확보 ( 20개의 원소가 각각 1바이트 )
+//	char* buf = (char*)calloc(20, sizeof(char));
+//
+//// #. Memory allocation
+//// #. size 바이트 만큼의 메모리를 할당, 초기화 X
+//	void* malloc(size_t size);
+//// #. 확보된 메모리의 시작 주소를 marry 포인터에 저장
+//// #. int 형으로 200개의 원소를 4바이트 size 로 메모리 확보
+//	int* marry = (int*)malloc(sizeof(int) * 200);
+//// #. 확보된 공간을 배열처럼 사용할 수 있다.
+//	marry[2] = 40;
+//
+//// #. 확보된 메모리 공간과 포인터간의 연결을 끊는다.
+//	void free(void* ptr);
+//	free(marry);
+//}
+
+/* --- < C++ Style 동적 메모리 할당 개요 > --- */
+
+/*
+< 동적 메모리 할당 > : 원하는 만큼 메모리를 언제든 만들고 없앨 수 있다.
+	#. new 연산자 : 주어진 타입으로 메모리 공간을 할당한 후 돌려 주는 단항 연산자
+	#. delete 연산자 : 주어진 포인터 변수의 메모리를 해제 하는 단항 연산자
+	#. new[] : 배열 형태로 메모리를 할당하는 연산자
+	#. delete[] : 배열 형태로 할당한 메모리를 해제하는 연산자
+*/
+
+//#include <iostream>
+//
+//struct Student
+//{
+//	std::string name;
+//	int scores;
+//};
+//
+//int main()
+//{
+//// #. < 포인터 변수 = new 타입; > : 포인터 변수를 위한 메모리 공간 할당
+//	int* pointer1 = new int;
+//	*pointer1 = 100;
+//	std::cout << *pointer1 << std::endl;
+//
+//// #. < delete 포인터 변수; > : 포인터 변수와 메모리 공간의 연결을 끊음
+//	delete pointer1;
+//	pointer1 = nullptr;
+//
+//// #. < 포인터 변수 = new 타입[크기]; > : 해당 타입의 배열 크기만큼 메모리 공간을 할당
+//	int* pointer2 = new int[5];
+//	for (int i = 0; i < 5; i++)
+//	{
+//		std::cin >> pointer2[i];
+//	}
+//
+//// #. < delete[] 포인터 변수; > : 포인터 변수와 메모리 공간의 연결을 끊음
+//	delete[] pointer2;
+//	pointer2 = nullptr;
+//
+//	Student* pointer3 = new Student[5];
+//	for (int i = 0; i < 5; i++)
+//	{	// 배열의 인덱스[] 안에 역참조 기능이 있기 때문에 화살표는 사용 불가
+//		std::cin >> pointer3[i].name;
+//		std::cin >> pointer3[i].scores;
+//	}
+//	delete[] pointer3;
+//	pointer3 = nullptr;
+//}
