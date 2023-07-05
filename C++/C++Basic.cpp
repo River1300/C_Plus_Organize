@@ -2043,3 +2043,55 @@
 //	delete[] pointer3;
 //	pointer3 = nullptr;
 //}
+
+/* --- < 힙( Heap ) & 스택( Stack ) > --- */
+
+/*
+< 힙&스택 > : 동적 메모리를 사용하는 또 다른 경우는 데이터를 힙( Heap )에 등록해야 할 경우다.
+	#. 스택( Stack )은 매우 작은 메모리를 사용하기 때문에 매우 큰 데이터는 지역 변수로 사용할 수 없다.
+*/
+
+//#include <iostream>
+//
+//void MyFunction1();
+//void MyFunction2();
+//
+//// #1. 전역 변수는 Data( 전역, static 변수 저장 공간 )영역에 저장된다.
+//// +1. Data[gString, gInteger]
+//char gString[]{ "Memory" };
+//int gInteger;
+//
+//// #2. Entry-Point로 main함수가 실행된다.
+////	 2-1. 메인 함수가 실행 되며 Stack영역에 저장된다.		+ Stack[main[]]
+////	 2-2. Stack메모리 공간은 굉장히 작은 크기가 할당된다.
+//int main()
+//{	
+//// #3. 동적할당은 Heap 에 할당된 메모리를 가리킨다.
+//// +3. Stack[main[allocated->]->] -> Heap[]
+////	 3-1. main함수에 저장된 지역변수가 Heap에 4바이트 메모리 공간을 가리킨다.
+////	 3-2. Heap메모리 공간은 큰 크기가 할당된다.
+//	int* allocated{ new int };
+//
+//// #4. Stack에 MyFunction1이 저장된다.		+ Stack[main[allocated], MyFunction1[]]
+//	MyFunction1();
+//
+//// #8. Heap을 가리키고 있던 allocated가 연결을 끊음
+////	 8-1. Stack 공간에 main안에 있는 지역 변수 allocated는 살아 있다.
+//	delete allocated;
+//	allocated = nullptr;
+//}
+//void MyFunction1()
+//{	
+//// #5. Stack에 저장된 MyFunction1안에 지역 변수 local이 저장된다.
+////	 +5. Stack[main[allocated], MyFunction1[local]]
+//	int loca;
+//
+//// #6. Stack에 MyFunction2가 저장된다.		+ Stack[main[allocated], MyFunction1[local], MyFunction2[]]
+//	MyFunction2();
+//}
+//void MyFunction2()
+//{	
+//// #7. Stack에 저장된 MyFunction2안에 지역 변수 local이 저장된다.
+////	 +7. Stack[main[allocated], MyFunction1[local], MyFunction2[local]]
+//	int local;
+//}
