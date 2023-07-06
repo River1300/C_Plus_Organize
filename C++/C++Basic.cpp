@@ -2298,3 +2298,95 @@
 //		std::cerr << "divide by zero!" << std::endl;
 //	}
 //}
+
+/* ----- < 알고리즘 > ----- */
+//
+//
+//
+//
+//
+/* --- < N^2 > --- */
+
+#include <iostream>
+
+void PrintArray(int input[], int size)
+{
+	for (int i = 0; i < size; i++) std::cout << input[i] << ' ';
+}
+void Swap(int& x, int& y)
+{
+	int temp = x; x = y; y = temp;
+}
+
+void SelectionSort(int input[], int size);	// 순차 정렬 : 배열을 순회하면서 가장 작은(or 큰)원소를 선택하여 정렬
+void BubbleSort(int input[], int size);	// 거품 정렬 : 인접한 두 원소를 비교하면서 위치를 교환하는 정렬
+void InsertionSort(int input[], int size);	// 삽입 정렬 : 배열의 원소를 하나씩 선택하여 정렬된 부분 배열의 적절한 위치에 삽입
+
+int main()
+{
+	const int SIZE{ 10 };
+	int array[SIZE]{ 1,10,5,8,7,6,4,3,2,9 };
+
+	// SelectionSort(array, SIZE);
+	// BubbleSort(array, SIZE);
+	InsertionSort(array, SIZE);
+	PrintArray(array, SIZE);
+}
+
+void SelectionSort(int input[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		int minIndex = i;
+
+		for (int j = i + 1; j < size; j++)
+		{
+			// 1. 배열의 원소 중 가장 작은 원소를 찾는다.
+			if (input[j] < input[minIndex]) minIndex = j;
+		}
+
+		// 2. 해당 원소를 배열의 가장 앞쪽 원소와 교환한다.
+		Swap(input[i], input[minIndex]);
+	}
+}
+
+void BubbleSort(int input[], int size)
+{
+	for (int i = 0; i < size - 1; i++)
+	{
+		for (int j = 0; j < size - i - 1; j++)
+		{
+			// 1. 배열의 첫 번째 원소부터 마지막 원소까지 인접한 원소들을 비교
+			// 2. 인접한 두 원소를 비교하여 크기 순서에 맞지 않는 경우, 위치를 교환
+			if (input[j] > input[j + 1]) Swap(input[j], input[j + 1]);
+
+			// 3. 이러한 비교와 교환 과정을 마지막 원소까지 반복
+			// 4. 가장 큰(or 작은)원소가 배역의 끝쪽으로 이동하게 된다.
+			// 5. 다시 첫 번째 원소부터 마지막에서 두 번째 원소까지 위의 과정을 반복
+			// 6. 위의 과정을 배열의 크기 -1번 만큼 반복하여 정렬
+		}
+	}
+}
+
+void InsertionSort(int input[], int size)
+{
+// 1. 배열의 두 번째 원소부터 마지막 원소까지 반복
+	for (int i = 1; i < size; i++)
+	{
+		// 2. 현재 원소를 Key 값으로 저장한다.
+		int key = input[i];
+		// 3. 다음 반복문의 인덱스로 활용할 변수에 현재 원소 바로 이전 인덱스를 저장
+		int j = i - 1;
+
+		// 4. 현재 원소를 이미 정렬된 부분 배열의 적절한 위치에 삽입하기 위한 반복
+		//		=> j가 배열 인덱스를 넘지 않으면서 && Key 이전의 값이 Key보다 크면 계속 반복문을 실행한다.
+		while (j >= 0 && input[j] > key)
+		{
+			// 5. 큰 값을 배열 끝으머리로 밀어버린다.
+			input[j + 1] = input[j];
+			j--;
+		}
+		// 6. 반복문을 나오면 Key값의 위치가 정해 진다.
+		input[j + 1] = key;
+	}
+}
