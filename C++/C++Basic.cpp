@@ -2307,86 +2307,323 @@
 //
 /* --- < N^2 > --- */
 
-#include <iostream>
+//#include <iostream>
+//
+//void PrintArray(int input[], int size)
+//{
+//	for (int i = 0; i < size; i++) std::cout << input[i] << ' ';
+//}
+//void Swap(int& x, int& y)
+//{
+//	int temp = x; x = y; y = temp;
+//}
+//
+//void SelectionSort(int input[], int size);	// 순차 정렬 : 배열을 순회하면서 가장 작은(or 큰)원소를 선택하여 정렬
+//void BubbleSort(int input[], int size);	// 거품 정렬 : 인접한 두 원소를 비교하면서 위치를 교환하는 정렬
+//void InsertionSort(int input[], int size);	// 삽입 정렬 : 배열의 원소를 하나씩 선택하여 정렬된 부분 배열의 적절한 위치에 삽입
+//
+//int main()
+//{
+//	const int SIZE{ 10 };
+//	int array[SIZE]{ 1,10,5,8,7,6,4,3,2,9 };
+//
+//	// SelectionSort(array, SIZE);
+//	// BubbleSort(array, SIZE);
+//	InsertionSort(array, SIZE);
+//	PrintArray(array, SIZE);
+//}
+//
+//void SelectionSort(int input[], int size)
+//{
+//	for (int i = 0; i < size; i++)
+//	{
+//		int minIndex = i;
+//
+//		for (int j = i + 1; j < size; j++)
+//		{
+//			// 1. 배열의 원소 중 가장 작은 원소를 찾는다.
+//			if (input[j] < input[minIndex]) minIndex = j;
+//		}
+//
+//		// 2. 해당 원소를 배열의 가장 앞쪽 원소와 교환한다.
+//		Swap(input[i], input[minIndex]);
+//	}
+//}
+//
+//void BubbleSort(int input[], int size)
+//{
+//	for (int i = 0; i < size - 1; i++)
+//	{
+//		for (int j = 0; j < size - i - 1; j++)
+//		{
+//			// 1. 배열의 첫 번째 원소부터 마지막 원소까지 인접한 원소들을 비교
+//			// 2. 인접한 두 원소를 비교하여 크기 순서에 맞지 않는 경우, 위치를 교환
+//			if (input[j] > input[j + 1]) Swap(input[j], input[j + 1]);
+//
+//			// 3. 이러한 비교와 교환 과정을 마지막 원소까지 반복
+//			// 4. 가장 큰(or 작은)원소가 배역의 끝쪽으로 이동하게 된다.
+//			// 5. 다시 첫 번째 원소부터 마지막에서 두 번째 원소까지 위의 과정을 반복
+//			// 6. 위의 과정을 배열의 크기 -1번 만큼 반복하여 정렬
+//		}
+//	}
+//}
+//
+//void InsertionSort(int input[], int size)
+//{
+//// 1. 배열의 두 번째 원소부터 마지막 원소까지 반복
+//	for (int i = 1; i < size; i++)
+//	{
+//		// 2. 현재 원소를 Key 값으로 저장한다.
+//		int key = input[i];
+//		// 3. 다음 반복문의 인덱스로 활용할 변수에 현재 원소 바로 이전 인덱스를 저장
+//		int j = i - 1;
+//
+//		// 4. 현재 원소를 이미 정렬된 부분 배열의 적절한 위치에 삽입하기 위한 반복
+//		//		=> j가 배열 인덱스를 넘지 않으면서 && Key 이전의 값이 Key보다 크면 계속 반복문을 실행한다.
+//		while (j >= 0 && input[j] > key)
+//		{
+//			// 5. 큰 값을 배열 끝으머리로 밀어버린다.
+//			input[j + 1] = input[j];
+//			j--;
+//		}
+//		// 6. 반복문을 나오면 Key값의 위치가 정해 진다.
+//		input[j + 1] = key;
+//	}
+//}
 
-void PrintArray(int input[], int size)
-{
-	for (int i = 0; i < size; i++) std::cout << input[i] << ' ';
-}
-void Swap(int& x, int& y)
-{
-	int temp = x; x = y; y = temp;
-}
+//#include <iostream>
+//
+//void Swap(int& x, int& y)
+//{
+//	int temp = x; x = y; y = temp;
+//}
+//
+//void SelectionSort(int input[], int size)
+//{
+//	// 1. 배열 중 가장 작은 값을 찾는다.
+//	for (int i = 0; i < size; i++)
+//	{
+//		int minIndex = i;
+//		for (int j = i + 1; j < size; j++)
+//		{
+//			if (minIndex < input[j])
+//			{
+//				minIndex = j;
+//			}
+//		}
+//		// 2. 가장 작은 값을 맨 앞으로 보낸다.
+//		Swap(input[i], input[minIndex]);
+//	}
+//}
+//
+//void BubbleSort(int input[], int size)
+//{
+//	// 1. 배열 첫 번째 원소부터 마지막 원소 이전까지 인접한 원소끼리 비교
+//	for (int i = 0; i < size - 1; i++)
+//	{
+//		for (int j = 0; j < size - i - 1; j++)
+//		{
+//			// 2. 큰 값을 배열의 뒤로 보낸다.
+//			if (input[j] > input[j + 1]) Swap(input[j], input[j + 1]);
+//		}
+//	}
+//}
+//
+//void InsertionSort(int input[], int size)
+//{
+//	// 1. 배열의 두 번째 원소부터 순회
+//	for (int i = 1; i < size; i++)
+//	{
+//		// 2. 현재 원소를 기준값 Key로 지정
+//		int Key = input[i];
+//		// 3. 현재 원소의 이전 인덱스를 저장
+//		int j = i - 1;
+//
+//		// 4. 이전 인덱스가 배열을 벗어나지 않고, 기준값이 이전 인덱스의 원소값보다 작다면
+//		while (j >= 0 && input[j] > Key)
+//		{
+//			// 5. 기준 원소보다 큰 값들은 뒤로 한 칸씩 이동
+//			//		=> 7 3 1 : Key[3] -> 7 7 1 -> 3 7 1 -> Key[1] -> 3 7 7 -> 3 3 7 -> 1 3 7
+//			input[j + 1] = input[j];
+//			j--;
+//		}
+//		input[j + 1] = Key;
+//	}
+//}
 
-void SelectionSort(int input[], int size);	// 순차 정렬 : 배열을 순회하면서 가장 작은(or 큰)원소를 선택하여 정렬
-void BubbleSort(int input[], int size);	// 거품 정렬 : 인접한 두 원소를 비교하면서 위치를 교환하는 정렬
-void InsertionSort(int input[], int size);	// 삽입 정렬 : 배열의 원소를 하나씩 선택하여 정렬된 부분 배열의 적절한 위치에 삽입
+//#include <iostream>
+//#include <vector>
+//
+//void BubbleSort(std::vector<int>& input)
+//{
+//	int size = input.size();
+//	// 1. 정렬이 필요한 구간인지 체크할 플래그 변수
+//	bool swapped;
+//
+//	for (int i = 0; i < size - 1; i++)
+//	{
+//		// 2. 정렬을 시작할 때 false를 쥐어 준다.
+//		swapped = false;
+//
+//		for (int j = 0; j < size - i - 1; j++)
+//		{
+//			if (input[j] > input[j + 1])
+//			{
+//				std::swap(input[j], input[j + 1]);
+//				// 3. 정렬이 필요한 구간일 경우 true를 준다.
+//				swapped = true;
+//			}
+//		}
+//		// 4. 정렬이 필요 없는 구간이라면 다음 구간으로 이동하기 위해 탈출
+//		if (!swapped) break;
+//	}
+//}
+//
+//int main()
+//{
+//	std::vector<int> arr{ 3,2,5,9,1,7,6,4,8 };
+//
+//	BubbleSort(arr);
+//
+//	for (int i : arr) std::cout << i << ' ';
+//}
 
-int main()
-{
-	const int SIZE{ 10 };
-	int array[SIZE]{ 1,10,5,8,7,6,4,3,2,9 };
+//#include <iostream>
+//#include <vector>
+//
+//void BinaryInsertionSort(std::vector<int>& input)
+//{
+//	int size = input.size();
+//
+//	// 1. 가장 앞의 원소는 정렬이 완성되었다는 가정으로 두 번째 원소부터 정렬을 시도 한다.
+//	for (int i = 1; i < size; i++)
+//	{
+//		int key = input[i];
+//		// 2. 이진 탐색을 하기 위해 범위를 지정 한다.
+//		int left{};
+//		int right{ i - 1 };
+//
+//		while (left <= right)
+//		{
+//			// 3. 범위의 기준을 가운데로 지정한다.
+//			int mid = (left + right) / 2;
+//
+//			// 4. Key 값과 비교하여 Key 값이 들어갈 자리를 찾는다.
+//			if (input[mid] > key) right = mid - 1;
+//			else left = mid + 1;
+//		}
+//		
+//		// 5. 원소들을 뒤로 이동
+//		for (int j = i - 1; j >= left; j--) input[j + 1] = input[j];
+//
+//		// 6. Key 값의 자리
+//		input[left] = key;
+//	}
+//}
+//
+//int main()
+//{
+//	std::vector<int> arr{ 5,3,2,6,1,7,8,9,4 };
+//
+//	BinaryInsertionSort(arr);
+//
+//	for (int i : arr) std::cout << i << ' ';
+//}
 
-	// SelectionSort(array, SIZE);
-	// BubbleSort(array, SIZE);
-	InsertionSort(array, SIZE);
-	PrintArray(array, SIZE);
-}
+/* --- < NLogN > --- */
 
-void SelectionSort(int input[], int size)
-{
-	for (int i = 0; i < size; i++)
-	{
-		int minIndex = i;
+//#include <iostream>
+//#include <vector>
+//
+//// 2. 작은 단계로 나누어진 배열을 정렬하며 합치는 함수
+//void Merge(std::vector<int>& input, int left, int mid, int right)
+//{
+//	int i = left;	// 왼쪽 배열 인덱스
+//	int j = mid + 1;	// 오른쪽 배열 인덱스
+//	int k = left;	// 병합한 배열의 인덱스
+//
+//	std::vector<int> temp(input.size());
+//
+//	// 왼쪽 집합과 오른쪽 집합을 비교하여 작은( 큰 )값을 임시 배열에 저장
+//	while (i <= mid && j <= right)
+//	{
+//		if (input[i] <= input[j])
+//			temp[k++] = input[i++];
+//		else
+//			temp[k++] = input[j++];
+//	}
+//	// 남은 원소들을 임시 배열에 저장
+//	while (i <= mid) temp[k++] = input[i++];
+//	while (j <= right) temp[k++] = input[j++];
+//
+//	// 정렬된 배열을 기존 배열로 배정
+//	for (int index = left; index <= right; index++)
+//		input[index] = temp[index];
+//}
+//
+//// 1. 배열을 반으로 나누는 함수
+//void Devide(std::vector<int>& input, int left, int right)
+//{
+//	if (left >= right) return;
+//
+//	int mid = (left + right) / 2;
+//
+//	Devide(input, left, mid);
+//	Devide(input, mid + 1, right);
+//	Merge(input, left, mid, right);
+//}
+//
+//int main()
+//{
+//	std::vector<int> arr{ 9,5,7,1,3,8,6,2,4 };
+//	Devide(arr, 0, arr.size() - 1);
+//	for (int i : arr) std::cout << i << ' ';
+//}
 
-		for (int j = i + 1; j < size; j++)
-		{
-			// 1. 배열의 원소 중 가장 작은 원소를 찾는다.
-			if (input[j] < input[minIndex]) minIndex = j;
-		}
-
-		// 2. 해당 원소를 배열의 가장 앞쪽 원소와 교환한다.
-		Swap(input[i], input[minIndex]);
-	}
-}
-
-void BubbleSort(int input[], int size)
-{
-	for (int i = 0; i < size - 1; i++)
-	{
-		for (int j = 0; j < size - i - 1; j++)
-		{
-			// 1. 배열의 첫 번째 원소부터 마지막 원소까지 인접한 원소들을 비교
-			// 2. 인접한 두 원소를 비교하여 크기 순서에 맞지 않는 경우, 위치를 교환
-			if (input[j] > input[j + 1]) Swap(input[j], input[j + 1]);
-
-			// 3. 이러한 비교와 교환 과정을 마지막 원소까지 반복
-			// 4. 가장 큰(or 작은)원소가 배역의 끝쪽으로 이동하게 된다.
-			// 5. 다시 첫 번째 원소부터 마지막에서 두 번째 원소까지 위의 과정을 반복
-			// 6. 위의 과정을 배열의 크기 -1번 만큼 반복하여 정렬
-		}
-	}
-}
-
-void InsertionSort(int input[], int size)
-{
-// 1. 배열의 두 번째 원소부터 마지막 원소까지 반복
-	for (int i = 1; i < size; i++)
-	{
-		// 2. 현재 원소를 Key 값으로 저장한다.
-		int key = input[i];
-		// 3. 다음 반복문의 인덱스로 활용할 변수에 현재 원소 바로 이전 인덱스를 저장
-		int j = i - 1;
-
-		// 4. 현재 원소를 이미 정렬된 부분 배열의 적절한 위치에 삽입하기 위한 반복
-		//		=> j가 배열 인덱스를 넘지 않으면서 && Key 이전의 값이 Key보다 크면 계속 반복문을 실행한다.
-		while (j >= 0 && input[j] > key)
-		{
-			// 5. 큰 값을 배열 끝으머리로 밀어버린다.
-			input[j + 1] = input[j];
-			j--;
-		}
-		// 6. 반복문을 나오면 Key값의 위치가 정해 진다.
-		input[j + 1] = key;
-	}
-}
+//#include <iostream>
+//#include <vector>
+//
+//// #. 배열을 분할하고 피벗의 위치를 반환하는 함수
+//int Part(std::vector<int>& input, int low, int high)
+//{
+//	int pivot = input[high];	// 피벗은 배열의 마지막 원소를 갖는다.
+//	int i = low - 1;	// 작은 값들을 저장하기 위한 인덱스 변수
+//
+//	for (int j = low; j < high; j++)
+//	{
+//		if (input[j] <= pivot) // 피벗보다 작거나 같다면
+//		{
+//			// i를 증가시키고 Swap하여 작은 값들은 왼쪽에 위치하게 한다.
+//			i++;
+//			std::swap(input[i], input[j]);
+//		}
+//	}
+//	// 반복문 종료 후 피벗을 정렬된 위치로 이동
+//	std::swap(input[i + 1], input[high]);
+//
+//	return i + 1;
+//}
+//
+//// #. 배열을 재귀적으로 정렬하는 함수
+//void QuickSort(std::vector<int>& input, int low, int high)
+//{
+//	// 배열의 크기가 1 이상인 경우에만 정렬을 수행한다.
+//	if (low < high)
+//	{
+//		// 배열을 분할하고 피벗의 위치를 받는다.
+//		int pivotIndex = Part(input, low, high);
+//
+//		// 재귀호출하며 왼쪽 부분, 오른쪽 부분을 각각 정렬
+//		QuickSort(input, low, pivotIndex - 1);
+//		QuickSort(input, pivotIndex + 1, high);
+//	}
+//}
+//
+//int main()
+//{
+//	std::vector<int> arr = { 9, 5, 7, 1, 3, 8, 6, 2, 4 };
+//
+//	QuickSort(arr, 0, arr.size() - 1);
+//
+//	for (int i : arr) std::cout << i << ' ';
+//}
