@@ -2627,3 +2627,75 @@
 //
 //	for (int i : arr) std::cout << i << ' ';
 //}
+
+//#include <iostream>
+//#include <vector>
+//// #. 배열을 나누고 피벗의 위치를 반환하는 함수를 만든다.
+//int Part(std::vector<int>& input, int low, int high)
+//{
+//	// 1. 전달 받은 배열 범위의 마지막을 pivot으로 지정하고 pivot 보다 작은 값의 인덱스를 저장할 변수가 필요하다.
+//	int pivot = input[high];
+//	int i = low - 1;
+//
+//	for (int j = low; j < high; j++)
+//	{
+//		// 2. 반복문을 통해 pivot 보다 작은 값들을 앞으로 이동 시킨다.
+//		if (input[j] <= pivot)
+//		{
+//			i++;
+//			std::swap(input[i], input[j]);
+//		}
+//	}
+//	// 3. pivot을 정렬된 위치로 이동 시키고 피벗의 위치를 반환한다.
+//	std::swap(input[i + 1], input[high]);
+//	return i + 1;
+//}
+//// #. 배열을 재귀적으로 정렬하는 함수
+//void QuickSort(std::vector<int>& input, int low, int high)
+//{
+//	if (low < high)
+//	{
+//		int pivotIndex = Part(input, low, high);
+//
+//		QuickSort(input, low, pivotIndex - 1);
+//		QuickSort(input, pivotIndex + 1, high);
+//	}
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//void QuickSort(std::vector<int>& input, int low, int high)
+//{
+//	// Base_Case : 배열의 크기가 1 이상일 때만 정렬 로직을 실행
+//	if (low < high)
+//	{
+//		// 1. 배열의 중간을 피벗으로 지정한다.
+//		int pivotIndex = (low + high) / 2;
+//		int pivotValue = input[pivotIndex];
+//		// 2. 배열의 가장 앞, 뒤를 지정한다.
+//		int i = low;
+//		int j = high;
+//
+//		// 3. 배열의 앞과 뒤가 서로 뒤바뀌기 전까지 계속 반복
+//		while (i <= j)
+//		{
+//			// 4. pivot을 중심으로 앞은 작은 값을 몰아 넣기 위해 pivot 보다 큰 값이 나올 때 까지 i를 증가 시킨다.
+//			while (input[i] < pivotValue) i++;
+//			// 5. pivot을 중심으로 뒤는 큰 값을 몰아 넣기 위해 pivot 보다 작은 값이 나올 때 까지 j를 감소 시킨다.
+//			while (input[j] > pivotValue) j--;
+//
+//			// 6. 배열의 앞과 끝이 서로의 영역을 침범하지 않았을 경우
+//			if (i <= j)
+//			{
+//				// 7. pivot보다 큰 i와 pivot보다 작은 j를 서로 교환 한다.
+//				std::swap(input[i], input[j]);
+//				i++;
+//				j--;
+//			}
+//		}
+//
+//		QuickSort(input, low, j);
+//		QuickSort(input, i, high);
+//	}
+//}
