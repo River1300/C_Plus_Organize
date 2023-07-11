@@ -222,45 +222,99 @@
 < 이중 연결 리스트( Double Linked List ) > : 일렬로 나열된 자료구조로 양 방향으로 연결
 */
 
+//#include <iostream>
+//#include "SLL.h"
+//#include "DLL.h"
+//
+//int main()
+//{
+//	SLL myList;
+//
+//	InputElement(myList, 10);
+//	InputElement(myList, 20);
+//	InputElement(myList, 30);
+//
+//	std::cout << CountElement(myList) << std::endl;
+//	PrintElement(myList);
+//
+//	std::cout << std::endl << "-------------------------------------" << std::endl;
+//
+//	DeleteElement(myList, 30);
+//
+//	std::cout << CountElement(myList) << std::endl;
+//	PrintElement(myList);
+//
+//	DeleteElement(myList);
+//
+//	DDL myList;
+//
+//	InputElement(myList, 10);
+//	InputElement(myList, 20);
+//	InputElement(myList, 30);
+//
+//	CountElement(myList);
+//	PrintElement(myList);
+//
+//	std::cout << std::endl << "------------------------------" << std::endl;
+//
+//	DeleteElement(myList, 10);
+//
+//	CountElement(myList);
+//	PrintElement(myList);
+//
+//	DeleteElement(myList);
+//}
+
 #include <iostream>
-#include "SLL.h"
-#include "DLL.h"
+#include "Stack.h"
+
+void PrintInfo()
+{
+	std::cout << "-----STACK-----" << std::endl;
+	std::cout << "[1] push" << std::endl;
+	std::cout << "[2] pop" << std::endl;
+	std::cout << "[3] exit" << std::endl;
+	std::cout << "---------------" << std::endl;
+}
+void ProcessUserInput(Stack& stack)
+{
+	int command{};
+	while (true)
+	{
+		Print(stack);
+		std::cout << std::endl;
+		std::cout << ">  ";
+		std::cin >> command;
+
+		switch (command)
+		{
+		case PUSH:
+		{
+			int value;
+			std::cout << "   > ";
+			std::cin >> value;
+			Push(stack, value);
+			break;
+		}
+		case POP:
+			Pop(stack);
+			break;
+		case EXIT:
+			return;
+		default:
+			std::cout << "잘못된 입력입니다." << std::endl;
+			break;
+		}
+	}
+}
 
 int main()
 {
-	SLL myList;
+	Stack myStack;
 
-	InputElement(myList, 10);
-	InputElement(myList, 20);
-	InputElement(myList, 30);
+	Initialize(myStack);
 
-	std::cout << CountElement(myList) << std::endl;
-	PrintElement(myList);
-
-	std::cout << std::endl << "-------------------------------------" << std::endl;
-
-	DeleteElement(myList, 30);
-
-	std::cout << CountElement(myList) << std::endl;
-	PrintElement(myList);
-
-	DeleteElement(myList);
-
-	DDL myList;
-
-	InputElement(myList, 10);
-	InputElement(myList, 20);
-	InputElement(myList, 30);
-
-	CountElement(myList);
-	PrintElement(myList);
-
-	std::cout << std::endl << "------------------------------" << std::endl;
-
-	DeleteElement(myList, 10);
-
-	CountElement(myList);
-	PrintElement(myList);
-
-	DeleteElement(myList);
+	PrintInfo();
+	ProcessUserInput(myStack);
+	ClearAll(myStack);
 }
