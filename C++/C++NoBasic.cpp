@@ -224,6 +224,7 @@
 
 #include <iostream>
 #include "SLL.h"
+#include "DLL.h"
 
 int main()
 {
@@ -241,6 +242,24 @@ int main()
 	DeleteElement(myList, 30);
 
 	std::cout << CountElement(myList) << std::endl;
+	PrintElement(myList);
+
+	DeleteElement(myList);
+
+	DDL myList;
+
+	InputElement(myList, 10);
+	InputElement(myList, 20);
+	InputElement(myList, 30);
+
+	CountElement(myList);
+	PrintElement(myList);
+
+	std::cout << std::endl << "------------------------------" << std::endl;
+
+	DeleteElement(myList, 10);
+
+	CountElement(myList);
 	PrintElement(myList);
 
 	DeleteElement(myList);
