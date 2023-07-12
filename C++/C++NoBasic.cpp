@@ -265,56 +265,216 @@
 //	DeleteElement(myList);
 //}
 
-#include <iostream>
-#include "Stack.h"
+//#include <iostream>
+//#include "Stack.h"
+//
+//void PrintInfo()
+//{
+//	std::cout << "-----STACK-----" << std::endl;
+//	std::cout << "[1] push" << std::endl;
+//	std::cout << "[2] pop" << std::endl;
+//	std::cout << "[3] exit" << std::endl;
+//	std::cout << "---------------" << std::endl;
+//}
+//void ProcessUserInput(Stack& stack)
+//{
+//	int command{};
+//	while (true)
+//	{
+//		Print(stack);
+//		std::cout << std::endl;
+//		std::cout << ">  ";
+//		std::cin >> command;
+//
+//		switch (command)
+//		{
+//		case PUSH:
+//		{
+//			int value;
+//			std::cout << "   > ";
+//			std::cin >> value;
+//			Push(stack, value);
+//			break;
+//		}
+//		case POP:
+//			Pop(stack);
+//			break;
+//		case EXIT:
+//			return;
+//		default:
+//			std::cout << "잘못된 입력입니다." << std::endl;
+//			break;
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	Stack myStack;
+//
+//	Initialize(myStack);
+//
+//	PrintInfo();
+//	ProcessUserInput(myStack);
+//	ClearAll(myStack);
+//}
 
-void PrintInfo()
-{
-	std::cout << "-----STACK-----" << std::endl;
-	std::cout << "[1] push" << std::endl;
-	std::cout << "[2] pop" << std::endl;
-	std::cout << "[3] exit" << std::endl;
-	std::cout << "---------------" << std::endl;
-}
-void ProcessUserInput(Stack& stack)
-{
-	int command{};
-	while (true)
-	{
-		Print(stack);
-		std::cout << std::endl;
-		std::cout << ">  ";
-		std::cin >> command;
+/* ----- < 객체 지향적 프로그래밍 > ----- */
+//
+//
+//
+//
+//
+/* --- < 절차적 프로그래밍( Procedural Programming ) > --- */
 
-		switch (command)
-		{
-		case PUSH:
-		{
-			int value;
-			std::cout << "   > ";
-			std::cin >> value;
-			Push(stack, value);
-			break;
-		}
-		case POP:
-			Pop(stack);
-			break;
-		case EXIT:
-			return;
-		default:
-			std::cout << "잘못된 입력입니다." << std::endl;
-			break;
-		}
-	}
-}
+/*
+< 절차적 프로그래밍 > : 프로그램의 기능을 함수단위를 바탕으로 작성하는 것
+	#. 함수는 다른 말로 프로시져( Procedure )라고도 부른다.
+*/
 
-int main()
-{
-	Stack myStack;
 
-	Initialize(myStack);
 
-	PrintInfo();
-	ProcessUserInput(myStack);
-	ClearAll(myStack);
-}
+/* --- < 객체 지향 프로그래밍( Object Oriented Programming ) > --- */
+
+/*
+< 객체( Object ) > : 현실 생활을 둘러싼 대상을 하나의 객체라고 볼 수 있다.
+	#. 상태( STATE )와 행동( BEHAVIOR )을 가지고 있다.
+< 객체 지향 프로그래밍( OOP ) > : 현실 세계를 모델링 하듯이 프로그래밍을 하는 방법
+
+< 클래스( Class ) > : 객체를 표현하기 위한 설계도, 또는 틀
+	#. 클래스는 추상적인 정보라 할 수 있고, 클래스를 통해 생성된 객체가 구체적인 실체이다.
+
+< 인스턴스화( Instantiate ) > : 추상적인 클래스에서 구체적인 객체를 생성하는 것
+	#. 인스턴스( Instance ) : 인스턴스화를 통해 만들어진 객체
+	#. 클래스는 단순한 청사진용도로 타입을 만드는 것 뿐이며, 실제 값은 메모리에 이름을 붙여 할당된 인스턴스( 객체 )가 들고 있다.
+*/
+
+/* < OOP의 특징 > */
+
+/*
+< 캡슐화( Encapsulation ) > : 내부에 무엇이 들어 있는지 모르게 하는 것
+	#. 불필요한 정보를 노출시키지 않고 민감한 기능을 숨겨두는, 정보 은닉의 개념으로 사용되기도 한다.
+
+< 상속( Inheritance ) > : 각 객체들은 상관관계를 가지고 있다.
+	#. 고양이라는 클래스는 동물이라는 상위 클래스( 개념 )을 가지고 있다.
+	#. 이러한 계층 구조를 상속( 파생 )이라 부른다.
+
+< 다형성( Polymorphism ) > : 하나의 객체가 경우에 따라 다른 형태로 취급될 수 있다.
+	#. 나비는 고양이 이면서 동시에 동물이다. 상황에 따라 나비라고 불리기도 하고 고양이라고 불리기도 하고, 동물이라고 불리기도 한다.
+	#. 포인터를 통해 객체가 존재하는 메모리를 가리키기 때문에 다양하게 해석할 수 있다.
+*/
+
+//#include <iostream>
+//
+//class Dog {	// #. Dog라는 추상적인 설계도, 틀
+//public:
+//	std::string mKind;
+//	int mAge;
+//	std::string mColor;
+//
+//	void Bark();
+//	void Rolling();
+//};
+//
+//int main()
+//{	// #. Dog설계도를 통해 만들어진 구체적인 실체 puppy
+//	Dog puppy;
+//
+//	puppy.mKind = "골든 리트리버";
+//	puppy.mAge = 3;
+//	puppy.mColor = "금";
+//}
+
+//#include <iostream>
+//
+//class Animal {	// #. Animal이라는 상위 개념( Parent Class )
+//public:
+//	int mAge;
+//	int mWeight;
+//	int mHeight;
+//
+//	void Eat();
+//	void Walk();
+//	void Sleep();
+//};
+//class Dog : public Animal {	// #. Animal의 개념을 상속받은 Dog라는 하위 개념( Child Class )
+//public:
+//	std::string mKind;
+//
+//	void Bark();
+//	void Rolling();
+//};
+//
+//int main()
+//{	// #. Dog클래스는 Animal클래스의 멤버를 사용할 수 있다.
+//	Dog marry;
+//	marry.mAge = 3;
+//	marry.mKind = "도배르만";
+//// #. marry의 인스턴스화가 진행되면 먼저 Dog클래스가 불린다.
+//// #. Dog클래스는 자신의 멤버를 구성하기 위해 Animal클래스를 부른다.
+//// #. Animal클래스가 먼저 메모리 공간에 구성되고 그 다음 Dog클래스가 메모리 공간에 구성된다.
+//// #. 그러므로 marry이름표가 붙은 메모리 공간에는 Animal과 Dog의 멤버가 모두 구성되어 있다.
+//}
+
+//#include <iostream>
+//
+//class Animal {	// #. Animal이라는 상위 개념( Parent Class )
+//public:
+//	int mAge;
+//	int mWeight;
+//	int mHeight;
+//
+//	void Eat();
+//	void Walk();
+//	void Sleep();
+//};
+//class Dog : public Animal {	// #. Animal의 개념을 상속받은 Dog라는 하위 개념( Child Class )
+//public:
+//	std::string mKind;
+//
+//	void Bark();
+//	void Rolling();
+//};
+//
+//int main()
+//{
+//	Dog* happy = new Dog;
+//	happy->mKind = "포메라니안";
+//// #. happy가 가리키는 메모리 공간은 Dog와 Animal클래스의 멤버가 구성된 공간이다.
+//// #. dragon이라는 포인터는 Animal타입이기 때문에 Animal클래스의 멤버만 가리키게된다.
+//	Animal* dragon = happy;
+//	dragon->Eat();
+//
+//	delete happy;
+//}
+
+/* < 기타 용어 > */
+
+/*
+< 생성자( Constructor ) > : 객체가 생성될 때 불리는 특수 함수
+< 소멸자( Destructor ) > : 객체가 사라질 때 불리는 특수 함수
+
+< 정적 멤버( Static Member ) > : 클래스를 인터스턴스화 해서 객체로 만들지 않아도 바로 클래스에서 바로 사용할 수 있다.
+	#. 상태와 행동은 각 객체( 인스턴스 )의 고유한 값으로 만들어진다.
+	#. Dog클래스로 'happy'를 객체화 하면 상태와 행동은 'happy'라는 객체에 종속된다.
+	#. 이러한 특성과 반대되는 것이 정적 멤버로 static이라는 키워드가 붙는다.
+
+< 추상 클래스( Abstract Class ) > : 추상적인 개념을 담고 있는 클래스로 스스로를 인스턴스화 할 수 없다.
+	#. 추상 클래스를 인스턴스화 하려면 추상 클래스로부터 상속을 받아 자식 클래스에서 인스턴스화 해야 한다.
+	#. 추상 클래스는 여러 자식 클래스에서 공유할 수 있는 공통적인 정의를 제공한다.
+		#. 추상 클래스는 추상 상태와 추상 행동을 가질 수 있는데 이 추상 메서드는 구현이 없이 정의만 들어있다.
+			#. 추상 클래스로부터 상속을 받은 자식 클래스는 무조건 이 추상 메서드를 구현해줘야 한다.
+
+< 인터페이스( Interface ) > : 서로 다른 두 장치를 접속시켜주는 부분
+	#. A사 키보드를 USB로 컴퓨터에 꼽으나 B사 키보드를 꼽으나 타이핑은 정상적으로 작동한다.
+		#. 표준 입력 방식을 정해놓고 이를 각 키보드사가 규격을 지키도록 각각의 방식으로 설계한다.
+			#. 이러한 규격을 인터페이스라고 하며 C++에서는 추상 클래스를 사용하여 설계한다.
+		#. 인터페이스는 상태는 없고 행동만 있으며, 실제 행동을 구현하지는 않는다.
+			#. 즉 빈 껍데기만 있으며 실제 구현은 상속받은 클래스에서 구현해 준다.
+
+< 오버로딩( Overloading ) > : 하나의 행동을 매개변수만 다르게 지정하여 여러 개의 행동을 정의하는 것
+
+< 오버라이딩( Overriding ) > : 부모 클래스의 행동을 자식 클래스에서 재정의 해서 부모 클래스의 행동을 무시한다는 뜻
+
+< 연산자 오버로딩( Operator Overloading ) > : 피연산자를 서로 다르게 지정해서 각 개체에 맞는 연산자를 만든다는 뜻
+*/
