@@ -478,3 +478,37 @@
 
 < 연산자 오버로딩( Operator Overloading ) > : 피연산자를 서로 다르게 지정해서 각 개체에 맞는 연산자를 만든다는 뜻
 */
+
+/* --- < POD( Plain Old Data ) > --- */
+
+/*
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| C언어에서 제공되는 타입들을 POD라고 부른다. 간단하고 오래된 데이터, 단순한 메모리 구조를	 |
+| 가지는 객체를 말한다. POD의 장점은 원본 메모리에서 다른 메모리로 복사나 이동이 매우 쉬워서 |
+| 컴퓨터 성능에 큰 부담이 없다는 것이다.													 |
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+< C++의 POD >
+	#. Standard Layout Type( 표준 레이아웃 타입 ) : C언어와 같은 레이아웃
+	#. Trivial Type( 간단한 타입 ) : 사용자가 정의한 매우 간단한 자료 구조
+*/
+
+#include <iostream>
+// #. POD와 Trivial Type은 성능에 관련이 있다.
+class ClassA
+{
+// #. 그런데 사용자가 클래스에 생성자를 붙이면 Trivial Type이 아니게 된다.
+public:
+	ClassA() {}
+};
+class ClassB
+{
+public:
+	// #. POD가 되게 위해서는 ( = default )키워드로 암시적 기본 생성자를 명시해야한다.
+	ClassB() = default;
+};
+
+int main()
+{
+	std::cout << std::is_trivial<ClassA>::value << std::is_pod<ClassA>::value << std::endl;
+	std::cout << std::is_trivial<ClassB>::value << std::is_pod<ClassB>::value << std::endl;
+}
