@@ -492,23 +492,251 @@
 	#. Trivial Type( 간단한 타입 ) : 사용자가 정의한 매우 간단한 자료 구조
 */
 
-#include <iostream>
-// #. POD와 Trivial Type은 성능에 관련이 있다.
-class ClassA
-{
-// #. 그런데 사용자가 클래스에 생성자를 붙이면 Trivial Type이 아니게 된다.
-public:
-	ClassA() {}
-};
-class ClassB
-{
-public:
-	// #. POD가 되게 위해서는 ( = default )키워드로 암시적 기본 생성자를 명시해야한다.
-	ClassB() = default;
-};
+//#include <iostream>
+//// #. POD와 Trivial Type은 성능에 관련이 있다.
+//class ClassA
+//{
+//// #. 그런데 사용자가 클래스에 생성자를 붙이면 Trivial Type이 아니게 된다.
+//public:
+//	ClassA() {}
+//};
+//class ClassB
+//{
+//public:
+//	// #. POD가 되게 위해서는 ( = default )키워드로 암시적 기본 생성자를 명시해야한다.
+//	ClassB() = default;
+//};
+//
+//int main()
+//{
+//	std::cout << std::is_trivial<ClassA>::value << std::is_pod<ClassA>::value << std::endl;
+//	std::cout << std::is_trivial<ClassB>::value << std::is_pod<ClassB>::value << std::endl;
+//}
 
-int main()
-{
-	std::cout << std::is_trivial<ClassA>::value << std::is_pod<ClassA>::value << std::endl;
-	std::cout << std::is_trivial<ClassB>::value << std::is_pod<ClassB>::value << std::endl;
-}
+/* --- < 무명 객체( Anonymous Object ) > --- */
+
+//#include <iostream>
+//
+//int Square(int x)
+//{
+//	return x * x;
+//// $2. 일반 타입 역시 객체라고 한다면, x * x 를 담아 둘 수 있는 임시 객체가 필요하다.
+//// $3. 예를 들어 int temp = x * x;  return temp;
+//// $4. 컴파일러 내부에서는 이 작업이 이루어진다. 다만, 임시로 사용하는 객체로 해당 코드 이외에는 사용할 필요가 없으므로, 굳이 변수명을 붙이지 않고 사용한다.
+//// $5. 이를 이름없는 객체( anonymous object )라고 부른다.
+//}
+//
+//int main()
+//{
+//	int x{ 2 };
+//// $1. < int x(1); > : 지금까지 사용한 일반 타입들( int, float... ) 역시 내부에서는 객체( x 라는 이름의 객체 )로 처리된다.
+//
+//	std::cout << Square(x) << std::endl;
+//	// #1. Square(x)함수를 호출한다.
+//	// #2. Square(x)에서 x가 리터럴 2로 치환된다. 이 과정에서 리터럴 2가 무명의 객체에 저장된다.
+//	// #3. 무명의 객체에 저장된 2가 Square(int x)의 매개변수 x에 복사된다. 이 과정에서 [매개변수 x]와 [인자 x]는 서로 다른 객체로 분류된다.
+//	// #4. x * x 를 무명의 객체에 저장한다.
+//	// #5. 무명 객체를 반환하고 함수가 종료되며 무명 객체도 소멸된다. 
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int x{ 2 };
+//	int y{};
+//
+//	// 1. x + x를 리터럴 2 + 2로 치환한다.
+//	// 2. 더한 값( 4 )를 무명 객체에 저장한다.
+//	// 3. 무명 객체를 반환( 출력 )하고 해당 라인이 끝나면 소멸된다.
+//	std::cout << x + x << std::endl << std::endl;
+//
+//	// 1. x + x를 리터럴 2 + 2로 치환한다.
+//	// 2. 더한 값( 4 )를 무명 객체에 저장한다.
+//	// 3. 무명 객체를 y에 대입하고 해당 라인이 끝나면 소멸된다.
+//	y = x + x;
+//}
+
+//#include <iostream>
+//
+//// #2. 매개변수 x는 main의 x와 같다고 볼 수 있다.
+//const int& Square(int& x)
+//{
+//	return x * x;
+//// #3. x * x는 표현식으로 따로 저장할 객체를 지정해주지 않을 경우 무명의 객체에 자동적으로 저장된다.
+//// #4. 즉 반환되는 값은 참조형으로 받은 매개변수 x와 관련 없는 객체다.
+//// #5. 이 함수의 반환 타입은 참조형이다. 주소 값의 형태로 반환 한다는 말인데 이 주소 값이 함수가 종료되면 사라진다.
+//// #6. 참조형은 무명의 객체를 받아들일 수 없기 때문에 const참조형을 반환해야 한다.
+//}
+//
+//int main()
+//{
+//	int x = 2;
+//	std::cout << Square(x) << std::endl;
+//// #1. Square()함수를 호출하는데 인자로 보내지는 것은 x라는 객체의 주소 값이다.
+//}
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//public:
+//	int mValue;
+//
+//	MyClass(int value) : mValue{ value }
+//	{
+//		std::cout << "[ MyClass() ] : " << mValue << std::endl;
+//	}
+//
+//// #. 매개변수 c는 참조형인데 참조형은 R_Value를 받지 못한다는 특성이 있다. 즉 무명의 객체를 받지 못한다.
+//// #. 그러므로 매개변수 c를 상수 참조형으로 바꾸어준다.
+//	MyClass operator+(const MyClass& c)
+//	{	// mValue = c1, c.mValue = c2
+//		// 반환값으로 MyClass타입의 무명 객체( 인스턴스 )가 생성되었다.
+//		return MyClass{ mValue + c.mValue };
+//	}
+//};
+//
+//int Square(MyClass c)
+//{
+//	return c.mValue * c.mValue;
+//}
+//
+//int main()
+//{
+//	MyClass c1{ 1 }, c2{ 2 };
+//
+//	std::cout << "------ * ------" << std::endl << std::endl;
+//	std::cout << "       " << Square(c1 + c2) << std::endl;
+//// #. c1이 연산자 함수를 호출하고 c2는 리터럴 2로 치환한 뒤 무명 객체에 저장하여 인자로 보낸다.
+//
+//	std::cout << "------ * ------" << std::endl << std::endl;
+//	std::cout << "       " << (c1 + c2).mValue << std::endl;
+//
+//	std::cout << "------ * ------" << std::endl << std::endl;
+//	MyClass c3{ c1 + c2 };
+//}
+
+/* ----- * ----- < 객체란? > ----- * ----- */
+
+//#include <iostream>
+//
+//struct Animal {
+//	char name[30];
+//	int age;
+//
+//	int health;
+//	int food;
+//	int clean;
+//};
+//
+//void play(Animal& a) {
+//	std::cout << a.age;
+//}
+//
+//int main()
+//{
+//// animal변수를 만들어서 이를 필요로 하는 함수들에게
+//	Animal cat{ "ring", 2, 10, 10, 10 };
+//	play(cat);
+//// 이와 같이 전달해 주었습니다.
+//// 그런데, 곰곰히 생각해 보면 play함수에 인자로 전달하는 것이 매우 불필해보입니다.
+//// 마치 러시아식 유머 처럼 "Play가 Animal을 합니다!" 라고 볼 수 있는데,
+//// 사실은 "Animal이 Play를 한다" 가 더 맞기 때문이지요.
+//// 다시 말해서 Animal자체가 Play를 하는 것이지, Play가 Animal을 해주는 것이 아닙니다.
+//}
+
+//#include <iostream>
+//// 만일 Animal 자체가 Play를 한다 라는 개념을 생각하게 된다면, 
+//// 다음과 같이 생각할 수 있을 것입니다.
+//class Animal {
+//public:
+//	void play() {
+//		std::cout << "dog";
+//	}
+//};
+//
+//int main()
+//{
+//// 이렇게 하면 play함수에 animal을 인자로 주지 않아도 됩니다.
+//// 왜냐하면 내가 play하는 것이기 때문에 내 정보는 이미 play함수가 다 알고 있기 때문입니다.
+//// play함수는 나의 상태들, 예를 들어서 체력이나, 배고픔 정도나 피곤한 정도 등을 
+//// 모두 알 수 있기 때문에 나에 대한 적절한 처리를 할 수 있게 되는 것입니다.
+//	Animal cat;
+//	cat.play();
+//// 즉, animal은 자신의 상태를 알려주는 변수(variable)와, 자신이 하는 행동들(play,sleep등등)
+//// 을 수행하는 함수(method)들로 이루어졌다고 볼 수 있습니다.
+//}
+
+/*
+결과적으로 객체는 다음과 같이 정의됩니다.
+
+객체란, 변수들과 참고 자료들로 이루어진 소프트웨어 덩어리 이다.
+이 때 객체가 현실 세계에서의 존재하는 것들을 나타내기 위해서는
+추상화(abstraction)라는 과정이 필요합니다.
+컴퓨터 상에서 현실 세계를 100% 나타낼 수 없는 것이기 때문에,
+적절하게 컴퓨터에서 처리할 수 있도록 바꾸는 것인데,
+
+예를 들어서 핸드폰의 경우 '전화를 한다', '문자를 보낸다' 와 같은 것들은
+'핸드폰이 하는 것' 이므로 함수로 추상화시킬 수 있고,
+
+핸드폰의 상태를 나타내는 것들,
+예를 들어서 자기 자신의 전화 번호나 배터리 잔량 같은 것은 변수로 추상화시킬 수 있습니다.
+
+이와 같이 어떠한 객체는 자기 만의 정보를 나타내는 변수들과,
+이를 가지고 어떠한 작업을 하는 함수들로 둘러싸고 있다고 보시면 됩니다.
+
+참고로, 이러한 객체의 변수나 함수들을 보통 인스턴스 변수(instance variable)와
+인스턴스 메소드(instance method)라고 부르게 되는데,
+그냥 알고 계시는 변수와 함수와 동일한 것으로 생각하시면 됩니다.
+
+누군가 인스턴스 메소드라고 하면"아 그냥 객체에 정의되어 있는 함수구나"라고 생각하시면 됩니다.
+*/
+
+//#include <iostream>
+//// 외부에서 어떠한 객체의 인스턴스 변수의 값을 바꾸지 못하고 
+//// 오직 객체의 인스턴스 함수를 통해서만 가능하다는 것이지요
+//// (물론 항상 이렇게 극단적으로 불가능 한 것은 아니고 사실 사용자가 조절할 수 있습니다) 
+//// 이를 단순히 코드로 표현한다면, 예컨대 Animal의 food를 바꾼다고 할 때
+//class Animal {
+//private:
+//	int food{};
+//
+//public:
+//	void increase_food(int a) {
+//		food += a;
+//	}
+//};
+//
+//int main()
+//{
+//	Animal cat;
+//	cat.food += 100;
+//	cat.increase_food(100);
+//// 이렇게 된다는 것입니다.
+//// 일단 animal.food += 100; 자체는 외부에서 animal이라는 '객체'의 '인스턴스 변수'에
+//// '직접'접근하는 것이기 때문에 불가능한 것이고, 
+//// 아래의 animal.increase_food(100); 의 경우 animal객체의 '인스턴스 함수'를 통해서 
+//// 값을 수정하는 것이기 때문에 가능한 것이지요.
+//// 이와 같이 외부에서 직접 인스턴스 변수의 값을 바꿀 수 없고 
+//// 항상 인스턴스 메소드를 통해서 간접적으로 조절하는 것을 
+//// 캡슐화(Encapsulation)라고 부릅니다.
+//}
+
+/*
+이 개념을 처음 들었을 때 이게 왜 필요하냐고 생각하시는 분들이 많습니다.
+
+저도 캡슐화를 굳이 해야될 이유를 못찼었거든요.
+그냥, animal.food += 100; 하나 animal.increase_food(100); 하나
+거기서 거기이지 라는 생각을 말이죠.
+
+일단 여기서는 캡슐화의 장점에 대해서는 나중에 설명하겠지만 간단하게 말하자면,
+"객체가 내부적으로 어떻게 작동하는지 몰라도 사용할 줄 알게 된다"
+라고 볼 수 있습니다.
+
+예컨대 animal.increase_food(100); 을 하면
+내부적으로 food변수 값이 100증가하는것 뿐만이 아니라
+몸무게도 바뀔 수 있고, 행복도도 올라갈 수 있고 등등 여러가지 작업들이 일어나겠지요.
+
+만일 increase_food함수를 사용하지 않았다면 여러가지 처리를 프로그래머가 직접 해주어야 합니다.
+*/
