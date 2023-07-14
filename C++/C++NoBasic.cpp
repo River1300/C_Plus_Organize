@@ -906,3 +906,389 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 다시 말해, Animal의 private멤버 함수에 접근할 수 없다는 의미겠지요.
 결과적으로 외부에서 접근을 할 수 없는 객체는 그냥 아무짝에도 쓸모 없는 덩어리로 남게 됩니다.
 */
+
+/* --- < 생성자와 소멸자 > --- */
+
+/*
+< 선언과 정의 > : 변수나 함수를 생성할 때 선언과 정의가 필요하다.
+	#. 이때 일반 타입의 변수는 기본값으로 초기화하거나 간단하게 초기값을 지정할 수 있다.
+		#. < 선언( int x; ) > : 타입과 객체이름을 메모리 공간에 지정해 준다.
+		#. < 정의( x = 2; ) > : 이름표가 붙은 메모리 공간에 값을 집어 넣어준다.
+		#. < 초기화( int x = 2; ) > : 선언과 정의의 기능을 한 번에 실행 한다.
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| 클래스 객체는 어떻게 초기화할 수 있나? 멤버가 여러 개가 존재하므로 단일 표현식으로는 처리가 |
+| 어렵다. 특히나 동적 객체들을 멤버로 가지고 있다면 메모리 할당에 대한 복잡한 기능이 추가되어 |
+| 야 하므로 일반 타입과 같은 정의나 초기화가 불가능 하다.									  |
+| C++의 클래스는 이러한 상황을 위해 생성자( Constructor )와 소멸자( Destructor )라는 개념이   |
+| 추가되었다.																				  |
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+< 생성자 > : 클래스의 객체가 인스턴스화될 때 자동적으로 호출되는 특별한 멤버 함수
+	#. 생성자는 클래스의 유효한 인스턴스를 생성하는 것을 담당하는데, 멤버들을 적절히 초기화하는 것을 책임진다.
+< 소멸자 > : 클래스 객체가 소멸될 때 객체가 사용하던 자료를 지우는 것을 담당하는 특별한 멤버 함수
+*/
+
+//#include <iostream>
+//
+//class MyClass {
+//// #2. 인스턴스를 만들기 위해 MyClass클래스의 멤버를 구성한다.
+//public:
+//// #3. RAM에 MyClass타입의 공간을 할당하고, 해당 공간에 생성자를 호출한다.
+//	MyClass() { std::cout << "[생성자] : MyClass" << std::endl; }
+//// #6. MyClass클래스의 인스턴스가 소멸되면서 소멸자가 호출된다.
+//	~MyClass() { std::cout << "[소멸자] : ~MyClass" << std::endl; }
+//};
+//
+//int main()
+//{
+//	{
+//// #1. MyClass클래스의 인스턴스화를 진행한다.
+//// #4. 생성자가 호출된 MyClass타입의 공간에 c라는 이름표를 붙여 인스턴스를 만든다.
+//		MyClass c;
+//		std::cout << "--* 1 *--" << std::endl;
+//	}
+//// #5. {}블럭이 끝나면 지역 변수로 만든 c가 소멸된다.
+//	std::cout << "--* 2 *--" << std::endl;
+//}
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//public:
+//	int mValue;
+//// #2. 다만 사용자가 입력한 생성자가 있을 경우 유니폼 초기화는 무시되고 생성자가 호출된다.
+//};
+//
+//int main()
+//{
+//	MyClass c{};
+//	std::cout << c.mValue;
+//// #1. public 공간에 멤버변수가 있을 경우 유니폼 초기화를 할 수 있다.
+//}
+
+//#include <iostream>
+//
+//// #4. 인스턴스를 만들기 위해 Knight클래스의 멤버를 구성한다.
+//class Knight
+//{
+//public:
+//// #5. RAM에 Kinght클래스 멤버가 구성되고 생성자가 호출된다.
+//	Knight() { std::cout << "기사가 파티에 합류하였다." << std::endl; }
+//
+//	void Nothing() {}
+//};
+//
+//// #2. 인스턴스를 만들기 위해 Party클래스의 멤버를 구성한다.
+//class Party
+//{
+//private:
+//// #3. Knight타입의 인스턴스화를 진행한다.
+//	Knight mUltraMarine;
+//// #6. 생성자가 호출된 메모리 공간에 mUltraMarine이라는 이름표를 붙인다.
+//
+//public:
+//// #7. RAM에 Party클래스 멤버가 구성되고 생성자가 호출된다.
+//	Party(){ std::cout << "마왕토벌 파티가 결성되었다!!!" << std::endl; }
+//};
+//
+//int main()
+//{
+//// #1. Party 타입의 인스턴스화를 진행한다.
+//	Party Hero;
+//// #8. 생성자가 호출된 메모리 공간에 Hero라는 이름표를 붙인다.
+//}
+
+//#include <iostream>
+//
+//class ClassA {
+//public:
+//	ClassA() { std::cout << "A" << std::endl; }
+//
+//public:
+//	class ClassB {
+//	public:
+//		ClassB() { std::cout << "B" << std::endl; }
+//	};
+//
+//public:
+//	//ClassA::ClassB one;
+//};
+//
+//int main()
+//{
+//	ClassA a;
+//	std::cout << std::endl << std::endl;
+//	ClassA::ClassB b;
+//	std::cout << std::endl << std::endl;
+//}
+
+//#include <iostream>
+//
+//class MyArray {
+//private:
+//	int mLength;
+//	int* mArray;
+//
+//public:
+//	MyArray(int length)
+//	{
+//		mLength = length;
+//		mArray = new int[length] {};
+//	}
+//	~MyArray() { delete[] mArray; }
+//};
+//
+//int main()
+//{
+//	MyArray array{ 10 };
+//// #. MyArray타입으로 인스턴스를 생성하면 자동으로 배열 형태의 메모리 공간이 동적 할당된다.
+//// #. {}블럭이 끝나고 지역 변수인 array가 소멸되면 소멸자가 자동으로 호출되어 동적 해제한다.
+//}
+
+/* < 기본 생성자( Default Constructor ) > */
+
+//#include <iostream>
+//
+//class MyClass {
+//private:
+//	int mValue;
+//	std::string mName;
+//
+//public:
+//	MyClass() {	// #. 매개 변수가 없는 생성자의 형태로 멤버들을 기본값으로 초기화한다.
+//		mValue = 0;
+//		mName = "UnNamed";
+//	}
+//};
+//
+//int main()
+//{
+//	MyClass c;
+//}
+
+/* < 암시적 기본 생성자 > */
+
+/*
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| 프로그래머가 생성자를 제공하지 않으면 C++컴파일러는 자동적으로 암시적 기본 생성자를 만 |
+| 들어 준다. 암시적 기본 생성자는 코드의 편의를 위해 제공하는 기능이기 때문에 멤버 초기화|
+| 는 전혀 하지 않는다. 그저 텅 비어 있는 함수이다.										 |
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+*/
+
+//#include <iostream>		// < Title : POD >
+//
+//class MyClass {
+//private:
+//	int mValue;
+//
+//public:
+//	MyClass(int a) { mValue = a; }
+//// #. 프로그래머가 임의의 생성자를 생성하였기 때문에 암시적 기본 생성자는 사라진 상태다.
+//};
+//
+//int main()
+//{
+//	MyClass c;
+//// #. 때에 따라 암시적 기본 생성자와 같이 아무것도 하지 않는 기본 생성자가 필요한 경우가 있다.
+//// #. 그럴때  '= default;'를 통해 명시적으로 POD형태의 기본 생성자를 만들 수 있다.
+//}
+
+//#include <iostreaM>
+//// 생성자는 기본적으로 "객체 생성시 자동으로 호출되는 함수"라고 볼 수 있습니다.
+//// 이 때 자동으로 호출 되면서 객체를 초기화 해주는 역할을 담당하게 됩니다.
+//// 생성자는 아래와 같이 정의합니다.
+//class MyClass
+//{
+//private:
+//	int mValue;
+//
+//public:
+//	MyClass() : mValue{ 0 } {}
+//// 이렇게 정의가 된 생성자는 객체를 생성할 때 다음과 같이 위 함수에서
+//// 정의한 인자에 맞게마치 함수를 호출하듯이 써준다면 위 생성자를 호출하며 
+//// 객체를 생성할 수 있게 됩니다.
+//};
+
+/*
+디폴트 생성자는 인자를 하나도 가지지 않는 생성자인데,
+클래스에서 사용자가 어떠한 생성자도 명시적으로 정의하지 않았을 경우에
+컴파일러가 자동으로 추가해주는 생성자입니다.
+*/
+
+//#include <iostream>
+//// 앞서 함수의 오버로딩에 대해 잠깐 짚고 넘어갔는데, 
+//// 생성자 역시 함수이기 때문에 마찬가지로 함수의 오버로딩이 적용될 수 있습니다.
+//// 쉽게 말해 해당 클래스의 객체를 여러가지 방식으로 생성할 수 있게 되겠지요.
+//class MyClass
+//{
+//private:
+//	int mNumber;
+//	char mWord;
+//
+//public:
+//	MyClass() = default;
+//	MyClass(int num, char word) : mNumber{ num }, mWord{ word }{}
+//	MyClass(std::string a)
+//	{
+//		std::cout << a << std::endl;
+//	}
+//};
+//int main()
+//{
+//	MyClass a;
+//	MyClass b(10, 'b');
+//	MyClass c("Element");
+//}
+
+/* --- < 초기화 > --- */
+
+/*
+< 복사 초기화( Copy Initialization ) > : int a = 2;
+	#. 리터럴 2가 무명의 int타입 객체에 저장되고 배정문을 통해 값이 대입되는 방식
+	#. 컴파일러는 이 과정을 자동으로 간소화 해주는데 2가 저장된 무명 객체에 a라는 이름을 붙여 버린다.
+
+< 직접 초기화( Direct Initialization ) > : int a ( 2 );
+	#. int, float, char등의 타입에는 이미 내부적으로 생성자가 존재한다.
+	#. 함수 형태로 초기화를 수행하는 것으로 생성자가 호출되어 값을 초기화 한다.
+
+< 유니폼 초기화( Uniform Initialization ) > : int a { 2 };
+	#. 복사/직접 초기화는 일부 타입에서만 작동하는 초기화 방식이다.
+	#. C++에서는 모든 객체에 동일하게 작동하는 단일한 방법인 유니폼 초기화라는 개념이 있다.
+	#. 어떤 객체든 초기화 시킬 수 있으며 형변환이 허용되지 않기 때문에 안전하고 빠르다.
+
+< 유니폼 복사 초기화( Uniform Copy Initialization ) > : int a = { 2 };
+	#. 리터럴 2를 무명의 int타입 객체에 유니폼 초기화를 하고 배정문을 통해 값을 대입한다.
+*/
+
+/* < 클래스 초기화 > */
+
+/*
+< 복사 초기화( Copy Initialization ) > : MyClass c = MyClass();
+	#. 무명의 객체를 기본 생성자로 만들고 배정문을 통해 멤버를 대입한다.
+
+< 직접 초기화( Direct Initialization ) > : MyClass c(2, 1.0f);
+	#. 객체가 생성자를 직접 호출하여 초기화 한다.
+
+< 유니폼 초기화( Uniform Initialization ) > : MyClass c{2, 1.0f};
+	#. public 변수들을 초기화 한다.
+	#. 만약 동일한 타입의 매개 변수를 받는 생성자가 있다면 생성자가 호출된다.
+
+< 유니폼 복사 초기화( Uniform Copy Initialization ) > : MyClass c = {2, 1.0f};
+	#. 무명의 객체를 유니폼 초기화로 만들고 배정문을 통해 멤버를 대입한다.
+*/
+
+/* --- < 대리 생성자( Delegating Constructor ) > --- */
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//private:
+//	int mOne;
+//	int mTwo;
+//
+//public:
+//// #. 기본 생성자가 매개 변수를 받는 임의의 생성자를 호출한다.
+//// #. 생성자가 다른 생성자를 호출하는 것을 생성자 위임이라고 한다.
+//	MyClass() : MyClass(1, 2){}
+//	MyClass(int a, int b) : mOne{ a }, mTwo{ b }{}
+//// #. 클래스의 멤버를 초기화 한다.
+//// ( : )생성자의 초기화 식은 생성자의 블럭{}보다 먼저 실행 된다.
+//};
+//
+//int main()
+//{
+//	MyClass c;
+//// #. 매개 변수를 받지 않는 기본 생성자를 호출한다.
+//}
+
+/* < 기본 생성자( Default Constructor ) > */
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//private:
+//	int mValue;
+//
+//public:	
+//	MyClass() : mValue{ 1 } {}
+//// #. 클래스명() : 멤버 변수{ 값 } {}
+//// #. 유니폼 초기화식을 이용하여 기본 생성자에서 멤버변수를 초기화 할 수 있다.
+//};
+//
+//int main()
+//{
+//// #. 인스턴스를 만들때 전달하는 인자가 없다면 기본 생성자가 호출된다.
+//	MyClass c1;
+//}
+
+/* < 대리 생성자( Delegating Constructor ) > */
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//private:
+//	int mValue;
+//
+//public:
+//// #. 생성자는 클래스를 만들 때 값을 초기화하거나 특정 작업을 수행하는 것이다.
+//// #. 생성자는 특별한 함수로 해당 클래스의 정보로 무명의 객체를 만들어 반환하는 것이 목적이다.
+//	MyClass() : mValue{ 1 }
+//	{
+//		std::cout << "다양한 매개변수를 갖는 생성자를 만든다고 해도 수행하는 작업은 동일하다." << std::endl;
+//	}
+//
+//// #. 동일한 기능을 사용하는 경우, 중복 코드를 방지하기 위해 대리 생성자를 사용하는 것이 좋다.
+//	MyClass(std::string name) : MyClass()
+//	{
+//		std::cout << "main 함수에서 MyClass 타입의 객체를 생성한다." << name << std::endl;
+//	}
+//};
+//
+//int main()
+//{	// #1. MyClass 타입의 인스턴스화가 진행된다.
+//	// #2. 문자열을 매개변수로 받는 임의 생성자가 호출된다.
+//	// #3. 임의 생성자의 초기화식이 실행되며 기본 생성자가 호출된다.
+//	// #4. 기본 생성자의 초기화식이 실행되며 mValue 의 값이 초기화된다.
+//	// #5. 기본 생성자의 {} 블록안의 내용이 실행되고 함수가 반환된다.
+//	// #6. 임의 생성자의 {} 블록안의 내용이 실행되고 함수가 반환된다.
+//	// #7. 메모리 공간에 클래스 타입의 무명 객체가 생성되고 이 곳에 c1 이라는 이름표를 붙인다.
+//	MyClass c("River");
+//}
+
+/* < 복사 생성자( Copy Constructor ) > */
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//private:
+//	int mValue;
+//
+//public:
+//	MyClass(int value) : mValue{ value }
+//	{
+//		std::cout << "일반적이기 짝이 없는 일반 생성자가 호출되었다..." << std::endl;
+//	}
+//	MyClass(const MyClass& from)
+//	{
+//		mValue = from.mValue;
+//		std::cout << "허걱! 복사 생성자가 호출됬따!!!!!" << std::endl;
+//	}
+//};
+//
+//int main()
+//{	// #1. MyClass타입의 인스턴스화가 진행된다.
+//	// #2. 매개 변수 MyClass{1}을 전달하기 위해 MyClass{1}의 인스턴스화를 진행한다.
+//	// #3. 기본 생성자가 호출되고 MyClass{1}의 멤버가 구성되며 무명의 객체가 생성된다.
+//	// #4. 무명의 객체가 매개변수로 전달되고 복사 생성자가 호출된다.
+//	MyClass c1{ MyClass{1} };
+//	std::cout << "----- * ----- * ----- * ----- * ----- * ----- * -----" << std::endl;
+//
+//	// #1. MyClass타입의 인스턴스화가 진행된다.
+//	// #2. 매개 변수 c1을 전달하여 c1의 내용을 그대로 복사하여 c2의 멤버에 대입한다.
+//	MyClass c2{ c1 };
+//}
