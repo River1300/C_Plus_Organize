@@ -1292,3 +1292,113 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 //	// #2. 매개 변수 c1을 전달하여 c1의 내용을 그대로 복사하여 c2의 멤버에 대입한다.
 //	MyClass c2{ c1 };
 //}
+
+/* --- < 상수 클래스( Const Class ) > --- */
+
+/*
+< const MyClass c; > : 기본 생성자로 초기화한 상수 객체
+< const MyClass c( 2, 2 ); > : 매개 변수 2개인 생성자로 초기화한 상수 객체
+< const MyClass c{ 3, 3 }; > : 유니폼 초기화를 사용한 상수 객체
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| 클래스 역시 타입으로 생성되는 객체이므로 상수 객체를 만들 수 있다. 클래스 타입으로 만들 |
+| 어진 객체를 상수형태로 만들 수 있다. 상수형 객체는 멤버의 값을 바꿀 수 없다.			  |
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+*/
+
+//#include <iostream>
+//
+//class MyClass {
+//public:
+//	int mOne;
+//	int mTwo;
+//
+//public:
+//	MyClass(int a, int b) : mOne{ a }, mTwo{ b }{}
+//
+//	void SetNumber(int x)
+//	{
+//		mOne = mTwo = x;
+//	}
+//
+//	void DoNothing() {}
+//// #. DoNothing()함수는 클래스의 멤버 변수 값을 바꾸지 않는 함수이다.
+//// #. 그러나 인스턴스가 함수를 호출할 수 없고, 호출할 경우 에러가 발생한다.
+//// #. 함수 본체는 언제든 프로그래머가 수정할 수 있기 때문에 위험을 미리 막아놓는다.
+//
+//	void RealyDoNothing() const {}
+//// #. 멤버 함수를 상수로 지정할 경우 상수 클래스 객체가 호출할 수 있다.
+//};
+//
+//int main()
+//{
+//	const MyClass c(0, 0);
+//	c.RealyDoNothing();
+//}
+
+/* --- < 정적 멤버( static member ) > --- */
+
+/*
+< 정적 멤버 > : 같은 클래스로 만들어진 모든 인스턴스 객체에 걸쳐 단 하나만 존재하는 값
+	#. 인스턴스가 아닌 클래스에만 존재한다고 해서 '클래스 변수( class variable )라고도 한다.
+	#. 정적 멤버 변수는 다른 멤버 변수와 다르게 반드시 외부에 변수를 다시 정의해야 한다.
+*/
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//public:
+//// #. 인스턴스는 생성될 때마다 멤버들이 새로 구성된다.
+//// #. static은 그럴 수 없기 때문에 static멤버변수는 인스턴스가 아닌 클래스가 소유한다.
+//	static int mValue;
+//
+//	MyClass() { mValue++; }
+//	~MyClass() { mValue--; }
+//};
+//// #. static멤버변수는 클래스 소유이기 때문에 클래스 외부에서 멤버 변수를 따로 정의해 줘야한다.
+//int MyClass::mValue{ 1 };
+//
+//int main()
+//{
+//	MyClass c1;
+//	{
+//		MyClass c2;
+//		MyClass c3;
+//		std::cout << MyClass::mValue << std::endl;
+//	}
+//	std::cout << MyClass::mValue << std::endl;
+//}
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//public:
+//// #. MyClass소유의 static멤버 변수 선언
+//	static int mValue1;
+//	// 인스턴스 소유의 멤버 변수 선언
+//	int mValue2;
+//
+//public:
+//// #. MyClass소유의 static멤버 함수 선언
+//	static void DoSomething();
+//};
+//
+//// #. 클래스 외부에서 static멤버 변수, 멤버 함수 정의
+//int MyClass::mValue1{ 0 };
+//
+//void MyClass::DoSomething()
+//{
+//	std::cout << mValue1;
+//// #. 인스턴스 소유의 멤버함수는 매개체인 this가 암시적으로 존재하였다.
+//// #. MyClass소유의 static멤버 함수는 this가 없다.
+//}
+//
+//int main()
+//{
+//	MyClass c1;
+//
+//	MyClass::mValue1 = 1;
+//	MyClass::DoSomething();
+//// #. static멤버 변수/함수는 클래스에 종속되어 있다는 것을 범위 해결 연산자로 표기해주어야 한다.
+//}
