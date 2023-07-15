@@ -1402,3 +1402,492 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 //	MyClass::DoSomething();
 //// #. static멤버 변수/함수는 클래스에 종속되어 있다는 것을 범위 해결 연산자로 표기해주어야 한다.
 //}
+
+/* --- < 친구( Friend ) > --- */
+
+/*
+< 친구 > : 내가 너를 친구라고 지정하면 너는 내 모든 것을 알 수 있다.
+	#. 친구로 지정된 클래스/함수는 private, protected멤버에 접근할 수 있다.
+	#. 친구관계는 일방향성 관계이다.
+		=> A가 B를 친구로 지정하면 B는 A의 모든 것을 알 수 있다.
+		=> 그러나 A는 B의 모든 것을 알 수 없다.
+*/
+
+//#include <iostream>
+//
+//class Sword
+//{
+//	friend class Warrior;
+//// #1. Warrior클래스를 friend로 지정하여 본인의 모든 정보를 Warrior에게 공개한다.
+//
+//private:
+//	int mAttackDamage;
+//
+//public:
+//	Sword(int damage) : mAttackDamage{ damage } {}
+//};
+//class Warrior
+//{
+//public:
+//	void AttackWith(Sword& sword)
+//	{
+//		std::cout << "칼을 휘둘러 " << sword.mAttackDamage << "만큼 피해를 주었다!!!" << std::endl;
+//// #2. mAttackDamage는 Sword클래스의 private멤버 변수지만 friend로 지정되었기 때문에 Warrior클래스에서 사용할 수 있다.
+//	}
+//};
+//
+//int main()
+//{
+//	Sword shortSword{ 10 };
+//	Warrior w;
+//// #3. Sword클래스가 friend로 Warrior을 지정한 것은 Warrior클래스 그 자체에게 정보를 공개한 것이 아니다.
+//// #4. Warrior타입으로 생성된 인스턴스( 객체 )에게 공개한 것이다.
+//
+//	w.AttackWith(shortSword);
+//// #5. 인스턴스 w는 멤버 함수를 통해 Sword클래스의 private정보를 출력한다.
+//}
+
+//#include <iostream>
+//
+//class Sword
+//{
+//private:
+//	int mAttackDamage;
+//
+//public:
+//	Sword(int damage) : mAttackDamage{ damage } {}
+//	friend void DamageBuff(Sword& sword);
+//// #1. 전역함수 DamageBuff() 함수에게 Sword클래스의 모든 정보를 공개한다.
+//};
+//void DamageBuff(Sword& sword)
+//{
+//	int oldDamage = sword.mAttackDamage;
+//	sword.mAttackDamage = oldDamage * 2;
+//	std::cout << "검을 강화했다. " << oldDamage << "=>" << sword.mAttackDamage << std::endl;
+//// #2. mAttackDamage는 private멤버 변수지만 friend로 지정되었기 때문에 사용할 수 있다.
+//}
+//
+//int main()
+//{
+//	Sword ShortSword(10);
+//	DamageBuff(ShortSword);
+//}
+
+//#include <iostream>
+//
+//class Sword;
+//// #3. 클래스를 전방 선언해준다.
+//
+//class Warrior
+//{
+//public:
+//	void AttackWith(Sword& sword);
+//// #2. 멤버 함수를 전방 선언해준다.
+//};
+//class Sword
+//{
+//private:
+//	int mAttackDamage;
+//
+//public:
+//	Sword(int damage) : mAttackDamage{ damage } {}
+//	friend void Warrior::AttackWith(Sword& sword);
+//// #1. 정보를 공개할 클래스를 정보를 받을 멤버 함수보다 아래에 선언한다.
+//};
+//void Warrior::AttackWith(Sword& sword)
+//{
+//	std::cout << "칼을 휘둘러 " << sword.mAttackDamage << "만큼 피해를 주었다!!!" << std::endl;
+//// #4. friend로 지정된 멤버 함수를 선언과 분리하여 정의를 한다.
+//}
+//
+//int main()
+//{
+//	Sword shortSword{ 10 };
+//	Warrior player;
+//
+//	player.AttackWith(shortSword);
+//}
+
+/* --- < 연산자 오버로딩( Operator Overloading ) > --- */
+
+/*
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+| int, double, char과 같은 형식들을 다루면서 +, -와 같은 연산자들을 다루어 보았다.   |
+| 이러한 연산자는 컴파일러 내부적으로 함수처럼 작동한다.							 |
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+< 객체의 연산 > : 연산자 함수를 만들어서 객체의 멤버를 일괄적으로 연산할 수 있다.
+	#. 컴파일러가 연산자를 호출하여 일반 타입의 연산을 진행하듯이
+	#. 사용자가 연산자 함수를 직접 만들어 입맛대로 연산을 실행할 수 있다.
+*/
+
+//#include <iostream>		// < Title : 연산자의 컴파일 형태 >
+//
+//int + (int param1, int param2)
+//{
+//	return param1 + param2;
+//}
+//int main()
+//{
+//	int x{ 1 }, y{ 2 };
+//
+//	+(x, y);
+//// #. x + y라는 명령어를 실행하면 컴파일러는 해당 타입과 일치한 연산자 함수를 호출한다.
+//// #. 해당 함수에서 연산이 진행되고 그 결과를 반환해 준다.
+//}
+
+//#include <iostream>		// < Title : 객체의 연산 이론 >
+//
+//class MyClass
+//{
+//public:
+//	int x{ 1 };
+//	int y{ 2 };
+//};
+//
+//int main()
+//{
+//	MyClass a, b;
+//
+//	a. + (b);
+//// #. 만약 사용자가 연산자 함수를 직접 만든다면?
+//// #. a.x + b.x라던지 a.x + b.y라던지, 다양한 방식으로 객체의 연산들 실행할 수 있다.
+//}
+
+//#include <iostream>
+//
+//class Point2D
+//{
+//private:
+//	int mX, mY;
+//
+//public:
+//	Point2D() = default;
+//	Point2D(int x, int y) : mX{ x }, mY{ y }{}
+//	void Print()
+//	{
+//		std::cout << "(" << mX << ", " << mY << ")" << std::endl;
+//	}
+//	friend Point2D operator+(const Point2D& p1, const Point2D& p2);
+//};
+//
+//// #. 매개 변수가 상수 참조형이다. 
+//// #. 즉 상수 참조형으로 무명의 객체 또한 인자로 받을 수 있게 한다.
+//Point2D operator+(const Point2D& p1, const Point2D& p2)
+//{
+//	Point2D result;
+//	result.mX = p1.mX + p2.mX;
+//	result.mY = p1.mY + p2.mY;
+//
+//	return result;
+//// #. 반환되는 result객체는 함수가 종료되면 함께 사라진다.
+//// #. 때문에 이 함수의 반환 타입은 참조가 아닌 값에 의한 복사로 지정한다.
+//}
+//
+//int main()
+//{
+//	Point2D pt1{ 2,3 }, pt2{ 4,5 };
+//	Point2D pt3, pt4;
+//
+//	pt3 = pt1 + pt2;		
+//// #. pt3을 빼고 보면, [pt1 + pt2]는 R_Value로 그저 표현식에 불과하다.
+//// #. 매개 변수로 보낸 형태가 (pt1, pt2)콤마로 이루어진 형태가 아니라는 것을 주의 깊게 봐야한다.
+//
+//	pt3.Print();
+//	pt4 = (pt1 + pt2) + pt3;
+//	pt4.Print();
+//}
+
+//#include <iostream>		// < Title : 전역 함수 >
+//
+//class MyClass
+//{
+//public:
+//	int mValue;
+//	MyClass() = default;
+//	MyClass(int x) : mValue{ x }
+//	{
+//		std::cout << "[ MyClass(x) ] : " << mValue << std::endl;
+//	}
+//};
+//
+//// #. 객체의 + 연산이 진행될 때마다 호출되는 전역함수
+//MyClass operator+(MyClass operand1, MyClass operand2)
+//{
+//	return MyClass{ operand1.mValue + operand2.mValue };
+//// #. 반환값에 이름을 붙이지 않았기 때문에 무명의 객체가 생성되었다가 소멸된다.
+//}
+//
+//int Square(const MyClass& c)
+//{
+//	return c.mValue * c.mValue;
+//}
+//
+//int main()
+//{
+//	MyClass c1{ 1 }, c2{ 2 };	// 생성자 x : 1, x :2
+//
+//	std::cout << "     " << Square(c1 + c2) << std::endl;	//	생성자 x : 3
+//
+//	std::cout << "     " << (c1 + c2).mValue << std::endl;	//	생성자 x : 3
+//
+//	MyClass c3 = c1 + c2;		// 생성자 x : 3
+//}
+
+//#include <iostream>		// < Title : 멤버 함수 >
+//
+//class Point2D
+//{
+//private:
+//	int mX, mY;
+//
+//public:
+//	Point2D() = default;
+//	Point2D(int x, int y) : mX{ x }, mY{ y }{}
+//// #. 매개 변수를 받는 생성자가 있어야 해당 연산자 함수에서 무명의 객체를 만들 수 있다.
+//
+//	void Print()
+//	{
+//		std::cout << "(" << mX << " : " << mY << ")" << std::endl;
+//	}
+//	Point2D operator+(const Point2D& pt)
+//	{
+//		return Point2D(mX + pt.mX, mY + pt.mY);
+//	}
+//};
+//
+//int main()
+//{
+//	Point2D pt1{ 2,3 }, pt2{ 4,5 };
+//	Point2D pt3, pt4;
+//
+//// #. [pt1 + pt2]는 pt1.operator+(pt2);와 같다.
+//	pt3 = pt1 + pt2;
+//	pt3.Print();
+//	pt4 = (pt1 + pt2) + pt3;
+//	pt4.Print();
+//}
+
+//#include <iostream>		// < Title : 단항 연산자 >
+//
+//class Point2D
+//{
+//private:
+//	int mX, mY;
+//
+//public:
+//	Point2D() = default;
+//	Point2D(int x, int y) : mX{ x }, mY{ y }{}
+//	void Print()
+//	{
+//		std::cout << mX << ", " << mY << std::endl;
+//	}
+//
+//// #. 반환 값을 상수 참조형으로 지정하여 호출한 객체를 그대로 반환한다.
+//// #. 전위 연산 함수
+//	const Point2D& operator++()
+//	{
+//		++mX;
+//		++mY;
+//		// this는 포인터이기 때문에 역참조가 필요하다.
+//		return *this;
+//	}
+//
+//// #. 후위 연산 함수는 아무 의미 없는 매개변수를 지정해 준다.
+//	Point2D operator++(int x)
+//	{	// #. 값을 먼저 돌려주고 이 후에 증가시켜야 하기 때문에 기존 값을 저장할 객체를 생성한다.
+//		Point2D temp(mX, mY);
+//		++(*this);
+//		return temp;
+//	}
+//};
+//
+//int main()
+//{
+//	Point2D pt{ 2,3 };
+//	++pt;
+//	pt.Print();
+//}
+
+//#include <iostream>		// < Title : 배열 첨자 >
+//
+//class MyClass
+//{
+//private:
+//	int mArray[10];
+//	int count;
+//
+//public:
+//	MyClass() : mArray{} {}
+//
+//// #. 반환 타입을 int로 지정할 경우 원소의 값을 가져올 순 있지만
+//// #. 대입하는 용도로는 사용이 불가능 하다.
+//	int& operator[] (const int& index)
+//	{
+//		return mArray[index];
+//	}
+//};
+//int main()
+//{
+//	MyClass arr;
+//	arr[0] = 1;
+//// #1. < array[0] = 1; > 중 '=' 의 좌측값( array[0] )이 배열 연산자를 호출한다.
+//// #3. 매개 변수는 인덱스를 받기 때문에 리터럴을 받을 수 있게 const 참조형으로 지정한다.
+//// #4. 반환타입 복사를 통해 반환한다면 함수 안에 this와 함수를 호출한 객체는 서로 다른 객체가 된다.
+//// #6. 그럼 배열 요소에 값을 대입할 수 없기 때문에 참조형을 반환한다.
+//
+//	std::cout << arr[0] << " : " << arr[1] << std::endl;
+//// 연산자 함수는 반환되는 값이 호출한 객체 그 자체라는 것을 주의해야 한다.
+//// 반환 타입을 잘 지정해 주자.
+//}
+
+//#include <iostream>		// < Title : 형변환 >
+//
+//class Point2D
+//{
+//private:
+//	int mX, mY;
+//
+//public:
+//	Point2D() = default;
+//	Point2D(int x, int y) : mX{ x }, mY{ y }{}
+//	void Print()
+//	{
+//		std::cout << "(" << mX << ", " << mY << ")" << std::endl;
+//	}
+//
+//// #. 형변환 연산자 함수는 반환값을 생략하도록 되어있다.
+//	operator const float()
+//	{	// #. 상수를 반환하여 반환된 값을 바꾸지 못하게 한다.
+//		return float(sqrt(mX * mX + mY * mY));
+//// sqrt 공식은 double 을 반환하는 함수이므로 float 형변환을 해준다.
+//	}
+//};
+//
+//int main()
+//{
+//	Point2D pt1{ 2,3 };
+//
+//// #. 형변환 연산자 또한 함수로 전달되는 것은 표현식이기 때문에 무명의 객체가 전달된다.
+//	float dist{ pt1 };
+//	std::cout << pt1 << std::endl;
+//}
+
+//#include <iostream>		// < Title : 함수 연산자 >
+//
+//class Point2D
+//{
+//private:
+//	int mX, mY;
+//
+//public:
+//	Point2D() = default;
+//	Point2D(int x, int y) : mX{ x }, mY{ y }{}
+//	void Print()
+//	{
+//		std::cout << "(" << mX << ", " << mY << ")" << std::endl;
+//	}
+//
+//// #. 함수 연산자는 operator()가 이름이고 ()가 매개 변수가 들어갈 공간이다.
+//	void operator()()
+//	{
+//		mX = mY = 0;
+//	}
+//	void operator()(int x, int y)
+//	{
+//		mX = x; mY = y;
+//	}
+//};
+//
+//int main()
+//{
+//	Point2D pt1{ 2,3 };
+//
+//// pt1(); 이 operator()를 호출하엿다.
+//// 함수 연산자 호출식 : Function Object 함수 객체 : Functor
+//	pt1();
+//	pt1.Print();
+//
+//// pt1(1, 2); 이 오버로딩된 operator()를 호출하였다.
+//	pt1(1, 2);
+//	pt1.Print();
+//}
+
+//#include <iostream>		// < Title : 스트림 연산자 >
+//
+//class Point2D
+//{
+//private:
+//	int mX, mY;
+//
+//public:
+//	Point2D() = default;
+//	Point2D(int x, int y) : mX{ x }, mY{ y }{}
+//	void Print()
+//	{
+//		std::cout << "(" << mX << ", " << mY << ")" << std::endl;
+//	}
+//	friend std::ostream& operator <<(std::ostream& os, Point2D& pt);
+//// std::cout의 cout또한 객체이다. 이 객체는 ostream이라는 클래스의 객체이다.
+//};
+//
+//std::istream& operator >> (std::istream& is, Point2D pt)
+//{
+//	return is;
+//}
+//
+//// std::cout은 ostream타입이다.
+//// #2. 함수가 실행되고 반환된다.
+//// #4. 이 함수의 매개 변수 역시 값에 복사가 진행되기 때문에 참조형으로 바꿔주어야 한다.
+//std::ostream& operator <<(std::ostream& os, Point2D& pt)
+//{
+//	os << "(" << pt.mX << ", " << pt.mY << ")";
+//
+//	return os;
+//}
+//
+//int main()
+//{
+//	Point2D pt1{ 2,3 };
+//
+//// #1. [std::cout << pt1] 까지 먼저 함수를 호출한다.
+//// #3. 반환 값이 첫번째 매개 변수가 되고 <<std::endl; 가 두번째 매개 변수가 된다.
+//	std::cout << pt1 << std::endl;
+//}
+
+//#include <iostream>		< Title : 점 연산자 >
+//
+//class Character
+//{
+//public:
+//// #. 반환 타입을 참조형으로 지정할 경우 연산자를 호출한 객체가 그대로 되돌아 온다는 뜻이다.
+//	Character& MoveForward()
+//	{
+//		std::cout << "Move" << std::endl;
+//		return *this;
+//	}
+//	Character& TurnLeft()
+//	{
+//		std::cout << "TurnLeft" << std::endl;
+//		return *this;
+//	}
+//	Character& TurnRight()
+//	{
+//		std::cout << "TurnRight" << std::endl;
+//		return *this;
+//	}
+//	Character& Swing()
+//	{
+//		std::cout << "Swing" << std::endl;
+//		return *this;
+//	}
+//};
+//
+//int main()
+//{
+//	Character player;
+//// #. 객체가 멤버함수를 호출할 때는 이미 해당 멤버 함수에 this라는 키워드로 객체 자신을 가리키는 포인터가 있다.
+//	player.MoveForward()
+//		.TurnLeft()
+//		.TurnRight()
+//		.Swing();
+//}
