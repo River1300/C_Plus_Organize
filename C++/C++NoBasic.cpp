@@ -1964,18 +1964,145 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 < 복소수 > : 허수와 실수를 모두 포함하는 수 체계로, 허수와 실수의 합으로 표현할 수 있다.
 */
 
-#include "Complex.h"
+//#include "Complex.h"
+//
+//int main()
+//{
+//	Complex a(1.0, 2.0);
+//	Complex b(3.0, -2.0);
+//	Complex c(0.0, 0.0);
+//
+//	c = a * b + a / b + a + b;
+//	a += b;
+//
+//	c.Print();
+//	a.Print();
+//	b.Print();
+//}
 
-int main()
-{
-	Complex a(1.0, 2.0);
-	Complex b(3.0, -2.0);
-	Complex c(0.0, 0.0);
+/* --- < 얕은 복사& 깊은 복사 > --- */
 
-	c = a * b + a / b + a + b;
-	a += b;
+/*
+< 초기화 과정 >
+	< 일반 타입 >
+		#. int x = 5; : 복사(대입) 초기화
+			=> x를 선언하고 5를 대입한다.
+		#. int x(5); : 직접 초기화
+			=> 클래스 생성자와 같은 개념으로 생성자를 호출하여 초기화 한다.
+		#. int x{ 5 }; : 유니폼 초기화
+			=> 유니폼 초기화식 문법으로 초기화한다.
 
-	c.Print();
-	a.Print();
-	b.Print();
-}
+	< 클래스 타입 >
+		#. MyClass c = MyClass(5); : 복사(대입) 초기화
+			=> c를 선언하고 MyClass(5)로 입시 객체를 만들어서 복사한다.
+		#. MyClass c = 5; : 복사(대입) 초기화
+			=> 5라는 값을 클래스 타입으로 암시적 변환을 수행한다.
+		#. MyClass c(5); : 직접 초기화
+			=> 생성자를 사용한 초기화다.
+		#. MyClass c{ 5 }; : 유니폼 초기화
+			=> 유니폼 초기화식 문법으로 초기화한다.
+
+< 복사 생성자 > : 새로운 객체를 초기화할 때 기존에 있던 객체를 넘겨주어 해당 자료로 생성할 수 있다.
+	#. MyClass(const MyClass& from) {}
+		=> 새로 만들어진 객체에 인자로 받은 객체의 멤버 변수를 그대로 복사한다.
+		=> 즉, 해당 객체를 복사본을 만드는 것이 목표이므로 인자를 변경할 이유가 없기 때문에 const를 붙인다.
+*/
+
+//#include <iostream>		// < Title : 초기화 방식 >
+//
+//class MyClass
+//{
+//private:
+//	int mValue;
+//
+//public:
+//	// 초기화식을 입력한 임의 생성자
+//	MyClass(int value) : mValue{ value }
+//	{
+//		std::cout << "[MyClass] : " << mValue << std::endl;
+//	}
+//};
+//
+//int main()
+//{	
+//// #. 이론상 생성자가 두 번 불려야만 한다.
+//// #. c1이라는 객체의 생성자와 복사를 위해 생성된 무명 객체의 생성자가 각각 호출된다는 이론
+//// #. 그런데 컴파일러가 최적화를 통해 값 5가 있는 무명 객체의 생성자를 호출하고 이 객체에 이름 c1을 붙인다.
+//// #. 그로인해 무명 객체가 호출한 생성자, 한 번만 불린다.
+//	MyClass c1 = 5;				// 복사 초기화
+//	MyClass c2 = MyClass(5);	// 복사 초기화
+//
+//	MyClass c3(5);				// 직접 초기화
+//	MyClass c4{ 5 };			// 유니폼 초기화
+//}
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//private:
+//	int mValue;
+//
+//public:
+//	MyClass(int value) : mValue{ value }
+//	{
+//		std::cout << "[MyClass] : " << mValue << std::endl;
+//	}
+//	// 암시적으로 복사 생성자가 클래스 내부에 있다.
+//	MyClass(const MyClass& from)
+//	{
+//		mValue = from.mValue;
+//		std::cout << "[MyClass Copy] : " << mValue << std::endl;
+//	}
+//};
+//
+//int main()
+//{
+//	MyClass c1 = 5;		// 복사 초기화
+//	MyClass c2(c1);		// 복사 생성자 : 다른 객체로부터 나를 참고하여 생성
+//// #. 즉 c1의 카피본을 c2라는 이름으로 만든다.
+//
+//// #. 리터럴을 매개 변수로 보내어 무명 객체를 생성하고 이 무명 객체를 참고하여 c3가 생성된다.
+//// #. 그러나 이건 MyClass c3(5);와 완전히 동일한 사용법이다.
+//// #. 따라서 컴파일러는 자동으로 최적화를 수행해서 하나의 객체만 생성한다.
+//	MyClass c3(MyClass(5));
+//}
+
+//#include <iostream>		// < Title : 얕은 복사 >
+//						// #. 주어진 객체의 각 멤버 변수를 새 객체의 멤버 변수에 배정하기만 한다.
+//
+//class Dog {};
+//class DogHouse
+//{
+//	Dog* owner;
+//// #. 멤버 변수에 포인터가 있을 경우 문제가 발생할 수 있다.
+//};
+//DogHouse house1;			// #. house1.owner가 HEAP에 할당된 메모리 공간을 가리킨다.
+//DogHouse house2(house1);	// #. house2.owner가 house1.owner가 가리키는 메모리 공간을 가리킨다.
+//// #. 이 때 house1이 소멸된다면 house2.owner는 알 수 없는 공간을 가리키는 상황이 된다.
+
+//#include <iostream>		// < Title : 깊은 복사 >
+//						// #. 실제로 새로운 메모리를 할당해 준다.
+//
+//class Dog 
+//{
+//public:
+//	int age;
+//	int weight;
+//	int color;
+//};
+//class DogHouse
+//{
+//	Dog* owner;
+//
+//public:
+//	DogHouse(const DogHouse& house)
+//	{
+//		owner = new Dog();
+//		owner->age = house.owner->age;
+//		owner->weight = house.owner->weight;
+//		owner->color = house.owner->color;
+//// #. 같은 HEAP공간을 가리키지 않고 새로운 메모리 공간을 가리킨다.
+//// #. 얕은 복사와 비교하여 안전하지만 추가적인 메모리가 필요하다.
+//	}
+//};
