@@ -2605,3 +2605,21 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 //
 //	delete clone;
 //}
+
+//#include <iostream>
+//#include "Dog.h"
+//// #. Dog헤더파일 안에 이미 Aniaml헤더파일이 있기 때문에 main에서는 Dog헤더파일만 등록해도 된다.
+//
+//int main()
+//{
+//	// #1. Dog클래스의 객체를 만드려면 우선 Animal클래스의 정보가 필요하다.
+//	// #2. Animal클래스의 멤버가 모두 구성된 뒤에 Dog클래스의 멤버가 구성된다.
+//	Dog happy;	// #3. 자식을 만들 때는 부모도 함께 만들어 진다.
+//
+//	happy.Sound();	// Animal 의 Sound 이지만 Dog 가 상속을 받앗고 또한 public 멤버함수이기 때문에 외부에서 사용이 가능핟.
+//	happy.Roll();
+//
+//	// #. BREED는 Dog에 종속되어 있는 열거형 타입이다.
+//	// #. public이기 때문에 외부에서 사용을 가능하지만 어디에 종속되어 있는지 반드식 입력해 줘야 한다.
+//	Dog merry(5, 2, Dog::BREED::CHIHUAHUA);
+//}
