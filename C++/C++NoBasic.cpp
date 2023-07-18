@@ -2623,3 +2623,40 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 //	// #. public이기 때문에 외부에서 사용을 가능하지만 어디에 종속되어 있는지 반드식 입력해 줘야 한다.
 //	Dog merry(5, 2, Dog::BREED::CHIHUAHUA);
 //}
+
+//#include <iostream>
+//#include "Warrior.h"
+//
+//int main()
+//{
+//	Character* pHero = new Warrior;
+//	pHero->Attack();
+//// 파생 클래스의 메모리 공간을 할당 받을 때는 기반 클래스도 메모리 공간에 구성된다.
+//// 다형성을 사용하여 가상( virtul )함수 Attack을 호출했다.
+//
+//	((Warrior*)(pHero))->DoubleSlash();
+//// #. 현재 메인 함수에 생성된 객체 pHero는 Character포인터 이기 때문에 Warrior클래스의 특수 함수인 DoubleSlash를 호출할 수 없다.
+//// #. pHero가 Warrior클래스의 DoubleShash를 호출하기 위해 형 변환을 실행할 것이다.
+//// #. 힙( heap )공간에 생성된 객체는 Warrior이므로 위와 같은 형변환이 가능하다.
+//// #. 현재 코드는 단순하기 때문에 아무런 의심 없이 형변환을 진행하고 실행할 수 있다. 
+//// #. 그런데 만약 코드가 복잡하다면?
+//
+//	Warrior* pWarrior = static_cast<Warrior*>(pHero);
+//// #. 어떤 타입을 어떤 타입으로 변환하였는지 명확하게 하고 싶다면 정적변환을 사용하면 된다.
+//	if (pWarrior == nullptr)
+//	{
+//		std::cout << "Error!!!!!!!!!!!!!!!" << std::endl;
+//	}
+//	else
+//	{
+//		pWarrior->DoubleSlash();
+//	}
+//
+//	pHero->Dead();
+//	pHero->Reborn();
+//
+//
+//	delete pHero;
+//// 객체( 인스턴스 )의 생성은 1. 기반 2. 파생 순서로 메모리 공간에 구성된다.
+//// 객체( 인스턴스 )의 소멸은 1. 파생 2. 기반 순서로 메모리 공간에서 소멸된다.
+//}
