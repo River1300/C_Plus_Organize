@@ -2896,3 +2896,164 @@ $. late-binding = dynamic-binding = run-time=binding
 //	Sigma(mf, &MyFunctions::NormalFunction, 1, 10);
 //// #. 비 정적 멤버 함수는 인스턴스가 소유하고 있기 때문에 인스턴스를 통해 호출해야 한다.
 //}
+
+/* --- < 템플릿( Template ) > --- */
+
+/*
+< 템플릿 >
+	#. 타입을 일반화( Generalization )하여 어떠한 타입도 처리할 수 있도록 만들고
+	#. 프로그래머가 원하는 타입으로 특수화( Specialization )를 진행한다.
+
+< 템플릿 함수 > : 함수를 호출할때, 컴파일러는 T가 어떤 타입일지 자동으로 추론해서 함수를 만들어 준다.
+	=> template < typename T1, typename T2 ... >
+
+< 템플릿 클래스 > : 클래스를 호출할때, 컴파일러는 멤버 T가 어떤 타입일지 자동으로 추론해서 클래스를 만들어 준다.
+	=> template < class T1, class T2 ... >
+
+< 템플릿 주의 사항 >
+	#. 자동이 아니다. 많은 타입으로 특수화를 하면 그 만큼의 코드가 추가된다.
+	#. 템플릿 선언과 정의는 같은 파일에 존재해야 한다.
+*/
+
+//#include <iostream>		// < Title : 템플릿 함수 >
+//
+//// #1. 함수 타입을 일반화시킨다.
+//template <typename T>
+//T Function(T x, T y)
+//{	
+//// #3. 함수가 호출되어 실행이 되면 이 함수 코드가 특수화된 타입으로 바뀐 버전이 암시적으로 복사된다.
+//	T sum;
+//	sum = x + y;
+//	return sum;
+//// #4. 다양한 타입으로 함수를 호출하면 할 수록 코드의 용량이 커진다는 단점이 있다.
+//}
+//
+//int main()
+//{	
+//// #2. 함수가 호출되면서 특수화가 진행된다.
+//// <> 부등호로 타입을 묶어주지 않아도 실행된다. 그러나 코드를 읽기 어려워짐으로 입력해주는 것이 좋다.
+//	std::cout << Function<int>(10, 50) << std::endl;
+//	std::cout << Function<float>(1.1f, 1.1f) << std::endl;
+//
+//	std::cout << Function(1, 1) << std::endl;
+//	std::cout << Function(2.2f, 2.2f) << std::endl;
+//}
+
+//#include <iostream>		// < Title : 템플릿 함수 >
+//
+//// #1. 템플릿 함수를 정의 하여 지정한 변수들의 타입을 일반화 시킨다.
+//template<typename T>
+//void SequentialSort(T input[], int size)
+//{
+//	for (int i = 0; i < size - 1; i++)
+//	{
+//		for (int j = i + 1; j < size; j++)
+//		{
+//			if (input[i] > input[j])
+//			{
+//				T temp = input[i];
+//				input[i] = input[j];
+//				input[j] = temp;
+//			}
+//		}
+//	}
+//}
+//
+//// #2. 템플릿 함수를 정의 하여 지정한 변수들의 타입을 일반화 시킨다.
+//template<typename T>
+//void PrintArray(T input[], int size)
+//{
+//	for (int i = 0; i < size; i++)
+//	{
+//		std::cout << input[i] << " ";
+//	}
+//	std::cout << std::endl;
+//}
+//
+//int main()
+//{	
+//// #3. 정렬을 진행할 배열을 초기화 해준다.
+//	int integerArray[]{ 3,2,1,5,4 };
+//	float floatArray[]{ 1.1f,0.3f,1.2f,4.0f,2.5f };
+//
+//// #4. int 타입으로 특수화 하여 템플릿 함수를 호출한다.
+//	SequentialSort<int>(integerArray, 5);
+//	PrintArray<int>(integerArray, 5);
+//
+//// #5. float 타입으로 특수화 하여 템플릿 함수를 호출한다.
+//	SequentialSort<float>(floatArray, 5);
+//	PrintArray<float>(floatArray, 5);
+//}
+
+//#include <iostream>		// < Title : 클래스 템플릿 >
+//
+//class Party {};
+//
+//// #1. 클래스의 멤버 타입을 일반화 한다.
+//template<class T>
+//class LinkedList
+//{
+//	T* pHead;
+//	T* pTail;
+//public:
+//	void Print() { std::cout << "gold"; }
+//};
+//
+//int main()
+//{	
+//// #2. 클래스의 멤버 타입을 'Party'로 지정하여 특수화하고 객체 hero로 만들어 준다.
+//	LinkedList<Party> hero;
+//	hero.Print();
+//}
+
+//#include <iostream>		// < Title : 문제 상황 >
+//
+//// MyClass.h라고 가정
+//template <typename T>
+//class MyClass {
+//	T mValue;
+//public:
+//	void Function(T arg);
+//};
+//// #. 멤버 변수 mValue는 문제가 없다 문제는 멤버 함수에서 발생한다.
+//
+//// MyClass.cpp라고 가정
+//template <typename T>
+//void MyClass<T>::Function(T arg) { }
+//// #1. 이 라인까지는 템플릿이 일반화만 되어있는 상태고 특수화가 진행되지 않은 상황이다.
+//
+//// main.cpp라고 가정
+//int main()
+//{
+//	MyClass<int> c1;
+//	c1.Function(10);
+//// #2. 객체가 멤버 함수를 호출할 때 '함수를 찾을 수 없다'라는 링크 에러를 발생 시킨다.
+////		=> c1이 멤버 함수를 호출하면 MyClass.h에 있는 Function은 (int arg)타입으로 특수화가 진행된다.
+////		=> Function(int arg)함수는 정의가 있는 .cpp로 가서 자기 자신에 대한 정의를 찾으려 한다.
+////		=> 그런데 MyClass.cpp에 있는 Function은 (T arg)인 일반화 형태 그대로인 상태이다.
+//// #3. 이와 같은 문제를 해결하려면 .h에 일반화한 멤버 함수를 정의 해주어야 한다.
+//}
+
+/* --- < 명시적 생성자( explicit constructor ) > --- */
+
+/*
+< 명시적 생성자 > : 클래스 객체를 만들때 생성자를 명시하도록 지정해 놓는 키워드
+*/
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//public:
+//	int mInt;
+//
+//// #. 객체를 만들때 클래스 타입을 명확히 명시하도록 강요하는 코드
+//	explicit MyClass(int val) : mInt{ val } {}
+//};
+//
+//int main()
+//{
+//	MyClass c = 1;	// 암시적 생성자 : MyClass c = MyClass(1)가 explicit으로 인해 맊힌다.
+//
+//	MyClass c1 = MyClass(1);	// 명시적으로 클래스 생성자를 통해 복사 대입한다는 것을 알려주어야 한다.
+//}
