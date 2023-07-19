@@ -2660,3 +2660,69 @@ public이라는 것은 말 그대로 공개된 것으로 외부에서 마음껏 이용할 수 있게 됩니다.
 //// 객체( 인스턴스 )의 생성은 1. 기반 2. 파생 순서로 메모리 공간에 구성된다.
 //// 객체( 인스턴스 )의 소멸은 1. 파생 2. 기반 순서로 메모리 공간에서 소멸된다.
 //}
+
+/* --- < 형 변환 > --- */
+
+/*
+< 상향 변환( up-cast ) > : 파생 클래스 -> 기반 클래스
+	#. 안전한 변환이라 암시적 변환으로 충분히 가능하다.
+		=> Character* pHero = new Warrior;
+
+< 하향 변환( down-cast ) > : 기반 클래스 -> 파생 클래스
+	#. 런타임에 체크하지 않으면 결과를 알 수 없다.
+		=> (Warrior*)pHero
+
+< static_cast > : 컴파일타임에 형변환을 결정하는 연산자
+	#. static_cast <new_type> ( expression ) : 정적으로 변환을 해준다.
+$. early-binding = static-binding = compile-time-binding
+
+< dynamic_cast > : 런타임에 동적으로 타입을 변환하는 연산자
+	#. dynamic_cast < new_type > ( expression ) : 동적으로 변환을 해준다.
+	#. 클래스의 포인터 및 참조형에서만 사용이 가능하다.
+		#. 주어진 포인터를 대상 타입의 완전히 유효한 객체에 대한 포인터로 변환하는 것을 보장한다.
+$. late-binding = dynamic-binding = run-time=binding
+
+< reinterpret_cast > : 어떠한 형 변환도 강제로 수행하는 위험하지만 유용한 형 변환 연산자
+	#. 객체의 자료를 바이너리 데이터로 해석한 다음 해당 타입으로 변환을 시도한다.
+	#. 주로 데이터를 파일로 변환하거나 할때 사용하는 표기법이다.
+
+< const_cast > : 상수를 변환해 준다.
+	#. const 기호를 추가/제거가 가능하다.
+	#. 단, 포인터 및 참조형만 가능하다.
+*/
+
+//#include <iostream>		// < Title : reinterpret_cast >
+//
+//class ClassA {};
+//class ClassB {};
+//
+//int main()
+//{
+//	float myFloat = 10.0f;
+//	std::cout << *reinterpret_cast<int*>(&myFloat);
+//// #. 부동 소수점 표현을 위해 메모리 공간을 2진수로 변환한 다음 정수로 변환하기 때문에 예상치 못한 값이 나온다.
+//
+//	ClassA* a = new ClassA;
+//	ClassB* b;
+//	b = reinterpret_cast<ClassB*>(a);
+//// #. 심지어 아무런 상관 없는 클래스도 강제로 변환한다.
+//// #. 물론 안전은 보장하지 않는다.
+//}
+
+//#include <iostream>		// < Title : const_cast >
+//
+//void Print(char* text)
+//{	// 함수의 매개 변수는 char포인터 자료형을 받아야 한다.
+//	std::cout << text << std::endl;
+//}
+//
+//int main()
+//{	
+//	char myString[]{ "Hello" };
+//	
+//	Print(const_cast<char*>("Hello"));
+//// #. 함수로 넘겨주는 인자는 const char포인터 자료형이다.
+//// #. "Hello"는 문자열에 대한 리터럴이라고 부른다.
+//
+//	Print(myString);
+//}
