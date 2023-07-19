@@ -2726,3 +2726,173 @@ $. late-binding = dynamic-binding = run-time=binding
 //
 //	Print(myString);
 //}
+
+/* --- < 인터페이스( Interface ) > --- */
+
+/*
+< 인터페이스 > : 순수 가상 함수들만 모여 있는 추상 클래스를 종종 다른 언어나 시스템에서는 인터페이스라 부른다.
+	#. 사전적 의미로는 서로 다른 두 시스템의 접점이라는 뜻이다.
+	=> USB : 컴퓨터의 데이터 입출력 단자에 연결하는 주변 기기들을 사용하기 쉽게 만든 외부 단자
+	=> HDMI : 비디오/오디오등 모든 단자를 통합하여 컴퓨터 및 영상기기에서 출력을 처리하는 규약
+		#. 서로 다른 제조사 간의 데이터 전송을 언제 어디서나 동일하게 보장해 주는 개념이 인터페이스다.
+*/
+
+/* --- < 이름공간( Namespace ) > --- */
+
+/*
+< 이름 공간 > : 내부 식별자들에 범위를 지정할 수 있는 별도의 공간
+
+< using 지시자 > : 예를 들어 std::cout에서 std::와 같은 동일한 타이핑을 매번 하는 것을 간추릴 수 있다.
+	=> using namespace std;
+	#. 헤더 파일에서는 사용하면 않된다.
+	#. 동일한 지역 식별자가 존재하면 구분이 되지 않아 컴파일 에러가 발생한다.
+*/
+
+//#include <iostream>
+//
+//namespace Game
+//{
+//	class Warrior
+//	{
+//	public:
+//		void DoubleSlash() {}
+//	};
+//	void Print() {}
+//}
+//namespace GUI
+//{
+//	void Print() {}
+//}
+//// #. 이름 공간안에서 지정한 이름은 다른 이름 공간이나 전역 공간에서 만든 같은 이름과 중복되지 않는다.
+//
+//int main()
+//{
+//	Game::Warrior warrior;
+//// #. 이름 공간에 접근하기 위해서는 ( :: ) 범위 해결 연산자를 사용해야 한다.
+//
+//	warrior.DoubleSlash();
+//// #. warrior 같이 인스턴스화된 객체는 이름 공간에 소속되지 않게된다.
+//
+//	Game::Print();
+//	GUI::Print();
+//}
+
+/* --- < 멤버 함수의 포인터 > --- */
+
+/*
+< 정적 멤버 함수 > : ret-type (*) (param-list)
+	#. 예제 : using fptr = int (*) (int)
+	#. 예제 호출 : fptr(3);
+
+< 비 정적 멤버 함수 > : ret-type (class-name::*) (param-list)
+	#. 예제 : using fptr = int (MyClass::*) (int)
+	#. 예제 호출 : (instance.*fptr)(3);
+*/
+
+//#include <iostream>		// < Title : 일반 함수 포인터 >
+//
+//// #. 전역 함수의 포인터 : 반환값 + (포인터,이름) + (매개변수 종류)
+//using FunctionPtr = int(*)(int);	// int (*f)(int x)
+//// #. FunctionPtr은 int타입을 반환하고 매개 변수를 int타입으로 한 개 받는 포인터의 별칭이다.
+//
+//int Sigma(FunctionPtr f, int m, int n)
+//{
+//	int sum = 0;
+//	for (int i = m; i <= n; i++)
+//	{
+//		sum += f(i);
+//	}
+//	return sum;
+//}
+//
+//// f(x) = x
+//int NormalFunction(int x) { return x; }
+//
+//// f(x) = x ^ 2
+//int SquareFunction(int x) { return x * x; }
+//
+//int main()
+//{
+//	std::cout << Sigma(NormalFunction, 1, 10) << std::endl;
+//
+//	int (*S)(FunctionPtr, int, int) { Sigma };
+//// #. S라는 이름의 함수 포인터를 선언 및 Sigma함수를 대입하여 초기화
+//
+//	std::cout << S(SquareFunction, 1, 10) << std::endl;
+//}
+
+//#include <iostream>		// < Title : 정적 멤버 함수의 포인터 >
+//
+//class MyFunctions
+//{
+//public:
+//	static int NormalFunction(int x)
+//	{
+//		return x;
+//	}
+//	static int SquareFunction(int x)
+//	{
+//	return x * x;
+//	}
+//// #. static멤버 함수는 class가 소유하고 있다.
+//// #. 이 정적 멤버 함수를 포인터로 지정하여 사용할 예정이다.
+//};
+//
+//using FunctionPtr = int(*)(int);
+//
+//int Sigma(FunctionPtr f, int m, int n)	// 전역 함수 Sigma
+//{
+//	int sum = 0;
+//	for (int i = m; i <= n; i++)
+//	{
+//		sum += f(i);
+//	}
+//	return sum;
+//}
+//
+//int main()
+//{
+//	std::cout << Sigma(&MyFunctions::NormalFunction, 1, 10) << std::endl;
+//// #1. 함수 포인터로 전달할 매개 변수는 class소유의 static멤버 함수이다.
+//// #2. 때문에 ( :: ) 범위 해결 연산자를 통해서 클래스에 속해있다는 것을 알려주어야 한다.
+//// #3. 전역 함수의 포인터는 전달하는 함수 인자를 자동적으로 함수 포인터 형식으로 변환시켜준다.
+//// #4. 그러나 멤버 함수는 그렇지 않기 때문에 멤버함수의 주소( & )를 넘겨주어야 한다.
+//}
+
+//#include <iostream>		// < Title : 비 정적 멤버 함수의 포인터 >
+//
+//class MyFunctions
+//{
+//public:
+//	int NormalFunction(int x)
+//	{
+//		return x;
+//	}
+//	int SquareFunction(int x)
+//	{
+//		return x * x;
+//	}
+//// #. 비 정적 멤버함수는 인스턴스가 소유하고 있다.
+//};
+//
+//using FunctionPtr = int(MyFunctions::*)(int);
+//// #. 포인터가 클래스 내부에 있다는 것을 알려줘야 한다.
+//
+//int Sigma(MyFunctions& instance, FunctionPtr f, int m, int n)
+//{
+//	int sum = 0;
+//	for (int i = m; i <= n; i++)
+//	{
+//		sum += (instance.*f)(i);
+//		// 멤버 함수 호출은 인스턴스에 (.)점 연산자를 사용한다는 것을 기억해라
+//		// 멤버 함수를 가리키는 포인터 f에 접근하기 위해 *f로 입력한다.
+//	}
+//	return sum;
+//}
+//
+//int main()
+//{
+//	MyFunctions mf;
+//	Sigma(mf, &MyFunctions::NormalFunction, 1, 10);
+//// #. 비 정적 멤버 함수는 인스턴스가 소유하고 있기 때문에 인스턴스를 통해 호출해야 한다.
+//}
