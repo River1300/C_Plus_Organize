@@ -758,3 +758,97 @@
 //		std::cout << e << " ";
 //	}	std::cout << std::endl;
 //}
+
+/* --- < quick-Algorithm > --- */
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//
+//int Compare(const void* left, const void* right)
+//{
+//	int lhs = *static_cast<const int*>(left);
+//	int rhs = *static_cast<const int*>(right);
+//
+//	if (lhs > rhs)
+//	{	// 왼쪽 값이 더 크면 -1 로 반환( 음수 )
+//		return -1;
+//	}
+//	else if (lhs < rhs)
+//	{	// 오른쪽 값이 더 크면 +1 로 반환( 양수 )
+//		return 1;	// 양수로 반환한다는 것은 값의 위치를 바꾸겠다는 뜻
+//	}
+//	else
+//	{	// 값이 같으면 0 으로 반환
+//		return 0;
+//	}
+//
+//	return rhs - lhs;
+//// #. if 문으로 길게 쓸 필요 없이 ( - ) 연산자로 리턴 값을 음수/양수/0 으로 구분할 수 있다.
+//}
+//
+//int main()
+//{
+//	std::vector<int> v{ 7,4,1,8,2,3,10,9,6,5 };
+//	// #. < qsort() > : 퀵 정렬 알고리즘
+//// #0. qsort 함수의 매개 변수
+//// #1. < void* Base > : container 의 시작 지점
+//// #2. < size_t Num > : Base 부터 몇 개 까지의 원소를 정렬할 것인지
+//// #3. < size_t Size> : 원소 하나의 크기( 시작 지점은 void 포인터로 받았기 때문에 원소 하나의 크기를 모르는 상태다. )
+//// #4. < CompareFunction > : 값을 비교하는 함수 포인터
+//	qsort(v.data(), v.size(), sizeof(v[0]), Compare);
+//// < vector.data() > : 첫 번째 원소의 주소값을 반환해준다.
+//// < size_t > : unsigned int 와 같은 뜻( 0 을 시작으로 한 양수 )
+//
+//	for (auto e : v)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
+
+/* < 람다식( 무명함수 ) > */
+
+/*
+< 람다식 > : 코드내에 함수를 선언없이 삽입하는 기법을 말한다.
+	#. < [] (int a, int b) {} > : 매개변수 2개를 받는 무명함수
+	#. < [] (int a) -> int { return result; } > : 매개변수 1개와 반환값이 있는 무명함수
+*/
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//
+//int main()
+//{
+//	std::vector<int> v{ 3,2,5,4,1 };
+//
+//	qsort(v.data(), v.size(), sizeof(v[0]), [](const void* left, const void* right) {
+//		return *static_cast<const int*>(left) - *static_cast<const int*>(right);
+//		});	// 이름이 없는 함수 [] (int a, int b) {}
+//// 코드내에 함수 선언/정의 없이 삽입하는 기법
+//
+//	for (auto e : v)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
+
+/* --- < for_each()-Algorithm > --- */
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//
+//int main()
+//{
+//	std::vector<int> v{ 3,7,4,1,6,2,5 };
+//
+//// #1. < inputiterator > : iterator( 시작 부터 끝까지 )
+//// #2. < function > : 함수( 함수를 받아서 실행 )
+//	std::for_each(v.begin(), v.end(), [](int val) {
+//		std::cout << val << " ";
+//		});	// 함수를 통해서 연산이 가능하다.
+//// < for_each() > : 템플릿 형태로 각각에 원소들에 대해서 반복을 실행하는 함수
+//// < Unary function > : 매개 변수가 한 개인 함수
+//// < Binary function > : 매개 변수가 두 개 이상인 함수
+//}
