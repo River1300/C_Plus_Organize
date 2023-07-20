@@ -696,3 +696,65 @@
 //	vec.erase(vec.begin() + 3);			// #. vec[3] 제거
 //	print_vector(vec);
 //}
+
+/* ----- < 반복자( Iterator ) > ----- */
+
+/*
+< 반복자 > : 컨테이너를 순회하기 위한 포인터라고 할 수 있다.
+	#. 모든 컨테이너는 반복자를 가지고 있다.
+		=> std::vector<int>::iterator itr;
+	#. 반복자는 각각의 컨테이너 안에 있는 요소를 구별할 수 있다.
+	#. 반복자는 요소안에 저장된 값을 알 수 있다.
+		=> *itr
+	#. 반복자는 컨테이너 안에 있는 요소들 간에 이동할 수 있는 연산을 제공한다.
+*/
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v{ 1,2,3 };
+//
+//	std::vector<int>::iterator itr;	// #. itr 앞에 있는 문장이 타입이다.
+//	itr = v.begin();	// #. iterator 타입의 객체 itr 이 vecter 타입의 객체 v 의 첫 번째 원소를 가리키게 한다.
+//
+//	while (itr != v.end())
+//	{	// #. itr 포인터가 v 객체의 마지막 원소 바로 뒤 주소값을 가리키기 전까지 반복한다.
+//		std::cout << *itr << " ";
+//		itr++;
+//	}
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v{ 1,2,3 };
+//
+//	for (std::vector<int>::iterator itr = v.begin(); itr != v.end(); itr++)
+//	{
+//		std::cout << *itr << " ";
+//	}
+//}
+
+/* < auto 키워드 > */
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v{ 1,2,3 };
+//	auto itr = v.begin();	// #. 컴파일러가 객체의 타입을 추론할 수 있을 경우 auto 로 입력할 수 있다.
+//
+//	for (auto e : v)
+//	{	// #. 컴파일러는 객체 v 의 원소 값이 int 타입이라는 것을 알 수 있기 때문에 객체 e 의 타입을 추론할 수 있다.
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//	for (auto& e : v)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
