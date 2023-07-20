@@ -220,3 +220,148 @@
 //		std::cout << *itr;
 //	}
 //}
+
+/* ----- < std::array > ----- */
+
+/*
+< std::array( Random Access ) > : 정적 배열
+	#. 순차적( Sequence ) : 정해진 순서가 있고, 그 순서대로 접근한다.
+	#. 연속된 저장공간( Contiguaous ) : 포인터로 이동이 가능하다.
+	#. 정적 : 저장공간의 크기가 고정되어 있다.
+	#. 연산 : algorithm 에 정의된 함수들을 사용할 수 있다.
+	#. 생성자 : 클래스의 생성자를 호출하여 초기화 할 수 있다.
+	#. 소멸자 : 배열 소멸 시에 모든 원소들의 소멸자를 호출한다.
+*/
+
+//#include <iostream>
+//#include <array>
+//
+//int main()
+//{
+//	int arr[3]{ 1,2,3 };
+//	int b[3];
+//	b = arr;
+//// #. 일반 배열의 경우 대입 연산자를 통한 값의 복사 배정을 할 수 없다.
+//
+//	std::array<int, 3> x{ 1,2,3 };
+//	std::array<int, 3> y;
+//	y = x;
+//// #. std::array 는 배열의 각각의 원소들에 대해 대입 연산자를 호출할 수 있다.
+//}
+
+//#include <iostream>
+//#include <array>
+//
+//int main()
+//{
+//	std::array<int, 6> data = { 1,2,4,5,5,6 };
+//
+//	data.at(1) = 88;	// #. 배열의 인덱스 1로 찾아가 값을 바꾸어 준다.
+//	// #. 배열의 인덱스 2로 찾아가 값을 참조형으로 반환한다.
+//	std::cout << "인덱스 2 에 위치한 원소 : " << data.at(2) << "\n";
+//	std::cout << "data 배열의 크기 = " << data.size() << "\n";
+//
+//	try {	//#. 크기가 고정되어 있기 때문에 배열의 크기를 넘어가는 원소를 참조할 경우 에러가 발생한다.
+//		data.at(6) = 666;
+//	}
+//	catch (std::out_of_range const& exc) {
+//		std::cout << "예외 발생 : " << exc.what() << "\n";
+//	}
+//
+//	std::cout << "data : ";
+//	for (auto e : data)
+//	{
+//		std::cout << " " << e;
+//	}	std::cout << std::endl;
+//}
+
+//#include <iostream>
+//#include <array>
+//
+//int main()
+//{
+//	std::array<int, 3> x = { 1,2,3 };
+//	std::array<int, 0> y;
+//	// #. 각각 첫 번째와 마지막 원소를 참조형으로 반환해준다.
+//	std::cout << x.front() << " : " << x.back() << std::endl;
+//	std::cout << y.front() << " : " << y.back() << std::endl;
+//// #. 배열의 크기가 0 일 경우, front 와 back 함수를 호출할 수 없다.
+//}
+
+//#include <iostream>
+//#include <array>
+//#include <cstddef>
+//
+//void pointer_func(const int* p, std::size_t size)
+//{
+//	std::cout << "data = ";
+//	for (std::size_t i = 0; i < size; i++)
+//	{
+//		std::cout << p[i] << " ";
+//	}	std::cout << std::endl;
+//}
+//
+//int main()
+//{
+//	std::array<int, 4>container{ 1,2,3,4 };
+//	pointer_func(container.data(), container.size());
+//// #. data() 함수는 std::array 가 참조하고 있는 배열의 시작 주소값을 반환한다.
+//}
+
+//#include <iostream>
+//#include <array>
+//
+//int main()
+//{
+//	std::array<int, 3> x{ 1,2,3 };
+//
+//	std::cout << "시작점을 나타내는 iterator : ";
+//	for (auto itr = x.begin(); itr != x.end(); itr++)
+//	{
+//		std::cout << *itr << " ";
+//	}	std::cout << std::endl;
+//	std::cout << "역방향 시작점을 나타내는 iterator : ";
+//	for (auto itr = x.rbegin(); itr != x.rend(); itr++)
+//	{
+//		std::cout << *itr << " ";
+//	}	std::cout << std::endl;
+//}
+
+//#include <iostream>
+//#include <array>
+//#include <algorithm>
+//
+//int main()
+//{
+//	std::array<int, 6> data = { 3,1,5,2,6,4 };
+//	std::sort(data.begin(), data.end());
+//
+//	for (auto e : data)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
+
+//#include <iostream>
+//#include <array>
+//
+//int main()
+//{	// 배열의 크기가 0 인지 아닌지 bool 타입으로 반환한다.
+//	std::array<int, 4> arr;
+//	std::cout << arr.empty() << std::endl;
+//	std::array<int, 0> brr;
+//	std::cout << brr.empty() << std::endl;
+//
+//	arr.fill(3);	// 모든 배열의 원소를 인자로 전달된 값으로 채운다.
+//	for (auto e : arr)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//
+//	std::array<int, 4> crr{ 1,1,1,1 };
+//	arr.swap(crr);	// 두 배열의 내용을 바꾼다.
+//	for (auto e : arr)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
