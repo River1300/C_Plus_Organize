@@ -365,3 +365,334 @@
 //		std::cout << e << " ";
 //	}	std::cout << std::endl;
 //}
+
+/* ----- < Container-Vector > ----- */
+
+/*
+< 벡터( Vector ) > : 자동으로 메모리가 할당되는 배열
+	#. 벡터 객체는 원소의 타입을 지정해서 인스턴스와 한다.
+	#. 벡터 객체는 원소들의 크기와 해당 원소들의 시퀀스를 가지고 있다.
+	#. 원소들의 시퀀스는 인덱스를 이용해 접근이 가능하다.
+
+< 순수 수학적 벡터 > : S 집합의 연속된 n 개의 값
+< 기하학적 벡터 > : 크기와 방향을 가진 값
+*/
+
+/* --- < std::vector_Basic > --- */
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{	// v 라는 이름의 객체에 5개의 원소가 생성되고 각각의 값이 저장되어있다.
+//	// 각각의 원소들은 1차 배열처럼 연결되어 있다.
+//	std::vector<int> v{ 2,3,1,5,6 };
+//	// 문자열로 된 시퀀스도 만들 수 있다.
+//	std::vector<std::string> v2{ "doggy","kitty","bunny" };
+//
+//	std::vector<int> v3(5);	// 5 개의 원소를 저장할 수 있는 빈 vector 객체를 만든다.
+//
+//	std::cout << v[0];
+//	v[1] = 9;
+//	// v[5] = 10;	// v 의 크기를 넘어갈 경우 run-time error 가 발생한다.
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{	// vecter 클래스를 int 타입으로 특수화하여 v 라는 이름의 객체를 생성한다.
+//	std::vector<int> v{ 2,3,1,5,6 };	// 객체 v 에는 5개의 원소가 있다.
+//	
+//	v.push_back(2); // 배열에 한 칸 추가하고 값 2 를 저장
+//	v.push_back(3);	// 배열에 한 칸 추가하고 값 3 을 저장
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v{ 1,2,3,4,5 };
+//
+//	for (int i = 0; i < v.size(); i++)
+//	{
+//		std::cout << v[i] << std::endl;
+//		++v[i];
+//	}
+//	for (int& x : v)
+//	{	// x 는 지역 변수로 정의되었기 때문에 일반적으로는 값을 바꿀 수 없다. x 를 참조형 변수로 정의해야 값을 바꿀 수 있다.
+//		std::cout << x << std::endl;
+//		++x;
+//// traverse( 순회 )
+//// < 범위 기반 반복( range-based-loop ) [0 : size()) > : 반복문 조건식으로 0 이상 ~ size() 미만
+//	}
+//
+//	// 일반 배열도 내부적으로 Container 취급을 해준다. ( 실제로는 아니지만 )
+//	std::string myName = { "PartManSu" };
+//	for (char x : myName)
+//	{
+//		std::cout << x;
+//	}
+//	int array[]{ 1,2,3,4 };
+//	for (int x : array)
+//	{
+//		std::cout << x;
+//	}
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v;
+//	int sum{};
+//
+//	// int 타입의 값을 입력받는다면 계속해서 반복되는 구조
+//	for (int value; std::cin >> value;)
+//	{	// 입력한 값은 한 개씩 원소로 저장된다.
+//		v.push_back(value);
+//	}
+//	for (int e : v)	// v 에 저장된 원소의 개수만큼 원소의 시작부터 끝까지 순회한다.
+//	{
+//		sum += e;
+//	}
+//	// static_cast 로 형변환을 진행한다.
+//	std::cout << sum << " : " << static_cast<float>(sum) / v.size() << std::endl;
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v1{ 3 };	// 유니폼 초기화식
+//
+//	// 기본 값으로 초기화 된 3개의 원소를 가지는 v2 이름의 객체
+//	std::vector<int> v2(3);		// 직접초기화 ( 생성자를 통한 초기화 )
+//
+//	for (int e : v1)
+//	{	// 현재 v1 은 한 개의 원소만 갖고 있다.
+//		std::cout << e << " ";
+//	}
+//	std::cout << std::endl;
+//	for (int e : v2)
+//	{	// 현재 v2 는 3 개의 원소를 갖고 있다.
+//		std::cout << e << " ";
+//	}
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
+//
+//	v.assign(5, 2);		// #1. 2의 값으로 5개의 원소를 할당한다.
+//// #1. 기존에 초기화한 원소들은 제거된다.
+//
+//	int& a = v.at(0);	// #2. 객체에 저장된 몇 번째 원소를 참조형으로 반환한다.
+//	a = 99;				// #2. 참조형으로 반환된 값은 해당 원소의 주소값으로 봐도 무방하다.
+//
+//	int& b = v[1];		// #3. 객체에 저장된 몇 번째 원소를 참조형으로 반환한다.
+//	b = 88;				// #3. at() 함수보다 빠른 속도로 컴파일하지만 안전하지 않다.
+//
+//	int& c = v.front();	// #4. 첫 번째 원소를 참조형으로 반환한다.
+//	c = 11;
+//
+//	int& d = v.back();	// #5. 마지막 원소를 참조형으로 반환한다.
+//	d = 99;
+//
+//	v.clear();			// #6. 모든 원소를 제거한다. 
+//// #6. 원소만 제거하고 메모리는 남아있다. ( size 는 줄어들지만 capacity 는 그대로 )
+//
+//	v = { 1,2,3,4,5,6,7,8,9 };
+//
+//	v.push_back(99);	// #7. 마지막 원소 뒤에 원소를 추가한다.
+//	v.pop_back();		// #8. 마지막 원소를 제거한다.
+//
+//	v.begin();			// #9. 첫 번째 원소를 가리킨다.
+//	v.end();			// #10. 마지막 원소의 바로 뒤를 가리킨다.
+//// #9, #10. iterator 클래스를 사용할 때 사용하는 포인터 개념의 함수
+//
+//	v.rbegin();			// #11. 원소 배열을 뒤집었을 때 첫 번째 원소를 가리킨다. ( 마지막 원소 )
+//	v.rend();			// #12. 원소 배열을 뒤집었을 때 마지막 원소 바로 뒤를 가리킨다. ( 첫 번째 원소 앞 공간 )
+//// #11, #12. 원소를 뒤에서 부터 순회할 때 사용한다.
+//
+//	v.reserve(5);		// #13. 몇 개의 원소를 저장할 위치를 예약한다. 
+//// #13. vecter 타입으로 입력된 개수 만큼 동적할당을 해놓는다.
+//
+//	v.resize(12);		// #14. 크기를 몇 개로 변경한다.
+//// #14. 값이 들어가 있는 원소보다 더 큰 크기일 경우 0의 값으로 초기화해준다.
+//
+//	v.resize(15, 3);	// #15. 크기를 몇 개로 변경한다.
+//// #15. 값이 들어가 있는 원소보다 더 큰 크기일 경우 입력한 임의의 값으로 초기화해준다.
+//
+//	// #16, 17. 현재 원소의 갯수와 할당된 크기를 반환해준다.
+//	std::cout << v.size() << " : " << v.capacity() << std::endl;
+//
+//	std::vector<int>v2{ 1,2,3,4,5 };
+//
+//	v2.swap(v);		// #18. 두 개의 원소 배열을 서로 바꿔 준다.
+//
+//	std::cout << v.empty() << std::endl;	// #19. 객체의 size 가 0일 경우 true 를 반환한다.
+//
+//	std::cout << v.size() << " : " << v.capacity() << std::endl;
+//
+//	for (auto e : v) { std::cout << e << " "; }
+//}
+
+/* < size / capacity > */
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v;
+//	std::cout << "[ v[i], v.size(), v.capacity() ]" << std::endl;
+//
+//// #1. size() : 원소의 갯수를 반환한다.
+//// #2. capacity() : 할당된 공간의 크기를 반환한다. ( c++ 에서는 기본 메모리 * 2 로 증가한다. )
+//	
+//	for (int i = 0; i <= 64; i++)
+//	{
+//		v.push_back(i + 1);
+//		std::cout << "[ " << v[i] << " , " << v.size() << " , " << v.capacity() << " ]" << std::endl;
+//// #3. size 는 데이터가 채워진 원소의 갯수 이고, capacity 는 할당된 메모리 공간임을 알 수 있다.
+//	}
+//}
+
+/* < vector 의 멤버 형식 > */
+
+//#include <iostream>
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector<int> v;
+//
+//	v.push_back(21); v.push_back(32); v.push_back(53); v.push_back(64); v.push_back(15);
+//
+//// #1. < size_type > : 원소의 개수의 형식
+//	std::cout << "ex1-1) [ v.at(i) ] size_type : ";
+//	for (std::vector<int>::size_type i = 0; i < v.size(); i++)
+//	{
+//		std::cout << v.at(i) << " ";
+//	}   std::cout << std::endl;
+//
+//	std::cout << "ex1-1) [ v[i] ] size_type : ";
+//	for (std::vector<int>::size_type i = 0; i < v.size(); i++)
+//	{
+//		std::cout << v[i] << " ";
+//	}	std::cout << std::endl << std::endl;
+//
+//
+//// #2. < iterator > : 반복자 형식
+//	std::cout << "ex2) [ *iter ] iterator : ";
+//	std::vector<int>::iterator itr;
+//	for (itr = v.begin(); itr != v.end(); itr++)
+//	{
+//		std::cout << *itr << " ";
+//	}	std::cout << std::endl;
+//}
+
+//#include <iostream>
+//#include <vector>
+//#include <string>
+//
+//int main()
+//{
+//	std::vector<std::string> v;
+//
+//	v.push_back("NOODLE");
+//	v.push_back("SIN NOODLE");
+//	v.push_back("JIN NOODLE");
+//	v.push_back("ZZAJANG");
+//	v.push_back("PALDO");
+//	v.push_back("TMSAE");
+//
+//// #1. < v.front > : 객체 원소 중 가장 앞에 있는 원소를 참조형으로 반환하는 함수
+//// #2. < v.back > : 객체 원소 중 가장 뒤에 있는 원소를 참조형으로 반환하는 함수
+//	std::cout << "//ex3) v.front(), v.back()" << std::endl;
+//	std::cout << "v.front() : " << v.front() << std::endl;
+//	std::cout << "v.back() : " << v.back() << std::endl;
+//	std::cout << std::endl;
+//
+//	std::cout << "//ex4) v.popback()" << std::endl;
+//	std::vector<std::string>::iterator itr;
+//	for (itr = v.begin(); itr != v.end(); itr++)
+//	{
+//		std::cout << *itr << " / ";
+//	}	std::cout << std::endl;
+//
+//	v.pop_back();	// #3. < v.pop_back > : 객체 원소 중 가장 뒤에 있는 원소를 제거하는 함수
+//
+//	for (itr = v.begin(); itr != v.end(); itr++)
+//	{
+//		std::cout << *itr << " / ";
+//	}	std::cout << std::endl << std::endl;
+//
+//	std::cout << "//ex6) v.erase(itr)" << std::endl;
+//	for (itr = v.begin(); itr != v.end(); itr++)
+//	{
+//		if (*itr == "JIN NOODLE")
+//		{	// #4. < v.erase(itr) > : 객체를 순회하며 특정 원소를 제거하는 함수
+//			v.erase(itr);
+//			break;
+//		}
+//	}
+//	for (itr = v.begin(); itr != v.end(); itr++)
+//	{
+//		std::cout << *itr << " / ";
+//	}	std::cout << std::endl << std::endl;
+//
+//// #5. 객체 안에 원소가 제거될 경우 size 는 줄어 들지만 capacity 는 초기에 할당한 값 그대로 유지되고 있다.
+//	std::cout << "//ex7) v.size(), v.capacity()" << std::endl;
+//	std::cout << "v.size() : " << v.size() << std::endl;
+//	std::cout << "v.capacity() : " << v.capacity() << std::endl;
+//}
+
+/*
+< Contaier > : 임의 타입의 객체를 보관할 수 있는 컨테이너
+	#. < Sequence Container > : 배열 처럼 객체들을 순차적으로 보관하는 컨테이너
+	#. < Associative Container > : 키를 바탕으로 대응되는 값을 찾아주는 컨테이너
+
+< Iterator > : 컨테이너에 보관된 원소에 접근할 수 있는 반복자
+
+< Algorithm > : 반복자들을 가지고 일련의 작업을 수행하는 알고리즘
+*/
+
+//#include <iostream>
+//#include <vector>
+//
+//template <typename T>
+//void print_vector(std::vector<T>& vec)
+//{
+//	for (typename std::vector<T>::iterator itr = vec.begin(); itr != vec.end(); itr++)
+//	{	// iterator 가 std::vector<T> 의 의존 타입이기 때문에 앞에 typename 을 작성해 주어야 한다.
+//		std::cout << *itr << std::endl;
+//	}
+//}
+//
+//int main()
+//{
+//	std::vector<int> vec;
+//	vec.push_back(10);
+//	vec.push_back(20);
+//	vec.push_back(30);
+//	vec.push_back(40);
+//
+//	std::cout << "--------- 처음 벡터 상태 ---------" << std::endl << std::endl;
+//	print_vector(vec);
+//	std::cout << std::endl << "------------------------------------" << std::endl << std::endl;
+//
+//	vec.insert(vec.begin() + 2, 999);	// #. vec[2] 앞에 값 999 cnrk
+//	print_vector(vec);
+//	std::cout << std::endl << "------------------------------------" << std::endl << std::endl;
+//
+//	vec.erase(vec.begin() + 3);			// #. vec[3] 제거
+//	print_vector(vec);
+//}
