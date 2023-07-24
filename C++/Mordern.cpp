@@ -1325,3 +1325,56 @@
 //	sort(vec.begin(), vec.end(), Compare);
 //	Print(vec);
 //}
+
+//#include <iostream>
+//#include <vector>
+//#include "Student.h"
+//
+//int main()
+//{
+//	std::vector<Student> student = {
+//		{1, "Kim",80},
+//		{2,"Lee",20},
+//		{3,"Park",50},
+//		{4,"Choi", 30}
+//	};
+//	bool isExit{ false };
+//	while (!isExit)
+//	{
+//		std::cout << "1. 전입생 추가" << std::endl;
+//		std::cout << "2. 전학생 제거" << std::endl;
+//		std::cout << "3. 학생부 출력" << std::endl;
+//		std::cout << "4. 평균 및 총점 출력" << std::endl;
+//		std::cout << "5. 평균 이상 학생 출력" << std::endl;
+//		std::cout << "6. 종료" << std::endl;
+//		std::cout << ">  ";
+//
+//		int command;
+//		std::cin >> command;
+//
+//		switch (command)
+//		{
+//		case 1:
+//			AddStudent(student);
+//			break;
+//		case 2:
+//			RemoveStudent(student);
+//			break;
+//		case 3:
+//			PrintStudent(student);
+//			break;
+//		case 4:
+//			PrintScoreInfo(student);
+//			break;
+//		case 5:
+//			PrintOverAverage(student);
+//			break;
+//		case 6:
+//			isExit = true;
+//			break;
+//		default:
+//			std::cout << "잘못된 입력입니다." << std::endl;
+//			break;
+//		}
+//	}
+//}
