@@ -1378,3 +1378,58 @@
 //		}
 //	}
 //}
+
+//#include <iostream>
+//#include <map>
+//#include "map_Student.h"
+//
+//using Students = std::map<int, Student>;
+//
+//int main()
+//{
+//	Students students = {
+//		{1,{"Kim",80}},
+//		{2,{"Lee",20}},
+//		{3,{"Park",50}},
+//		{4,{"Choi",30}}
+//	};
+//	bool isExit{ false };
+//	while (!isExit)
+//	{
+//		std::cout << "1. 전입생 추가" << std::endl;
+//		std::cout << "2. 전학생 제거" << std::endl;
+//		std::cout << "3. 학생부 출력" << std::endl;
+//		std::cout << "4. 평균 및 총점 출력" << std::endl;
+//		std::cout << "5. 평균 이상 학생 출력" << std::endl;
+//		std::cout << "6. 종료" << std::endl;
+//		std::cout << ">  ";
+//	
+//		int command;
+//		std::cin >> command;
+//	
+//		switch (command)
+//		{
+//		case 1:
+//			AddStudent(students);
+//			break;
+//		case 2:
+//			RemoveStudent(students);
+//			break;
+//		case 3:
+//			PrintStudents(students);
+//			break;
+//		case 4:
+//			PrintScoreInfo(students);
+//			break;
+//		case 5:
+//			PrintOverAverage(students);
+//			break;
+//		case 6:
+//			isExit = true;
+//			break;
+//		default:
+//			std::cout << "잘못된 입력입니다." << std::endl;
+//			break;
+//		}
+//	}
+//}
