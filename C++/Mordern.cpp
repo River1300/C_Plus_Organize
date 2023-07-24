@@ -1029,3 +1029,176 @@
 //	}	std::cout << std::endl;
 //	std::cout << list1.size() << std::endl;
 //}
+
+/* ----- < 보조 컨테이너( Contaier Adaptor ) > ----- */
+
+/*
+< 보조 컨테이너 > : 특정한 목적에 따라 구조가 변경
+	#. < stack > : 원소가 위로 쌓이고( top ), 위에서 부터 빠진다.
+		=> < LIFO > : Last In Last Out
+	#. < queue > : 원소가 뒤로 쌓이고, 앞에서( front ) 부터 빠진다.
+		=> < FIFO > : First In First Out
+	#. < priority_queue > : 특정 원소는 우선 순위가 적용되어 맨 앞의 원소( front )보다 먼저 빠진다.
+
+< Iterator/[] > : 반복자나 배열 첨자가 포함되어 있지 않은 컨테이너이다.
+*/
+
+/* --- < std::stack > --- */
+
+//#include <iostream>
+//#include <stack>
+//
+//int main()
+//{
+//	std::stack<int> stack;
+//	stack.push(1);
+//	stack.push(2);
+//	stack.push(3);
+//	stack.push(4);
+//
+//	stack.pop();
+//
+//	std::stack<int> temp(stack);	// #. 복사 생성자를 이용하여 stack 객체의 내용을 temp 로 복사
+//	while (!temp.empty())
+//	{	// #. iterator 가 없기 때문에 stack 의 top() 함수를 이용해서 출력해야 한다. 
+//		// #. top() 에 위치하는 원소를 바꾸기 위해 기존에 top() 에 있는 원소를 제거하면서 출력해야 한다.
+//		std::cout << temp.top() << " ";
+//		temp.pop();
+//	}
+//// #. top() 함수를 통해 최근에 추가된 원소만 액세스할 수 있도록 제한한다.
+//}
+
+/* --- < std::queue > --- */
+
+//#include <iostream>
+//#include <queue>
+//
+//int main()
+//{
+//	std::queue<int> queue;
+//
+//	queue.push(1);
+//	queue.push(2);
+//	queue.push(3);
+//	queue.push(4);
+//	
+//	queue.pop();
+//	
+//	std::cout<< queue.front();
+//// front() 함수를 통해 가장 처음에 추가된 원소만 액세스할 수 있다.
+//}
+
+/* ----- < 연관 컨테이너( Associative Container ) > ----- */
+
+/*
+< 연관 컨테이너 > : 원소들이 상/하 또는 좌/우로 서로 관련이 있는 컨테이너이다.
+	#. 원소들끼리 부모/자식의 관계를 가지기도 한다.
+	#. 원소를 추가하면 미리 정의된 순서에 따라 정렬이 된다.
+	#. < std::set > : 특정 순서에 따라 고유한( unique )원소를 저장하는 컨테이너이다.
+		#. set 의 원소는 한 번 추가된 이후에는 수정할 수 없지만 컨테이너에 삽입하거나 제거할 수는 있다.
+			=> 원소를 삽입할 때는 자동적으로 정렬이 된다.
+		#. 이진 탐색 트리( Binary search tree ) 자료구조를 사용하며, 다음과 같은 형태로 값을 저장하는 자료구조이다.
+	#. < std::map > : [key, value]로 구성된 원소를 가지는 set 이라고 볼 수 있다.
+		#. 원소를 일반적으로 key-value pair( 키 값 쌍 )이라 부른다.
+			=> < key > : 식별자
+			=> < value > : 실제 원소의 값
+		#. 배열 첨자[]를 제공하며 map[key]로 value에 접근할 수 있다.
+		#. < std::pair > : 하나의 쌍을 의미한다. 두 개의 값을 넣을 수 있다.
+
+< Binary Search Tree > : 노드의 왼쪽 자식은 작은 값, 노드의 오른쪽 자식은 큰 값
+	#. travers(Node* current) {
+	#.   if(current == NULL) return;
+	#.   traverse(current->left);
+	#.   traverse(current->right); }
+
+< 연관( Associative ) > : 원소를 키( key )로 참조
+	#. 양방향 반복자
+	#. 순서집합( Orderded )
+	#. 고유성( Unique ) : 키는 오직 아나만 존재
+*/
+
+/* --- < std::set > --- */
+
+//#include <iostream>
+//#include <set>		// < 연관적( Associative ) > : 순서나 위치에 의해 원소를 참조하는 것이 아니라, 키( key )로 참조한다.
+//					//		=> 양방향 반복자를 제공하기 때문에 정방향/역방향 순회가 용이하다.
+//					// < 순서 집합( Ordered ) > : 컨테이너의 모든 원소는 전순서 집합( totally odererd set )에 속한다.
+//					//		=> 원소가 추가될 때 지정된 비교함수에 의해 정렬된다.
+//					// < 고유성( Unique ) > : 동일한 키는 존재하지 않는다. set 은 원소의 값이 키 이다.
+//					// < 메모리 할당자( Memory Allocator ) > : 할당자를 통해 추가할 원소의 메모리 할당을 관리할 수 있다.
+//
+//int main()
+//{
+//	std::set<int> set;
+//
+//	set.insert(5);
+//	set.insert(3);
+//	set.insert(6);
+//
+//	for (auto e : set)
+//	{	// 다른 컨테이너와 마찬가지로 반복자를 통한 순회가 가능하다.
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//// #. [순서 집합] 특성으로 인해 별다른 정렬 없이도 자동으로 원소가 자동으로 정렬되어 있다.
+//}
+
+/* --- < std::map > --- */
+
+//#include <iostream>
+//#include <map>		// < 연관적( Associative ) > : 순서나 위치에 의해 원소를 참조하는 것이 아니라, 키( key )로 참조한다.
+//					//		=> 양방향 반복자를 제공하기 때문에 정방향/역방향 순회가 용이하다.
+//					// < 순서 집합( Ordered ) > : 컨테이너의 모든 원소는 전순서 집합( totally odererd set )에 속한다.
+//					//		=> 원소가 추가될 때 지정된 비교함수에 의해 정렬된다.
+//					// < 고유성( Unique ) > : 동일한 키는 존재하지 않는다.
+//					// < 메모리 할당자( Memory Allocator ) > : 할당자를 통해 추가할 원소의 메모리 할당을 관리할 수 있다.
+//
+//int main()
+//{
+//	std::map<std::string, std::string> myDictionary;
+//
+//	myDictionary.insert(std::pair<std::string, std::string>("array", "단순 배열"));
+//	myDictionary.insert(std::pair<std::string, std::string>("vector", "동적 배열"));
+//	myDictionary.insert(std::pair<std::string, std::string>("stack", "LIFO 구조"));
+//	myDictionary.insert({ "list", "양방향" });	// #. 유니폼 초기화 식은 만능이다.
+//
+//// #. key 값으로 접근하여 value 를 출력한다.
+//	std::cout << "array : " << myDictionary["array"] << std::endl;
+//
+//	for (auto e : myDictionary)
+//	{	// #. first 는 key 값을, second 는 value 값을 의미한다.
+//		std::cout << e.first << " : " << e.second << std::endl;
+//// #. cout 은 기본 타입만 받을 수 있기 때문에 pair 타입에서 하나 씩 분리 출력해야 한다.
+//	}
+//}
+
+/* --- < std::bitset > --- */
+
+//#include <iostream>
+//#include <bitset>	// 비트로 이루어진 집합을 관리하기 위한 클래스
+//					// 반복자가 없다.
+//
+//int main()
+//{
+//	std::bitset<4> flag;
+//
+//	flag |= 0b0001;
+//	flag |= 0b0100;	// #. 비트 연산
+//
+//	flag.set(0, 1);
+//	flag.set(2, 1);	// #. 비트 직접 제어
+//
+//	if (flag.test(0) && flag.test(2))
+//	{
+//		// 퀘스트 5 진행
+//	}
+//
+//	flag[0] = 1;
+//	flag[2] = 1;	// #. 배열 첨자 사용 가능
+//
+//	if (flag[0] && flag[2])
+//	{
+//		// 퀘스트 5 진행
+//	}
+//
+//	std::cout << flag;
+//}
