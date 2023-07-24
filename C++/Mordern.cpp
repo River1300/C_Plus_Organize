@@ -1202,3 +1202,126 @@
 //
 //	std::cout << flag;
 //}
+
+/* ----- < sort algorithm > ----- */
+
+/*
+< sort() > : 범위 내의 인자를 정렬해주는 함수이다.
+	#. <algorithm> 헤더파일에 속해있다.
+	#. sort(start, end)를 이용하여 [start, end)의 범위에 있는 인자(element)를 오름차순(default)으로 정렬해준다.
+	#. quick sort 를 기반으로 함수가 구현되어 있어, 평균 시간복잡도는 n log n 이다.
+
+< default > : template <typename T>
+			  void sort(T start, T end);
+< option >	: template <typename T>
+			  void sort(T start, T end, Compare comp);
+
+< Descending > : sort(v.begin(), v.end(), greater<자료형>());
+< Ascending >  : sort(v.begin(), v.end(), less<자료형>());
+*/
+
+/* < default > */
+
+//#include <iostream>
+//#include <array>
+//#include <algorithm>
+//
+//template<typename T>
+//void Print(T& arr)
+//{
+//	std::cout << "arr[i] : ";
+//	for (auto e: arr)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
+//int main()
+//{
+//	std::array<int,10> arr{ 3,7,2,4,1,0,9,8,5,6 };
+//	Print(arr);
+//// #. default - 오름차순
+//	std::sort(arr.begin(),arr.end());
+//	Print(arr);
+//}
+
+/* < greater<>() > */
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//#include <ctime>
+//
+//template<typename T>
+//void Print(T& v)
+//{
+//	std::cout << "vector : ";
+//	for (auto e : v)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
+//int main()
+//{
+//	srand((int)time(NULL));	// 난수생성
+//
+//	std::vector<int> vec;
+//	int n = 10;
+//
+//	for (int i = 0; i < n; i++)
+//	{	// 한자리 숫자를 임의로 삽입
+//		vec.push_back(rand() % 10);
+//	}
+//	Print(vec);
+//// #. greater - 내림차순
+//	sort(vec.begin(), vec.end(), std::greater<int>());
+//	Print(vec);
+//}
+
+/* < option > */
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//#include <ctime>
+//
+//class Student
+//{
+//public:
+//	std::string mName;
+//	int mAge;
+//
+//	Student(std::string name, int age) : mName{ name }, mAge{ age }{}
+//};
+//void Print(std::vector<Student>& v)
+//{
+//	std::cout << "Student : ";
+//	for (int i = 0; i < 5; i++)
+//	{
+//		std::cout << "[" << v[i].mName << ", " << v[i].mAge << "]";
+//	}	std::cout << std::endl;
+//}
+//bool Compare(Student a, Student b)
+//{
+//	if (a.mName == b.mName)
+//	{
+//		return a.mAge < b.mAge;
+//	}
+//	else
+//	{
+//		return a.mName < b.mName;
+//	}
+//}
+//int main()
+//{
+//	std::vector<Student> vec;
+//
+//	vec.push_back(Student("cc", 10));
+//	vec.push_back(Student("ba", 24));
+//	vec.push_back(Student("aa", 11));
+//	vec.push_back(Student("cc", 8));
+//	vec.push_back(Student("bb", 21));
+//
+//	Print(vec);
+//	sort(vec.begin(), vec.end(), Compare);
+//	Print(vec);
+//}
