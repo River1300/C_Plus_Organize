@@ -852,3 +852,180 @@
 //// < Unary function > : 매개 변수가 한 개인 함수
 //// < Binary function > : 매개 변수가 두 개 이상인 함수
 //}
+
+/* ----- < STL_Container > ----- */
+
+/*
+< 오버헤드( Overhead ) > : 프로그램이 실행되는 중에 다른 위치의 코드를 실행시켜야 할 때, 간접적으로 시간, 메모리, 자원 등이 사용되는 현상이다.
+	#. A 라는 처리를 단순하게 실행한다면 10 초가 걸리는데, 안전성을 고려하여 부가적인 B 라는 처리를 추가한 결과
+		=> 처리 시간이 15 초가 걸렸다. 이 때 오버헤드는 5 초가 된다.
+	#. 정보 전송의 신뢰성 확보 및 시스템의 안정적 운용 등을 위하여 실제 운반되는 정보에 추가되는 성격의 운용 및 유지보수를 위한 신호
+	#. 외부 함수 사용 시 함수 사용을 위해 스택메모리를 할당하고 함수에 따라 여러가지 연산 등이 일어난다.
+		=> 이 처럼 예상치 못한 자원들이 사용되는 것을 오버헤드라고 한다.
+	#. 컨테이너 자체에 대한 공간 복잡도( Space Complexity )로 볼 수도 있다.
+
+< 임의적 접근( Random Access ) > : 인덱스를 사용하여 바로 접근( Direct Access )할 수 있는 것을 뜻한다.
+	#. 순차적으로 저장되어 있기 때문에 배열에 저장된 객체의 크기와 인덱스를 사용해서 해당 객체의 위치를 계산할 수 있기 때문이다.
+
+< 순차적 접근( Sequential Access ) > : 메모리에 각 객체를 위한 공간이 할당되고 이웃된 객체들 끼리만 위치를 알 수 있다.
+	#. n 번째 저장된 객체에 접근하려면 n-1 번까지의 객체를 순차적으로 접근해야 한다.
+		=> 인덱스를 사용하여 접근할 수 없다.
+*/
+
+/* --- < 순차 컨테이너( Sequence Container ) > --- */
+
+/*
+< Sequence Container > : 원소들이 순서대로 나열되어 있다.
+	#. < std::array( Random Access ) > : 정적 배열
+	#. < std::vector( Random Access ) > : 동적 배열
+	#. < std::deque( Random Access ) > : 양 방향 큐( Double Ended Queue )
+	#. < std::forward_list( Sequential Access ) > : 순차적 리스트( Single Linked List )
+	#. < std::list( Sequential Access ) > : 양 방향 리스트( Double Linked List )
+*/
+
+/* < std::array > */
+
+//#include <iostream>
+//#include <array>	// 순차적( Sequence ) : 정해진 순서가 있고, 그 순서대로 접근한다.
+//					// 연속된 저장공간( Contiguous ) : 포인터로 이동이 가능하다.
+//					// 정적 : 저장공간의 크기가 고정되어 있다.
+//
+//int main()
+//{
+//	std::array<int, 4> intArray{ 0,1,2,3 };	// #. 정수 원소를 갖는 4 개의 배열
+//
+//	for (auto e : intArray)
+//	{	// #. 범위 기반 반복문 사용 가능
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//
+//	for (auto itr = intArray.begin(); itr != intArray.end(); itr++)
+//	{	// #. iterator 사용 가능
+//		std::cout << *itr << " ";
+//	}	std::cout << std::endl;
+//
+//	for (int i = 0; i < intArray.size(); i++)
+//	{	// #. size() 함수를 통해 배열의 크기를 구할 수 있다.
+//		std::cout << intArray[i] << " ";
+//	}	std::cout << std::endl;
+//// #. 일반 array 와는 다르게 STL array 는 반복자나 알고리즘을 배열을 대상으로 사용할 수 있다.
+//}
+
+/* < std::vector > */
+
+//#include <iostream>
+//#include <vector>	// 순차적( Sequence ) : 정해진 순서가 있고, 그 순서대로 접근한다.
+//					// 연속된 저장공간( Contiguous ) : 포인터로 이동이 가능하다.
+//					// 동적( Dynamic ) : 배열의 크기를 바꿀 수 있다. ( 가장 마지막에 추가/제거 권장 )
+//
+//int main()
+//{	// #. 가장 뒤에서 원소의 추가/삭제를 하는 것이 vector 를 효율적으로 활용하는 방법이다.
+//	std::vector<int> v{ 1,2 };
+//
+//// #. < 메모리 할당자( Memory Allocator ) > : 할당자( allocator )를 통해 추가할 원소의 메모리 할당을 동적으로 처리할 수 있다.
+//	v.push_back(3);	// #. 가장 뒤에 원소를 저장한다. 
+//	v.pop_back();	// #. 가장 뒤에 저장된 원소를 삭제한다.
+//
+//	v.resize(5);	// #. 원소의 개수를 바꿀 수 있다.
+//
+//	for (auto e : v)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//
+//	v.clear();		// #. 모든 원소를 삭제한다.
+//	std::cout << v.size() << v.capacity() << std::endl;
+//}
+
+/* < std::deque > */
+
+//#include <iostream>
+//#include <deque>	// 순차적( Sequence ) : 정해진 순서가 있고, 그 순서대로 접근한다.
+//					// 동적( Dynamic ) : 배열의 크기를 바꿀 수 있다.
+//					// 양 쪽으로 끝날 수 있는 : 앞/뒤에서 추가/삭제가 가능하다.
+//					// 연속된 저장공간( Contiguous ) ? : 포인터로 이동이 가능하다. 상황에 따라 연속된 공간이 아닌 곳에 값을 저장하기도 한다.
+//
+//int main()
+//{
+//	std::deque<int> deque{ 3,4,5 };
+//
+//	deque.push_front(1);
+//	deque.push_back(6);	// #. 앞/뒤에서 값을 추가하는 함수
+//	deque[1] = 99;
+//
+//	for (auto e : deque)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//
+//	deque.pop_front();
+//	deque.pop_back();	// #. 앞/뒤에서 값을 삭제하는 함수
+//}
+
+/* < std::forward_list > */
+
+//#include <iostream>
+//#include <forward_list>	// 순차적( Sequence ) : 정해진 순서가 있고, 그 순서대로 접근한다.
+//						// 동적( Dynamic ) : 배열의 크기를 바꿀 수 있다.
+//						// 단일 연결( Single Linked List ) : 한 쪽 방향으로만 연결이 되어 있다.
+//
+//int main()
+//{	// #. vector 와 다르게 list 는 원소 배열 중간에 새로운 원소를 추가/삭제가 쉽다.
+//	std::forward_list<int> list{ 10,11,20,21 };
+//	// #. iterator 시작부터 끝까지, 11 이라는 값을 검색해서 찾아내어 iterator( 가리키는 위치 ) 로 반환한다.
+//	auto itr = std::find(list.begin(), list.end(), 11);
+//// #. < const int& _Val > : container 함수에서 상수 참조형으로 표기된 부분은 역참조가 않되지만 빠르다는 것을 알려준다.
+//	std::cout << *itr << std::endl;	// #. find() 함수를 통해 받은 것은 가리키는 위치이기 때문에 ( * )역참조를 해주어야 한다.
+//
+//	// #. 입력한 위치, 바로 뒤의 공간에 입력한 값을 저장한다.
+//	list.insert_after(itr, 11);
+//	// #. 정렬 함수에 서술어( Predicate )를 입력하여 값을 정렬할 수 있다.
+//	list.sort(std::greater<int>());
+//// #. < Predicate > : 서술자로 bool 형을 반환하는 함수 객체
+////		=> < list.sort(std::less<int>()); > : 오름차순
+////		=> < list.sort(std::greater<int>()); > : 내림차순
+//
+//	list.push_front(10);
+//	list.unique();	// #. 바로 뒤에 있는 값과 비교해서 같은 값이 있다면 중복되는 값( 뒤에 있는 )을 제거한다.
+//
+//	for (auto e : list)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//}
+
+/* < std::list > */
+
+//#include <iostream>
+//#include <list>	// 순차적( Sequence ) : 정해진 순서가 있고, 그 순서대로 접근한다.
+//				// 동적( Dynamic ) : 배열의 크기를 바꿀 수 있다.
+//				// 양 방향 연결( Double Linked List ) : 양 쪽 방향으로 연결이 되어 있다.
+//int main()
+//{
+//	std::list<int> list1{ 1,2,3 };
+//	std::list<int> list2{ 4,5,6 };
+//
+//	list1.reverse();	// #. 배열이 입력된 순서에서 역순으로 정렬된다.
+//
+//	list1.sort();
+//	list2.sort();
+//
+//	for (auto e : list1)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//	
+//	// #. 두 개의 list 를 이어 붙인다. 단, 두 개의 list 는 동일한 차순( 오름차순/내림차순 )으로 이미 정렬된 상태여야만 merge() 함수를 실행할 수 있다.
+//	list2.merge(list1);
+//// #. < 우측값 참조형( && ) > : 값을 이동할 수 있는 개념으로 복사, 참조가 아닌 기존에 원소가 저장된 위치에서 새로운 위치로 값이 이동하는 것
+//
+//	for (auto e : list2)
+//	{
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//	for (auto e : list1)
+//	{	// #. merge() 함수로 값이 모두 빠져나갔기 때문에 list1 에는 저장된 값이 없는 상태이다.
+//		std::cout << e << " ";
+//	}	std::cout << std::endl;
+//	std::cout << list1.size() << std::endl;
+//}
