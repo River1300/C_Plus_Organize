@@ -1433,3 +1433,334 @@
 //		}
 //	}
 //}
+
+/* ----- < Modern C++ > ----- */
+
+/*
+< 짜투리 > :
+	#. nullptr : 포인터가 아무런 공간도 가리키지 않는다는 의미의 키워드
+	#. auto : 컴파일러가 타입을 추론할 수 있을 때 입력할 수 있는 타입
+	#. decltype : 타입을 선언
+		=> int x;
+		=> decltype(x + 1) y; : 연산식에서 타입을 추론하여 타입을 만든다.
+	#. noexcept : 예외를 던지지 않음
+	#. user-custom Literal : 사용자 지정 리터럴
+*/
+
+/* --- < Initializer > --- */
+
+//#include <iostream>
+//
+//int main()
+//{	// #. < 초기화 리스트( Initializer list ) >
+//	int myValue1 = { 0 };
+//// #. { 0 } 이 무명의 객체가 된 뒤에 무명의 객체에 myValue1 이라는 이름을 붙인다.
+//
+//	// #. < 유니폼 초기화( Uniform Initialization ) >
+//	int myValue2{ 0 };
+//// #. myValue2 의 생성자를 호출하면서 동시에 값 0 을 저장한다.
+//}
+
+/* --- < range-based for > --- */
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int myValue[5]{ 1,2,3,4,5 };
+//
+//	for (auto e : myValue) { std::cout << e << " "; }
+//}
+
+/* --- < 람다식( Lamda Expression ) > --- */
+
+/*
+< Anonymous Function >
+	#. 캡쳐절( [] ) : 외부의 변수들을 가져온다.
+		=> [] : 외부변수 사용 불가
+		=> [=] : 외부 변수를 값으로 사용( Call By Value )
+		=> [&] : 외부 변수를 참조로 사용( Call By Reference )
+	#. 매개변수( () ) : 일반 함수의 매개변수 목록 기능과 동일하다.
+	#. 반환값( -> ) : 일반 함수의 return type 과 같은 기능을 한다.
+		=> 반환값은 자동 추론되기 때문에 입력하지 않아도 괜찮다.
+*/
+
+//#include <iostream>
+//// []() mutable throw() -> int {}
+//
+//int main()
+//{
+//	int number{ 10 };
+//
+//// #. 람다식 역시 main 함수에 포함되어 있다. 이 main 함수의 객체를 가져올 수 있게 하는 기능이다.
+//	[=]() {std::cout << number << std::endl; };
+//	[&]() {std::cout << number << std::endl; };
+//
+//// #. 람다식의 리턴 타입은 매개변수 목록 뒤에 온다.
+//	[]()->int {int x = 5; return x; };
+//}
+
+//#include <iostream>
+//
+//int main()
+//{	// #. 표현식 처럼 사용할 수 있다.
+//	auto myLambda1 = [](int x)->void {};
+//// #. 자동 추론이 되기 때문에 [-> void] 는 입력하지 않아도 된다.
+//
+//	auto myLambda2 = [](int x) {return 1; };
+//
+//	myLambda1(3);
+//}
+
+/* --- < R_Value Reference > --- */
+
+/*
+< Move Semantics > : 의미론적인 이동시킨다.
+	#. 1 + 2 인 3을 이동시킨다.
+	#. "1" + "2" 인 "12"를 이동시킨다.
+< Perfect Forwarding > : 완벽한 전달( 의미 )
+
+< 구문( syntax ) + 의미( semantics ) >
+	#. 1 + 2
+		=> 구문 : operator+ 좌우로 피연산자가 2개 존재해야 한다.
+		=> 의미 : 좌우로 피연산자를 더한 결과를 반환한다.
+	#. "1" + "2"
+		=> 구문 : operator+ 좌우로 피연산자가 2개 존재해야 한다.
+		=> 의미 : 좌우로 피연산자를 이어붙인 문자열을 반환한다.
+*/
+
+//#include <iostream>
+//
+//template<typename T>
+//void swap1(T& a, T& b)
+//{	// #. a 는 x 를 참조하고 있고, b 는 y 를 참조하고 있는 상태
+//	T tmp(a);
+//// #. tmp 는 a 가 가리키는 x 를 참조하고 있다.
+//
+//	a = b;
+//// #. a 에 b 를 넣기 위해서 현재 a 안에 있는 x 를 해제한다.
+//// #. 이 후 a 는 y 를 가리키게 된다.
+//// #. tmp 는 그대로 x 를 참조하고 있다.
+//
+//	b = tmp;
+//}
+//
+//template<typename T>
+//void swap2(T&& a, T&& b)
+//{	// #. 우측값 참조는 값의 복사가 아닌 값이 옮겨 다닌다.
+//	T tmp(a);	// #. 복사 생성자는 매개변수를 상수 참조형으로 받는다.
+//	a = b;		// #. a 안에 b 의 값이 옮겨 온다. ( a = 5 )
+//// #. tmp 는 x 를 가리키고 있는데 x 에는 b 의 값이 옮겨져 있다.
+//
+//	b = tmp;
+//}
+//
+//template<typename T>
+//void swap3(T& a, T& b)
+//{	// #. std::move 의 매개 변수는 우측값 참조이다.
+//	T tmp = std::move(a);		// #. a 의 값을 tmp 로 옮겨 버린다. a 는 값이 없어진다.
+//	a = std::move(b);			// #. b 의 값을 a 로 옮겨 버린다.	b 는 값이 없어진다.
+//	b = std::move(tmp);			// #. tmp 의 값을 b 로 옮겨 버린다.	tmp 는 값이 없어진다.
+//}
+//
+//int main()
+//{
+//	int x{ 1 };
+//	int y{ 5 };
+//	swap3(x, y);
+//
+//	std::cout << x << " : " << y << std::endl;
+//}
+
+//#include <iostream>
+//
+//void function1(int& a) {}
+//
+//template<typename T>
+//void function2(T&& x) { function1(std::forward<T>(x)); }
+//// #. perfect forwarding : 전달하고자 하는 것이 l_value 냐 r_value 냐 참조형이냐 명확하게 전달하는 것
+//
+//int main()
+//{
+//	int i = 0;
+//	function2(i);	// #. i 는 주소값을 우측값으로 넘겨준다.
+//}
+
+/* --- < constexpr > --- */
+
+/*
+< const > : 상수( constant )
+	#. 컴파일타임/런타임에 결정된다.
+
+< constexpr > : 상수 표현식( constant expression )
+	#. 오직 컴파일타임에 결정된다.
+	#. 객체나 함수등에서 상수를 만들어 낼 때 사용한다.
+		=> 함수의 반환값은 런타임에 작동하는 것이 기본 원칙이지만 간단한 계산식 이라면 컴파일 타임에 계산하여 반환값을 상수화 시킬 수 있다.
+*/
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int n = 1;	// #. n 이라는 변수에 값이 저장되는 시점은 런타임이다.
+//// #. 하드디스크에 있던 실행 파일이 실행되면 RAM 공간에 프로그램이 올라간다.
+//// #. 이 후 RAM 에 변수 이름과 값이 저장되는 공간이 할당된다.
+//
+//	const int c1 = n;
+//
+//	constexpr int c2 = n;
+//// #. constexpr 는 컴파일 타임에 결정되기 때문에 변수를 받을 수가 없다.
+//
+//	std::cout << c1 << std::endl;
+//}
+
+//#include <iostream>
+//
+//enum Flags
+//{
+//	none = 0, slow = 1, paralyse = 2, bleed = 4, poison = 8
+//};
+//
+//constexpr int operator|(Flags f1, Flags f2)
+//{	// #. 연산자 오버로딩을 통해 추가적인 상황을 만들려고 한다고 가정해 보자
+//	// #. 이 때 반환 타입이 int 형 변수 타입이라면 런타임에 결정되기 때문에 switch 문의 레이블로 올라갈 수 없다.
+//	return Flags(int(f1) | int(f2));
+//// #. 그래서 constexpr 을 활용하여 컴파일 타임에 결정되도록 만들어 주는 것이다.
+//}
+//
+//int main()
+//{
+//	Flags myStatus{ none };
+//
+//	switch (myStatus)
+//	{
+//	case slow:
+//		break;
+//// #. switch 레이블에는 변수가 올 수 없다.
+//	case slow | paralyse:
+//		break;
+//	}
+//}
+
+/* ----- < Modern C++( PLUS+ ) > ----- */
+
+/* --- < 언어 - 일반 > --- */
+
+/*
+< nullptr > : null pointer value 로 널을 표현한 값이다.
+	=> int* ptr = nullptr;
+
+< auto > : 선언의 초기화 식에서 형식이 추론되는 변수를 선언하는 역할
+	=> auto number = 3.14f;
+
+< 초기화 리스트( Initializer list ) > : 생성자에서 필드를 간단하게 초기화 하는 방법
+	=> MyClass(int value) : mValue{ value } {}
+
+< 유니폼 초기화( Uniform initialization ) > : 균일한 초기화
+	=> int number { 10 };
+
+< 범위 기반 for( range-based for ) > : 시작과 끝점을 알려주지 않아도 알아서 처음부터 끝까지 순회를 해주는 반복문
+
+< 람다식( Lambda expression ) > : 익명의 함수 객체
+
+< 우측값 참조( R_Value reference )와 std::move 구문 > : 값의 이동
+
+< constexpr > : 상수식
+
+< decltype > : declared type 의 약자로 표현식의 타입을 알려주는 키워드
+	=> decltype(x + 1) y;
+
+< noexcept > : 함수 뒤에 표기하여 예외를 던지지 않는다는 것을 명시
+
+< 예외 복사 및 다시 던지기 > : 현재 예외를 복사해서 다시 던지기가 가능
+	=> std::current_exception();
+	=> std::rethrow_exception(...);
+
+< 인라인 이름공간( Inline namespace ) > : 이름 공간 안에 또다른 이름 공간을 만들어 둔다.
+*/
+
+/* --- < 언어 - 클래스 > --- */
+
+/*
+< 기본 이동 생성자 > : R_Value referenece 를 파라미터로 갖는 새로운 타입의 생성자
+
+< 복사 생성자 > : 자신과 같은 클래스 타입의 다른 객체에 대한 참조를 인수로 전달받아, 그 참조를 가지고 자신을 초기화 하는 방법
+
+< 대리 생성자 > : 생성자 호출시 대리로 매개변수를 받아 다른 생성자를 호출
+
+< 클래스 내부에서의 멤버 초기화 > : 생성자를 통한 멤버 초기화식
+
+< override > : overriding 함수가 오타가 나는지 컴파일타임에 검사해주는 키워드
+
+< final > : 클래스나 함수를 파생하지 못하도록 막는 키워드
+
+< 상속 생성자 > : 기반 클래스의 생성자를 가져오는 방법
+
+< 명시적 형변환 연산자 > : 생성자에서만 사용 가능하던 explicit 키워드를 연산자에 적용하는 방법
+*/
+
+/* --- < 언어 - 타입 > --- */
+
+/*
+< enum class > : 열거형을 객체 타입으로 만들 수 있는 방법
+
+< long long > : 64비트 변수 추가
+*/
+
+/* --- < 언어 - 기타 > --- */
+
+/*
+< 반환형 접미사( Suffix return type ) >
+
+< 원시 문자열 리터럴( Raw string literal ) > : 문자, 숫자, 특수기호, 엔터 등을 있는 그대로 출력하는 방법
+
+< std::static_assert >
+*/
+
+/* --- < 언어 템플릿 > --- */
+
+/*
+< 가변 인자 템플릿( variadic template ) > : 템플릿을 사용해서 임의의 개수의 인자를 받는 방법
+
+< extern 템플릿 > : 코드를 복사하지 않고 땡겨 쓰는 방법
+
+< 템플릿 별명 > : using 을 사용하여 템플릿 별명을 지정하는 방법
+*/
+
+/* --- < STL 일반 > --- */
+
+/*
+< std::unique_ptr > : 객체의 유일한 소유권을 갖는 스마트 포인터
+
+< std::shared_ptr > : 객체를 공유하는 스마트 포인터
+
+< std::weak_ptr > : 다른 스마트 포인터처럼 객체를 안전하게 참조할 수 있지만 참조 개수를 늘릴 수는 없는 스마트 포인터
+
+< std::tuple > : 가변인자 타입으로 임의의 타입을 반환할 수 있는 키워드
+
+< std::function & std::bind > : 함수의 객체화
+
+< 정규 표현식 > : 문자열에서 패턴을 찾는 알고리즘
+*/
+
+/* --- < STL 컨테이너 및 알고리즘 > --- */
+
+/*
+< std::array > : 일반 배열과 동일한 컨테이너
+
+< std::forward_list > : 단일 연결 리스트
+
+< unordered_ 계열 컨테이너 > : map, set에 정렬이 빠진 unordered_map, unordered_set
+*/
+
+/* --- < STL 동시성 > --- */
+
+/*
+< std::thread >
+
+< 상호 배제( Mutual Exclusion ) >
+
+< std::lock >
+
+< std::async >
+*/
