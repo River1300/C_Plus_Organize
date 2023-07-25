@@ -1949,3 +1949,293 @@
 //	MyClass c3 = MyClass();	// #. 이동 생성자
 //	MyClass c4 = c1 + c2;	// #. 이동 생성자
 //}
+
+/* ----- < Modern C++ STL > ----- */
+
+/*
+< C++ 포인터의 진화 > : 스마트 포인터( Smart Pointer )
+	#. std::unique_ptr<T> : 소유하는 포인터
+		=> 1:1( 객체 : 포인터 ) : 포인터가 가리키고 있는 객체를 해당 포인터가 소유하고 있는 형태
+		=> 복사 생성자와 복사 대입은 허용하지 않는다. ( 이동생성자/이동 대입은 가능하다. )
+
+	#. std::shared_ptr<T> : 공유하는 포인터
+		=> 1:n( 객체 : 포인터 ) : 하나의 객체를 여러 포인터가 가리키고 있는 형태
+		=> 소유는 하는데, 메모리 관리는 reference count에 의해 관리된다.
+			=> 객체를 소유하고 있는 포인터가 없을 때까지 사라지면 않된다.
+
+	#. std::weak_ptr<T> : 일반 포인터
+		=> 1:n( 객체 : 포인터 ) :
+		=> shared_ptr를 가리키는 용도, reference count 가 증가하지 않는다.
+		=> party 개념으로 party 가 깨진다고 해서 플레이어에 영향을 주지 않는다.
+*/
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//public:
+//	int mValue;
+//
+//	// #. 가변 템플릿과 퍼팩트 포워딩을 통해서 가변 인자를 보내 생성자를 호출할 수 있다.
+//	MyClass() : mValue{ 0 } {}
+//	MyClass(int a) : mValue{ a } {}
+//};
+//
+//int main()
+//{	// #1. 할당할 타입을 부등호 안에 넣어 준다.( int* p ) 라면 int 를 말하는 것이다.
+//	// #2. 동적할당을 위헤 ( new MyClass )보다 다른 방식의 입력을 한다.
+//	std::unique_ptr<MyClass> p{ std::make_unique<MyClass>(1) };
+//	p->mValue = 0;
+//
+//	p.reset();		// #. 메모리를 해제하고 새로운 포인터를 지정할 수 있게 준비하는 초기화이다.
+//	p.release();	// #. delete 를 직접 부르는 함수라고 봐도 좋다.
+//	p.get();		// #. 일반 포인터를 반환해준다.
+//
+//	MyClass* pClass;	// MyClass 를 가리키는 포인터 pClass
+//	pClass = p;			// p 는 unique_ptr 타입의 스마트 포인터이다. 겸상 안한다.
+//	pClass = p.get();	// 그래서 일반 포인터를 반환해주는 함수를 통해서 일반 포인터와 연결해준다.
+//
+//// #. 포인터가 사라지면 자동으로 동적할당된 메모리도 해제되기 때문에 delete 가 필요 없다.
+//}
+
+//#include <iostream>
+//
+//class MySong
+//{
+//public:
+//	int mTrackNo;
+//	std::string mName;
+//
+//	MySong(int no, std::string name) : mTrackNo(no), mName(name) {}
+//};
+//
+//int main()
+//{	// 포인터 변수 spSong 이 객체를 소유하고 있는 관계이다.
+//	std::unique_ptr<MySong> spSong{ std::make_unique<MySong>(1,"BattleBGM") };
+//	std::cout << spSong->mTrackNo << " : " << spSong->mName << std::endl;
+//}
+
+//#include <iostream>
+//
+//class Image
+//{	// #1. 벌레 그림이 있는 클래스라고 가정해 보자
+//public:
+//	Image() { std::cout << "[|[ Image Create!!! ]|]" << std::endl; }
+//	~Image() { std::cout << "[|[ Image Destroyed!!! ]|]" << std::endl; }
+//};
+//
+//class Bug
+//{	// #2. 어떤 그림을 사용할 것인지에 대한 포인터
+//	std::shared_ptr<Image> mspImage;
+//
+//public:
+//	// #3. 객체가 만들어저서 생성자가 만들어 질 때 그림 포인터를 가리키게 해준다.
+//	Bug(std::shared_ptr<Image> image) : mspImage(image)
+//	{
+//		std::cout << "\t<BUG>" << std::endl;
+//	}
+//	~Bug() { std::cout << "\t<~~BUG>" << std::endl; }
+//};
+//
+//int main()
+//{	// 하나의 그림을 가리키는 spImage 라는 포인터를 생성한다.
+//	std::shared_ptr<Image> spImage = std::make_shared<Image>();
+//	std::cout << spImage.use_count() << std::endl;
+//	{	// 화면에 벌래 한마리를 생성하는데 이 때 생성자로 spImage를 보내어 그림을 가리키게 한다.
+//		std::unique_ptr<Bug> bug1 = std::make_unique<Bug>(spImage);
+//		{
+//			std::unique_ptr<Bug> bug2 = std::make_unique<Bug>(spImage);
+//			{
+//				std::unique_ptr<Bug> bug3 = std::make_unique<Bug>(spImage);
+//				std::cout << spImage.use_count() << std::endl;
+//			}
+//		}
+//	}
+//	std::cout << spImage.use_count() << std::endl;
+//}
+
+//#include <iostream>
+//
+//void function(int p) {}
+//
+//int main()
+//{
+//	std::unique_ptr<int> p{ std::make_unique<int>() };
+//	function(*p + 42);	// #. 스마트 포인터도 역참조를 통해 내부 값에 진입할 수 있다.
+//	// #. p 가 가리키는 주소에 내부 값이 int 형 값일 때 해당 값과 42를 더할 수 있다.
+//}
+
+/* --- < 스마트 포인터 > --- */
+
+/* < std::unique_ptr > */
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//private:
+//	int mValue1;
+//	int mValue2;
+//
+//public:
+//	MyClass() : mValue1{ 0 }, mValue2{ 0 }{}
+//// #. 복사 생성자, 복사 배정은 지원하지 않고 이동 생성자, 이동 배정은 가능하다.
+//	void Print() { std::cout << mValue1 << " " << mValue2 << std::endl; }
+//};
+//
+//int main()
+//{	// #. 엄격한 소유권 관리를 수행하는 스마트 포인터이다.
+//	std::unique_ptr<MyClass> p{ std::make_unique<MyClass>() };
+//	// #. 포인터를 저장하고 있는 객체를 소유하고 있다. ( MyClass 라는 무명 객체가 make_unique 로 공간을 할당 받고 이 공간을 unique 포인터가 가리킨다. )
+//	p->Print();
+//
+//	p.reset();	// #. 새로운 포인터를 지정할 수 있도록 초기화 시킨다.
+//	p.get();	// #. 현재 포인터를 일반 포인터 형식으로 반환한다.
+//}	// #. 블럭 {} 을 넘어가면 p 는 자동적으로 해제된다.
+
+//#include <iostream>
+//
+//class Person
+//{
+//private:
+//	std::string mName;
+//	int mAge;
+//
+//public:
+//	Person(const std::string& name, int age) : mName{ name }, mAge{ age }{}
+//	~Person() { std::cout << "소멸자가 호출되었습니다." << std::endl; }
+//	// #. 김씨라는 한 사람은 복제될 수가 없다.
+//	// #. 하나의 육체를 이씨, 박씨와 함께 나누어 쓸 수 없다.
+//public:
+//	void ShowPersonInfo() { std::cout << mName << " : " << mAge << std::endl; }
+//};
+//
+//int main()
+//{	// #. 김씨는 한 명의 사람으로 불리고 김씨가 사람 그 자체이다.
+//	std::unique_ptr<Person> kim = std::make_unique<Person>("주연", 31);
+//	kim->ShowPersonInfo();
+//}	// #. 김씨라는 사람이 죽으면 그 육체 또한 썩어 문드러진다.
+
+/* < std::shared_ptr > */
+
+//#include <iostream>
+//
+//class Hotel
+//{	// #. 포인터를 사용하다 보면 동일한 객체에 대한 여러개의 포인터가 필요한 경우가 있다.
+//private:	// #. 호텔이라는 객체를 여러 사람이 사용하는 것처럼 말이다.
+//	std::string mName;
+//
+//public:
+//	Hotel(std::string name) : mName{ name } {}
+//};
+//
+//class Travers
+//{	// #. 포인터 하나가 객채를 소유하지 않고 다른 포인터들과 공유한다.
+//private:	// #. 여행객들은 홋수를 배정 받아 호텔에 숙박할 수 있다.
+//	int mHotelNumber;
+//	std::shared_ptr<Hotel> pRoom;
+//// #. Travers 객체가 생성됨과 동시에 호텔에 홋수를 배정 받아 들어간다.
+//
+//public:
+//	Travers(std::shared_ptr<Hotel> room, int num) : pRoom{ room }, mHotelNumber{ num } {}
+//};
+//
+//int main()
+//{	// #. 다른 포인터들이 공동으로 가리킬 수 있는 호텔 객체를 만든다.
+//	std::shared_ptr<Hotel> hotel = std::make_shared<Hotel>("AAA");
+//
+//	// #. 여행객들이 추가될 때마다 호텍 객체를 인자로 전달하여 가리키게끔 한다.
+//	std::unique_ptr<Travers> couple1 = std::make_unique<Travers>(hotel, 103);
+//	std::unique_ptr<Travers> couple2 = std::make_unique<Travers>(hotel, 205);
+//	std::unique_ptr<Travers> couple3 = std::make_unique<Travers>(hotel, 301);
+//}
+
+//#include <iostream>
+//
+//class Image {};
+//class Demon
+//{	// #. shared_ptr 은 내부에 참조 카운트라는 것이 존재한다.
+//	// #. shared_ptr 로 만들어진 객체가 가리켜질 때마다 이 카운트가 증가한다.
+//	std::shared_ptr<Image> mspImage;
+//public:
+//	Demon(std::shared_ptr<Image> image) : mspImage{ image } {}
+//};
+//
+//int main()
+//{	// #. 이미지를 하나만 생성하고 데몬을 3 개 생성한다.
+//	std::shared_ptr<Image> spImage = std::make_shared<Image>();	// 이미지를 가리키는 포인터 1 개
+//	// #. 데몬을 생성하며 이미지 객체를 인자로 넘겨준다.
+//	std::unique_ptr<Demon> demon1 = std::make_unique<Demon>(spImage);	// 이미지를 가리키는 포인터 2개
+//	{
+//		std::unique_ptr<Demon> demon2 = std::make_unique<Demon>(spImage);	// 이미지를 가리키는 포인터 3개
+//		{
+//			std::unique_ptr<Demon> demon2 = std::make_unique<Demon>(spImage);	// 이미지를 가리키는 포인터 4개
+//		}	// 이미지를 가리키는 포인터 3개
+//	}	// 이미지를 가리키는 포인터 2개
+//}	// 이미지를 가리키는 포인터 0개 자동으로 동적 소멸
+
+/* --- < 추가 사항 > --- */
+
+/* < std::tuple > */
+
+//#include <iostream>
+//#include <tuple>	// #. std::pair 는  단순한 타입 2 개를 가진 객체라고 한다면
+//					// #. std::tuple 은 N 개의 원소를 가진 객체라고 할 수 있다.
+//
+//int main()
+//{
+//	std::pair<int, std::string> myPair{ 1,"helloween" };
+//	std::cout << myPair.first << " : " << myPair.second << std::endl;
+//
+//	// #. tuple 객체로 원하는 타입을 원하는 만큼 추가하여 묶을 수 있다.
+//	std::tuple<int, int, float, std::string> Noodle;
+//	// #. Noodle 객체에 설정한 타입에 값을 집어 넣은다.
+//	Noodle = std::make_tuple(530, 980, 580.0f, "SinLaMyun");
+//	// #. pair 는 first, second 로 값을 출력하지만 tuple 은 std::get<>() 을 통해 출력한다.
+//	std::cout << "원가	 : " << std::get<0>(Noodle) << std::endl;
+//	std::cout << "판매가 : " << std::get<1>(Noodle) << std::endl;
+//	std::cout << "칼로리 : " << std::get<2>(Noodle) << std::endl;
+//	std::cout << "이름	 : " << std::get<3>(Noodle) << std::endl;
+//}
+
+/* < std::function 과 std::bind > */
+
+//#include <iostream>
+//#include <functional>	// #. 함수 포인터와 비슷한 기능을 하지만 더 편리하고 범용성이 있다.
+//
+//void MyFunction(const int arg1) {}
+//
+//struct MyStruct
+//{
+//	void operator()() {}
+//};
+//
+//int main()
+//{
+//	std::function<void(const int)> functor1 = MyFunction;	// 함수
+//
+//	std::function<void()> functor2 = MyStruct();	// 구조체
+//
+//	std::function<void()> functor3 = []() {};	// 람다식
+//// #. 함수, 구조체, 람다식을 호출 가능한 객체로 만들었다.
+//}
+
+//#include <iostream>
+//#include <functional>
+//
+//void F(int arg1, char arg2)
+//{
+//	std::cout << arg1 << ", " << arg2 << std::endl;
+//}
+//
+//int main()
+//{	// #. bind 를 통해 매개변수를 지정할 수 있다.
+//	auto functor1 = std::bind(F, std::placeholders::_1, std::placeholders::_2);
+//	functor1(1, 'a');
+//	// #. bind 를 통해 매개 변수에 값을 넣을 수 있다.
+//	auto functor2 = std::bind(F, 99, std::placeholders::_1);
+//	functor2('b');
+//	// #. bind 를 통해 매개 변수의 위치를 바꿀 수 있다.
+//	auto functor3 = std::bind(F, std::placeholders::_2, std::placeholders::_1);
+//	functor3('c', 3);
+//}
