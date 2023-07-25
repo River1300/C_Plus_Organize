@@ -1764,3 +1764,188 @@
 
 < std::async >
 */
+
+/* ----- < Modern C++ Class > ----- */
+
+/*
+< 생성자가 자동으로 만들어지는 규칙 >
+	#. 기본 생성자 : 생성자가 하나도 제공되지 않는 경우			( 아무일도 안함 )
+	#. 소멸자 : 소멸자가 제공되지 않는 경우						( 아무일도 안함 )
+	#. 복사 생성자 : 이동 생성자나 이동 대입이 없는 경우		( 모든 멤버를 복사 )
+	#. 이동 생성자 : 소멸자, 복사 생성자, 복사 대입이 없는 경우	( 모든 멤버를 이동 )
+	#. 복사 대입 연산자 : 복사 생성자와 동일한 규칙
+	#. 이동 대입 연산자 : 이동 생성자와 동일한 규칙
+
+< MyClass(const MyClass&); >				: 복사 생성자
+	#. const 를 붙여서 원본에 대한 변화 없이 원본의 내용을 복사한다.
+
+< MyClass& operator=(const MyClass&); >		: 복사 대입 연산자
+	#. const 를 붙여서 원본에 대한 변화 없이 원본의 내용을 복사 대입한다.
+
+< MyClass(MyClass&&); >						: 이동 생성자
+	#. 객체의 값을 다른 객체로 옮긴다.
+		=> 복사와 달리 실제로 다른 객체로 값이 옮겨지기 때문에 원본은 데이터가 사라진다.
+	#. 원본값이 무명 객체( unnamed object )인 경우 주로 사용한다.
+		=> 무명 객체는 라인을 넘어가면 사라지기 때문에 값을 이동 시켜도 코드에 문제가 발생하지 않는다.
+	#. < Dog dog = Dog(); > : Dog 타입의 메모리 공간이 할당되고 이 공간에 dog 라는 이름표가 붙는다.
+	#. < Point2D pt3(pt1 + pt2); > : pt1 + pt2 표현식 역시 무명의 객체에 이름표를 붙이는 이동 생성자이다.
+
+< MyClass& operator=(MyClass&&); >			: 이동 대입 연산자
+
+< 대리 생성자( Delegating Constructor ) > : 생성자를 대신 갖다 사용한다.
+	=> MyClass() : MyClass(0, 0) {}
+	=> MyClass(int a, int b) : mValue{ a }, mNumber{ b } {}
+*/
+
+/* --- < override + final > --- */
+
+//#include <iostream>
+//
+//class Base
+//{
+//public:
+//	virtual void func1() const {}
+//	void func2() {}
+//
+//	virtual void func3() {}
+//};
+//class Derived : public Base
+//{
+//public:
+//// #. const 가 붙어 있지 않아서 override 가 아니다.
+//	void func1() {}
+//// #. 부모 class 에서 virtual 화가 안되어 있기 때문에 override 가 아니다.
+//	void func2() {}
+//// #. 이와 같이 프로그래머가 실수를 할 수 있는데 이런 실수를 막아주는 기능이 있다.
+//
+//	// #. override 키워드를 사용하면 컴파일타임에 이와 같은 실수를 잡아내 준다.
+//	void func3() const override {}
+//};
+
+//#include <iostream>
+//
+//class Bases final {};
+//
+//class Base
+//{
+//public:
+//	virtual void func() final {}
+//// #. 강제적으로 파생이 되지 못하게, 막는 키워드
+//};
+
+/* --- < enum class > --- */
+
+//#include <iostream>
+//
+//enum Color
+//{	// #. 일반 enum 은 단점이 있다.
+//// #. 이름이 중복되기 쉬움
+//// #. 자동으로 정수 취급되므로 의도하지 않은 에러를 발생시킴
+//	WHITE, BLACK
+//};
+//
+//enum class TrafficLight : char	// #. enum 의 목록에 char 형 값이 대입된다.
+//{	// #. enum 을 class 화 시켜준다.
+//	RED, YELLOW, GREEN
+//};
+//
+//int main()
+//{	// c 는 enum 타입의 객체로 존재한다.
+//	TrafficLight c{ TrafficLight::RED };
+//// #. 클래스화 되어있기 때문에 방향지정 연산자를 통해서 값을 저장할 수 있다.
+//
+//	std::cout << static_cast<int>(c) << " : " << sizeof(c) << std::endl;
+//}
+
+/* --- < template 반환 타입 > --- */
+
+//#include <iostream>
+//
+//// #. 다양한 값을 받는 함수이기에 반환값을 지정하기 애매한 경우
+//template<typename T, typename U>
+//auto Add(T t, U u) -> decltype(t + u)
+//{	// 반환값을 앞뒤로 입력한다.
+//	return t + u;
+//}	// #. 화살표 연산자 뒤에 디클레이션 타입을 입력해 준다.
+//
+//int main()
+//{
+//	Add<float, int>(1.1f, 2);
+//	Add<int, float>(2, 1.1f);
+//	Add<char, double>('a', 10.5);
+//}
+
+/* --- < Raw String Literal > --- */
+
+//#include <iostream>
+//
+//int main()
+//{
+//// #. R : 날것 그대로의 문자열
+//	std::string str{ R"("ssfds's\sd
+//	\'''"''";;;1242)" };
+//// #. 특수 문자와 따옴표, 역슬레쉬 탭, 엔터 등등 문자그대로 저장한다.
+//	std::cout << str << std::endl;
+//}
+
+/* --- < 가변인자 템플릿 > --- */
+
+//#include <iostream>
+//
+//// typename 이 몇 개가 올지 모를 때 [... Params] 로 받는다.
+//template<typename T, typename... Params>
+//T* Create(Params&& ... args)	// 매개변수들이 리터럴이 올 수도 있기 때문에 우측값 참조로 받는다.
+//{	// 반환타입 역시 다양한 형태가 올 수 있기 때문에 일반적인 반환으로는 반환이 않된다.
+//	return new T(std::forward<Param>(args)...);
+//// perfect forwarding 을 통해 반환되는 값마다 자동으로 완벽한 의미를 반환해준다.
+//}
+
+/* --- < extern template > --- */
+
+//// ---------- Header.h 라고 가정
+//
+//template<typename T>
+//void MyFunction()
+//{
+//	// ... 수백줄의 복잡한 코드
+//}
+//
+//// ---------- Source1.cpp 라고 가정
+//
+//void DoSomething()
+//{	// #. 템플릿은 타입을 지정받아 호출될 때 해당 코드가 암시적으로 복사 입력된다.
+//	MyFunction<int>();
+//}
+//
+//// ---------- Source2.cpp 라고 가정
+//
+//extern template void MyFunction<int>();	// #1. 이미 <int> 타입으로 특수화된 템플릿이 있다는 것을 알려준다.
+//// #2. 그럼 이후에 같은 타입으로 특수화할 때 이미 작성된 코드를 땡겨서 사용할 수 있다.
+//void DoSomething()
+//{	// #. 특수화되는 템플릿은 해당 소스 코드에서만 발생하기 때문에 용량의 낭비가 심하다.
+//	MyFunction<int>();
+//}
+
+/* --- < 기본 이동 생성자 > --- */
+
+//#include <iostream>
+//
+//class MyClass
+//{
+//	int mValue{ 1 };
+//public:
+//	// MyClass(MyClass&& c);
+//// #. 소멸자, 복사 생성자, 복사 및 이동 배정이 없는 경우 암시적인 이동 생성자가 존재한다.
+//// #. 객체의 값이 이동하여 원본 객체는 데이터를 유실하게 된다.
+//// #. 그러므로 원본 객체가 무명 객체일 때만 호출되는 생성자이다.
+//
+//	MyClass& operator+(const MyClass& c) { this->mValue + c.mValue; }
+//};
+//
+//int main()
+//{
+//	MyClass c1;				// #. 기본 생성자
+//	MyClass c2 = c1;		// #. 복사 생성자
+//	MyClass c3 = MyClass();	// #. 이동 생성자
+//	MyClass c4 = c1 + c2;	// #. 이동 생성자
+//}
