@@ -2527,3 +2527,220 @@
 //
 //	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
 //}
+
+/* ----- < 멀티태스킹 > ----- */
+
+/*
+< 멀티태스킹( Multi-tasking ) > : 프로그램이 여러 개 화면에 동시에 실행되는 기술이다.
+	#. 여러( multi ) 작업( task )을 실행하는 것을 말한다.
+
+< 스케쥴링( Scheduling ) > : 일 처리를 빠르게 하여 사람의 눈에는 동시에 프로그램이 실행되는 것 처럼 보이게 한다.
+	#. 컴퓨터는 기본적으로 주어진 입력을 계산하여 출력하는 순차 작업이다.
+	#. 따라서 여러 개가 실행되는 형태를 흉내내려면, 간단히 줄을 세우고 순서대로 작업을 관리하여야 한다.
+	#. 그러다가 급한 작업이 요청되면 가장 앞으로 빼서 우선 처리를 하면 된다.
+*/
+
+/* --- < 프로세스( Process ) > --- */
+
+/*
+< 프로세스 > : 운영체제의 작업 단위를 말한다.
+	=> pc의 작업 관리자를 실행하면 가장 먼저 프로세스 화면이 출력된다.
+
+< 프로세스 진행 >
+	#. 프로그램( program )들은 하드 디스크에 저장되어 있다.
+	#. 이를 실행하면 프로세스( Process )가 되어 메모리에 등록되며 OS 에서 관리되기 시작한다.
+
+< 컨텍스트( Context ) >
+	#. 프로세스는 사용자의 입력에 의해 휴면/활성 상태가 된다.
+	#. 이런 상태 변화를 위해서는 각 프로세스의 현재 진행상태를 저장해 두었다가 복원해야 한다.
+	#. 이러한 작업을 컨텍스트라고 부른다.
+*/
+
+/* --- < 스레드( Thread ) > --- */
+
+/*
+MMORPG 에서는 수 많은 플레이어들이 서로 이동하는데, 이러한 이동 정보는 네트워크를 통해 전달된다.
+
+플레이어 이동 명령
+while ( 네트워크 데이터 수신 완료 )
+{
+	데이터 수신
+}
+
+player.Move();
+
+	#. 컴파일은 순차적으로 일어나기 때문에 한 명이 움직일 때 게임의 모든 것이 다 멈춰 버린다.
+	#. 하나의 프로세스에서도 동시에 일을 처리할 필요가 있다.
+
+< 스레드 > : 프로세스를 동시에 처리하는 것을 말한다.
+	#. 엄밀히 말하면 동시가 아니라 스케쥴링이다.
+	#. 프로세스의 자원을 공유하는 방식으로, 공유하는 데이터를 여러 스레드가 동시에 접근하기 때문에 다양한 문제가 발생한다.
+*/
+
+/* < 교착 상태 > */
+
+/*
+사다리 하나( 공유하는 데이터 )와 두 명의 작업자( 스레드 )가 있다.
+하나의 사다리에 한 명은 위에서 아래로, 다른 한 명은 아래에서 위로 이동할 경우 교착 상태가 발생한다.
+
+< 상호 배제( Mutual exclusion ) > : 특정 스레드가 자원을 사용 중일 때 다른 스레드가 이 자원에 접근하지 못하도록 막는 것을 말한다.
+< 임계 구역( Critical Section ) > : 자원에 동시 접근을 허용하는 곳을 말한다.
+*/
+
+/* ----- < Modern C++ 동시성 > ----- */
+
+
+
+/* --- < std::thread > --- */
+
+//#include <iostream>
+//#include <thread>
+//
+//void PrintInt()
+//{
+//	for (int i = 0; i < 500; i++)
+//	{
+//		std::cout << "[ job : " << i << " ]" << std::endl;
+//	}
+//}	// #. PrintInt 함수는 std::cout<< 을 통해서 함수를 실행한다.
+//void PrintAscii()
+//{
+//	for (int repeat = 0; repeat < 5; repeat++)
+//	{
+//		for (int i = 33; i < 126; i++)
+//		{
+//			std::cout << "[ ASCII : " << (char)(i) << " ]" << std::endl;
+//		}
+//	}
+//}	// #. PrintAscii 함수는 std::cout<< 을 통해서 함수를 실행한다.
+//
+//int main()
+//{	// #. 동시성 작업으로 두 개의 함수를 지정해 준다.
+//	std::thread job1(PrintInt);
+//	std::thread job2(PrintAscii);
+//
+//	job1.join();
+//	job2.join();	// #. 두 개의 함수를 실행한다.
+//
+//	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
+//// #. cout 이라는 자원에 두 스레드가 동시에 서로 접근 하려고 하여 출력이 엉키는 경우가 발생한다.
+//}
+
+/* < std::mutex > */
+
+//#include <iostream>
+//#include <thread>
+//#include <mutex>	// #. 스레드가 공동의 자원을 사용할 때 다른 스레드가 자원에 접근하지 못하도록 막아 준다.
+//
+//std::mutex gMutex;
+//
+//void PrintInt()
+//{
+//	int i = 0;
+//	while (i < 500)
+//	{
+//		if (gMutex.try_lock())	// #. 임계구역에 들어가기 위해 lock 을 동시에 호출할 수 있기 때문에 잠금을 시도해 보고 이미 잠겨 있다면 대기한다.
+//		{
+//			std::cout << "[ job : " << i << " ]" << std::endl;
+//			i++;
+//			gMutex.unlock();
+//		}
+//		else
+//		{
+//			// 대기
+//		}
+//	}
+//}
+//void PrintAscii()
+//{
+//	for (int repeat = 0; repeat < 5; repeat++)
+//	{
+//		int i = 33;
+//		while (i < 126)
+//		{
+//			if (gMutex.try_lock())
+//			{
+//				std::cout << "[ ASCII : " << (char)(i) << " ]" << std::endl;
+//				i++;
+//				gMutex.unlock();
+//			}
+//			else
+//			{
+//				// 대기
+//			}
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	std::thread job1(PrintInt);
+//	std::thread job2(PrintAscii);
+//
+//	job1.join();
+//	job2.join();
+//
+//	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
+//}
+
+/* < std::lock > */
+
+//#include <iostream>
+//#include <thread>
+//#include <mutex>
+//
+//std::mutex gMutex1;
+//std::mutex gMutex2;
+//
+//int main()
+//{	// #. mutex 가 하나 이상인 경우 std::lock 을 통해서 한 번에 여러 mutex 를 잠글 수 있다.
+//	if (std::try_lock(gMutex1, gMutex2) == -1)
+//	{	// #. std::try_lock() 은 잠금에 성공하면 -1 을 반환한다.
+//		// 작업
+//	}
+//	else
+//	{
+//		// 대기
+//	}
+//}
+
+/* --- < std::async > --- */
+
+//#include <iostream>
+//#include <future>
+//
+//void PrintInt()
+//{
+//	for (int i = 0; i < 500; i++)
+//	{
+//		std::cout << "[ job :  " << i << " ]" << std::endl;
+//	}
+//}
+//void PrintAscii()
+//{
+//	for (int repeat = 0; repeat < 5; repeat++)
+//	{
+//		for (int i = 33; i < 126; i++)
+//		{
+//			std::cout << "[ ASCII :  " << (char)(i) << " ]" << std::endl;
+//		}
+//	}
+//}
+//
+//int main()
+//{	// #. 일반적으로 함수는 시작후 반환값을 돌려 줄때 까지 호출자에게 되돌아가지 않는다.
+//	// #. 이를 동기화 방식( Synchronous )이라고 부른다.
+//	std::future<void> async1 = std::async(PrintInt);
+//	std::future<void> async2 = std::async(PrintAscii);
+//
+//	// #. 반대로 함수가 호출되자마자 호출자에게 권한을 넘겨주어 다른 함수를 호출할 수 있게 해주는 것을
+//	// #. 비동기 방식( Asynchornous )라고 부른다.
+//	// #. 즉 프로그램 코드의 실행이 stack 이 아닌 여러 갈래로 나뉘어 진행되는 것이다.
+//	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
+//
+//	async1.get();	// #. get() 을 통해서 반환 값을 받고 아래 코드를 컴파일 한다.
+//	std::cout << "PrintInt 종료" << std::endl;
+//
+//	async2.get();
+//	std::cout << "PrintAscii 종료" << std::endl;
+//}
