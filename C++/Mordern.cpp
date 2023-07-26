@@ -2239,3 +2239,291 @@
 //	auto functor3 = std::bind(F, std::placeholders::_2, std::placeholders::_1);
 //	functor3('c', 3);
 //}
+
+/*
+< tuple > : n 개의 데이터를 말한다.
+	#. std::pair 와는 다르게 마음껏 만들 수 있다.
+
+< std::function > : 호출 가능한 객체( Callable object )를 만들 수 있다.
+< std::bind > : 호출 가능한 객채에 매개 변수를 연결 시켜준다.
+	#. 스크립트( script ) : 프로그래머가 아니더라도 만들 수 있는 쉬운 코딩
+		=> TurnLeft();
+			=> Turn(float degree) {}
+				=> TurnLeft = std::bind(90)
+		=> Swing();
+
+< Regular Expression( 정규 표현식 ) > : 검색의 끝판왕
+	#. hom0906@naver.co.kr
+		=> < 아이디>@<도메인(주소) >
+*/
+
+/* < tuple > */
+
+//#include <iostream>
+//#include <tuple>
+//
+//int main()
+//{	// n 개의 데이터를 객체의 변수로 저장할 수 있다.
+//	std::tuple<int, std::string, std::string> song;
+//
+//	song = std::make_tuple(1, "Little Bit of Love", "Tom Grennan");
+//	
+//	// song 이라는 tuple 의 n 번째 인덱스
+//	std::cout << "TrackNo : " << std::get<0>(song) << std::endl;
+//	std::cout << "Artist : " << std::get<1>(song) << std::endl;
+//	std::cout << "Title : " << std::get<2>(song) << std::endl;
+//}
+
+/* < std::function > */
+
+//#include <iostream>
+//#include <functional>
+//
+//// Normal Function
+//void MyFunction(const int& arg1) { std::cout << "Hello" << std::endl; }
+//
+//struct MyStruct	// Object
+//{
+//	int mValue;
+//	MyStruct() { std::cout << "[MyStruct]" << std::endl; }
+//	// #. () 연산자를 오버로딩 하여 함수를 객체처럼 호출할 수 있다.
+//	void operator()(int x) { std::cout << "MyStruct Function" << std::endl; }
+//};
+//
+//int main()
+//{	// 함수 호출
+//	MyFunction(1);
+//
+//	MyStruct();	// 생성자 호출
+//	MyStruct instance;
+//
+//	instance(1);	// #. Callable Object
+//// #. 함수는 기능을 수행할 뿐이지만 객체는 값을 들고 있을 수가 있다.
+//}
+
+//#include <iostream>
+//#include <functional>
+//
+//void MyFunction(const int& arg1) { std::cout << "Hello" << std::endl; }
+//
+//struct MyStruct
+//{
+//	int mValue;
+//	MyStruct() { std::cout << "[MyStruct]" << std::endl; }
+//	void operator()(int x) { std::cout << "MyStruct Function" << std::endl; }
+//};
+//
+//int main()
+//{	// #. functor1 이라는 이름의 함수 객체를 만들어 준다.
+//	std::function <void(const int&)> functor1 = MyFunction;
+//
+//	functor1(1);	// #. 함수 포인터보다 훨씬 사용이 편리하다.
+//	
+//	// #. functor2 라는 이름으로 구조체의 무명객체를 객체로 만들어 준다.
+//	std::function<void(int)> functor2 = MyStruct();	// MyStruct() 는 생성자다.
+//
+//	functor2(1);
+//
+//	// #. functor3 라는 이름으로 람다식을 객체로 만들어 준다.
+//	std::function<void(int)> functor3 = [](int x) {std::cout << "Lambda" << std::endl; };
+//
+//	functor3(1);
+//}
+
+/* < std::bind > */
+
+//#include <iostream>
+//#include <functional>
+//
+//void f(int arg1, char arg2) { std::cout << arg1 << ", " << arg2 << std::endl; }
+//
+//int main()
+//{
+//	f(1, 'a');
+//
+//	std::function<void(int, char)> functor = f;
+//	// #. placeholders 는 위치라는 의미로 _1, _2 첫 번째 두 번째 매개변수를 뜻한다.
+//	auto f1 = std::bind(functor, std::placeholders::_1, std::placeholders::_2);
+//
+//	// #. 첫 번째 매개변수를 10이라는 값으로 고정하고 두 번째 매개변수를 첫 번째 매개변수로 바꿔준다.
+//	auto f2 = std::bind(functor, 10, std::placeholders::_1);
+//	f2('b');
+//
+//	auto f3 = std::bind(functor, std::placeholders::_2, std::placeholders::_1);
+//	f3('Z', 99);
+//}
+
+/* < Regular Expression > */
+
+//#include <iostream>
+//#include <regex>
+//
+//int main()
+//{
+//	std::wcout << "이메일을 입력하세요 : ";
+//	std::string email;
+//	std::cin >> email;
+//
+//	// \w : word 단어 => + : 한 개 이상
+//	// * : 반복
+//	// \. : 점
+//	std::regex pattern(R"((\w+[\w\.]*)@(\w+[\w\.]*)\.([A-Za-z]+))");
+//
+//	if (std::regex_match(email, pattern))
+//	{
+//		std::cout << "올바른 이메일 입니다." << std::endl;
+//	}
+//	else
+//	{
+//		std::cout << "잘못된 이메일 입니다." << std::endl;
+//	}
+//}
+
+/* ----- < 멀티 테스킹 & 멀티 스레드 > ----- */
+
+/*
+< 멀티 테스킹 > : 운영 체제에서 주로 사용하는 개념으로 window 나 mac 등에서 앱을 동시에 띄우고 작업하는 것을 말한다.
+
+< 멀티 프로세싱 > : 실제로 여럿이 작업을 수행하는 것을 말한다.
+	#. 프로세스 : 분신술
+
+< 멀티 스레드 > : 실제로는 혼자서 바쁘게 돌아다니며 작업을 수행하는 것을 말한다.
+	#. 스레드 : 잔상
+
+< 비동기 방식 > :
+	#. 동기화( Synchronous ) : 함수가 시작되서 반환될 때 까지 기다린다.
+	#. 비동기화( Asynchronous ) : 함수가 반환이 되기 전에 다른 함수를 추가로 실행한다.
+		=> std::async
+*/
+
+/* --- < 동시성 프로그래밍( Concurrency ) > --- */
+
+//#include <iostream>
+//#include <thread>	// #. 실제로 동시에 작업하는 것이 아닌, 마치 동시에 작업하는 것 처럼 나누어서 작업하는 것
+//#include <mutex>	// #. 상호 배제 규칙 : 하나가 작없을 할 때 다른 하나가 끼어들지 못하게 잠근다.
+//
+//std::mutex gMutex;	// #. critical section 을 지정할 std::mutex 객체를 생성해 준다.
+//
+//void PrintInt()
+//{
+//	for (int i = 0; i < 100; i++)
+//	{	// #. std::cout 이라는 공통의 자원을 두 개의 함수가 서로 끼어들면서 사용하지 못하게 예방을 해준다.
+//		gMutex.lock();	// #. 임계 구역( critical section ) 에 진입할 때 다른 작업이 끼어들지 못하게 잠근다.
+//		std::cout << "[Worker1] : " << i << std::endl;	// critical section : 공통으로 사용하는 자원을 말한다.
+//		gMutex.unlock();	// #. 임계 구역을 나올 때 잠금 해제
+//	}
+//}
+//
+//void PrintAscii()
+//{
+//	for (int reapeat = 0; reapeat < 2; reapeat++)
+//	{
+//		for (int i = 33; i < 126; i++)
+//		{
+//			gMutex.lock();
+//			std::cout << "[Worker2] : " << char(i) << std::endl;
+//			gMutex.unlock();	// #. 때에 따라서 두 개의 작업이 동시에 진입하여 동시에 잠그려고 할 때가 있기 때문에 완벽한 예방은 아니다.
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	std::thread worker1(PrintInt);		// #. woker1 은 PrintInt 함수를 실행한다.
+//	std::thread worker2(PrintAscii);	// #. woker2 는 PrintAscii 함수를 실행한다.
+//
+//	worker1.join();	// #. 작업을 실행하기 위한 멤버함수 join()
+//	worker2.join();
+//
+//	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
+//}
+
+//#include <iostream>
+//#include <thread>	
+//#include <mutex>	
+//
+//std::mutex gMutex;
+//
+//void PrintInt()
+//{
+//	int i = 0;	// #. for 문은 i 가 무조건 증가하기 때문에 위험하다.
+//	while (i < 200)
+//	{	// 따라서 while 문으로 조건을 제시하고 이 조건에 만족하면 작업을 실행한다.
+//		if (gMutex.try_lock())
+//		{
+//			std::cout << "[Worker1] : " << i << std::endl;
+//			i++;
+//			gMutex.unlock();
+//		}
+//		else
+//		{
+//			// 만약 다른 함수가 이미 std::cout 을 잠갔다면 해당 함수의 작업이 끝날때 까지 대기한다.
+//		}
+//	}
+//}
+//
+//void PrintAscii()
+//{
+//	for (int reapeat = 0; reapeat < 2; reapeat++)
+//	{
+//		int i = 33;
+//		while (i < 126)
+//		{
+//			if (gMutex.try_lock())
+//			{
+//				std::cout << "[Worker2] : " << char(i) << std::endl;
+//				gMutex.unlock();
+//			}
+//			else
+//			{
+//				// 대기
+//			}
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	std::thread worker1(PrintInt);		
+//	std::thread worker2(PrintAscii);	
+//
+//	worker1.join();	// 
+//	worker2.join();
+//
+//	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
+//}
+
+/* --- < 비동기 방식 > --- */
+
+//#include <iostream>
+//#include <future>
+//
+//void PrintInt()
+//{
+//	for (int i = 0; i < 200; i++)
+//	{
+//		std::cout << "[Worker1] : " << i << std::endl;
+//	}
+//}
+//
+//void PrintAscii()
+//{
+//	for (int reapeat = 0; reapeat < 2; reapeat++)
+//	{
+//		for (int i = 33; i < 126; i++)
+//		{
+//			std::cout << "[Worker2] : " << char(i) << std::endl;
+//		}
+//	}
+//}
+//
+//int main()
+//{	// #. std::future : 미래에 무언가를 할 예정이다.
+//	std::future<void> async1 = std::async(PrintInt);	// #. PrintInt 를 실행하고 끝나기를 기다리지 않고 main 으로 돌아온다.
+//	std::future<void> async2 = std::async(PrintAscii);	// #. PrintAscii 를 실행하고 끝나기를 기다리지 않고 main 으로 돌아온다.
+//// #. 부등호 사이에는 해당 함수의 반환 타입을 입력해 준다. 언젠가는 반환을 해주겠다는 의미
+//
+//	async2.get();	// async2 의 작업이 끝날 때까지 밑의 작업을 실행하지 말아라
+//
+//	std::cout << "--- 모든 작업이 끝났습니다. ---" << std::endl;
+//}
