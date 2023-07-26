@@ -2744,3 +2744,164 @@ player.Move();
 //	async2.get();
 //	std::cout << "PrintAscii 종료" << std::endl;
 //}
+
+/* ----- < 람다 표현식( Lambda ) > ----- */
+
+//#include <iostream>
+//
+//void sum1(int a, int b)	// 일반 함수 정의
+//{
+//	std::cout << "sum1 func   : " << a + b << std::endl;
+//}
+//
+//int main()
+//{
+//	sum1(10, 20);	// 일반 함수 호출
+//
+//	[](int a, int b)	// #. 람다 함수 정의
+//	{	// #. lambda 는 람다 표현식, 람다 함수, 익명 함수 등의 이름으로 불린다.
+//		std::cout << "sum2 lambda : " << a + b << std::endl;
+//	}	(30, 40);	// #. 람다 함수 호출
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int result1 = 1;
+//	int result2 = 2;
+//	int result3 = 3;
+//	int result4 = 4;
+//
+//	std::cout << "1. 특정변수 복사" << std::endl;
+//// #. Call By Value 로 result1 과 result2 를 캡쳐한다.
+//	[result1, result2](int a, int b) {
+//		std::cout << "result1, result2 : " << result1 << ", " << result2 << std::endl;
+//		std::cout << "result + a + b : " << result1 + a + b << std::endl;
+//	}	(10, 20);
+//
+//	std::cout << "2. 특정변수 참조" << std::endl;
+//// #. Call By Reference 로 result3 과 result4 를 캡쳐한다.
+//	[&result3, &result4](int a, int b) {
+//		result3 = 22222;
+//		std::cout << "(내부) result3 : " << result3 << std::endl;
+//		result4 = a + b;
+//	}	(10, 20);
+//
+//	std::cout << "(외부) result3, result4 : " << result3 << ", " << result4 << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int result1 = 1;
+//	int result2 = 2;
+//	int result3 = 3;
+//	int result4 = 4;
+//
+//	std::cout << "3. 전체 복사" << std::endl;
+//// #. 외부의 모든 변수나 상수를 Call By Value 로 캡쳐한다.
+//	[=](int x) {
+//		std::cout << "result1, 2 : " << result1 << ", " << result2 << std::endl;
+//		std::cout << "result3, 4 : " << result3 << ", " << result4 << std::endl;
+//		std::cout << "매개변수 : " << x << std::endl;
+//	}	(30);	std::cout << std::endl;
+//// #. 외부의 모든 변수나 상수를 Call By Reference 로 캡쳐한다.
+//	[&](int y) {
+//		std::cout << "result1, 2 : " << result1 << ", " << result2 << std::endl;
+//		std::cout << "result3, 4 : " << result3 << ", " << result4 << std::endl;
+//		std::cout << "매개변수 : " << y << std::endl;
+//
+//		result1 += y;
+//		result2 += y;
+//		result3 += y;
+//		result4 += y;
+//	}	(99);
+//
+//	std::cout << "result1, 2 : " << result1 << ", " << result2 << std::endl;
+//	std::cout << "result3, 4 : " << result3 << ", " << result4 << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	int result1 = 1;
+//	int result2 = 2;
+//	int result3 = 3;
+//	int result4 = 4;
+//
+//	std::cout << "3. 전체 복사" << std::endl;
+//// #. result3, result4 를 제외한 외부의 모든 변수나 상수를 Call By Value 로 캡쳐한다.
+//	[=, &result3, &result4](int x) {
+//		std::cout << "result1, 2 : " << result1 << ", " << result2 << std::endl;
+//		std::cout << "result3, 4 : " << result3 << ", " << result4 << std::endl;
+//		std::cout << "매개변수 : " << x << std::endl;
+//		
+//		result3 += x;
+//		result4 += x;
+//	}	(30);	std::cout << std::endl;
+//// #. result1, result2 를 제외한 외부의 모든 변수나 상수를 Call By Reference 로 캡쳐한다.
+//	[&, result1, result2](int y) {
+//		std::cout << "result1, 2 : " << result1 << ", " << result2 << std::endl;
+//		std::cout << "result3, 4 : " << result3 << ", " << result4 << std::endl;
+//		std::cout << "매개변수 : " << y << std::endl;
+//
+//		result3 += y;
+//		result4 += y;
+//	}	(99);
+//
+//	std::cout << "result1, 2 : " << result1 << ", " << result2 << std::endl;
+//	std::cout << "result3, 4 : " << result3 << ", " << result4 << std::endl;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{	// #. 람다식을 객체로 저장하여 포인터 함수처럼 활용할 수 있다.
+//	auto func1 = [](int a, int b) { return a * b; };
+//
+//	std::cout << "func1(2, 10) : " << func1(2, 10) << std::endl;
+//
+//	int num = 20;
+//	auto func2 = [&num](int a) { num += a; };
+//
+//	func2(100);
+//
+//	std::cout << "num : " << num << std::endl;
+//}
+
+//#include <iostream>
+//#include <array>
+//#include <algorithm>
+//
+//bool Compare(int a, int b) { return a > b; }
+//
+//int main()
+//{
+//	std::array<int, 10> arr1 = { 5,4,2,1,100,32,2,4,6,9 };
+//	std::array<int, 10> arr2 = { 5,4,2,1,100,32,2,4,6,9 };
+//	std::array<int, 10> arr3 = { 5,4,2,1,100,32,2,4,6,9 };
+//// #. sort 함수는 기본적으로 오름 차순 정렬이다.
+//	sort(arr1.begin(), arr1.end());
+//	std::cout << "std::sort(arr1, arr1 + 10)" << std::endl;
+//	for (int val : arr1)
+//	{
+//		std::cout << val << " ";
+//	}	std::cout << std::endl;
+//// #. sort 함수에 비교 함수를 매개변수로 보내어 내림 차순으로 정렬한다.
+//	std::cout << "std::sort(arr, arr + 10, compare) : " << std::endl;
+//	sort(arr2.begin(), arr2.end(), Compare);
+//	for (int val : arr2)
+//	{
+//		std::cout << val << " ";
+//	}	std::cout << std::endl << std::endl;
+//// #. sort 함수에 비교 함수로 람다식을 보낼 수 있다.
+//	std::cout << "std::sort(arr, arr + 10, [](int a, int b) {return a > b:})" << std::endl;
+//	sort(arr3.begin(), arr3.end(), [](int a, int b) {return a > b; });
+//	for (int val : arr3)
+//	{
+//		std::cout << val << " ";
+//	}
+//}
