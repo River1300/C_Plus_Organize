@@ -176,6 +176,21 @@
 //	return h[N];
 //}
 
+//#include <iostream>
+//#include <map>
+//
+//using fib_history = std::map<int, int64_t>;
+//
+//int64_t Fibo(int N, fib_history& h)
+//{
+//	if (h.count(N) == 1) return h[N];
+//
+//	if (N <= 2) return 1;
+//
+//	h[N] = Fibo(N - 1, h) + Fibo(N - 2, h);
+//	return h[N];
+//}
+
 /* < 모눈 종이 > */
 
 /*
@@ -323,6 +338,26 @@
 //	return h[key];
 //}
 
+//#include <iostream>
+//#include <string>
+//#include <map>
+//
+//using way_history = std::map<std::string, int>;
+//
+//int FindWays(int Floor, int RoomNumber, way_history& h)
+//{
+//	const std::string key = std::to_string(Floor) + ',' + std::to_string(RoomNumber);
+//	const std::string rkey = std::to_string(RoomNumber) + ',' + std::to_string(Floor);
+//	if (h.count(key) == 1) return h[key];
+//	if (h.count(rkey) == 1) return h[rkey];
+//
+//	if (Floor == 0 || RoomNumber == 0) return 0;
+//	if (Floor == 1 || RoomNumber == 1) return 1;
+//
+//	h[key] = FindWays(Floor - 1, RoomNumber, h) + FindWays(Floor, RoomNumber - 1, h);
+//	return h[key];
+//}
+
 /* < 정수 배열 > */
 
 /*
@@ -439,6 +474,32 @@
 //	}
 //	h[sum] = false;
 //	return false;
+//}
+
+//#include <iostream>
+//#include <vector>
+//#include <map>
+//
+//using accum_history = std::map<int, bool>;
+//
+//bool Accum(int sum, const std::vector<int>& numbers, accum_history& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//
+//	if (sum == 0) return true;
+//	if (sum < 0) return false;
+//
+//	for (auto e : numbers)
+//	{
+//		int remain = sum - e;
+//		if (Accum(remain, numbers, h))
+//		{
+//			h[sum] = true;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = false;
+//	return h[sum];
 //}
 
 //#include <iostream>
@@ -589,4 +650,108 @@
 //	how_accum h;
 //	Print(HowAccum(30, { 3,5,10 }, h).get());
 //	h.clear();
+//}
+
+//#include <iostream>
+//#include <vector>
+//#include <map>
+//
+//using int_vec = std::vector<int>;
+//using how_accum = std::map<int, std::shared_ptr<int_vec>>;
+//
+//std::shared_ptr<int_vec> HowAccum(int sum, const int_vec& numbers, how_accum& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//
+//	if (sum == 0) return std::make_shared<int_vec>();
+//	if (sum < 0) return nullptr;
+//
+//	int remain{};
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		auto ret = HowAccum(remain, numbers, h);
+//		if (ret != nullptr)
+//		{
+//			ret->push_back(e);
+//			h[sum] = ret;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = nullptr;
+//	return h[sum];
+//}
+//void Print(const int_vec* r)
+//{
+//	for (auto e : *r)
+//	{
+//		std::cout << e << '\n';
+//	}
+//}
+//int main()
+//{
+//	how_accum h;
+//	Print(HowAccum(10, { 3,4,5 }, h).get());
+//	h.clear();
+//}
+
+/* ----- < 동적 프로그래밍( Dynamic Programming ) > ----- */
+
+
+
+/* --- < 테이블 기법 > --- */
+
+/*
+1. 최적화( Dynamic Programming )
+	a. 문제를 Tree 구조로 표현
+	b. Tree 구조로 표현된다면 테이블 기법으로 문제 풀이가 가능
+		i. n + 1 배열을 만든다.
+		ii.	기본값으로 초기화한다.
+		iii. base case 를 채운다.
+		iv. 표를 순회하면서 영향을 주는 셀에 퍼트린다.
+
+2. 테스트
+	a. 다양한 테스트 필요( 비교 대상이 없으므로 )
+*/
+
+/* < fib_table > */
+
+//#include <iostream>
+//#include <vector>
+//
+//int64_t Fibonacci(const int N)
+//{	// 매개 변수 N 이 0 일 경우 0 을 반환한다.
+//	if (N == 0) { return 0; }
+//	std::vector<int64_t> table(N + 1);					// #1. N + 1 배열을 준비한다.
+//	table[0] = 0;										// #2. 배열의 값을 기본 값으로 채운다.
+//	table[1] = 1;										// #3. base case 를 채운다.( 0 과 1 )
+//	for (int i = 0; i <= N; i++)						// #4. 영향을 주는 원소로 전파한다.
+//	{	// 자신의 값을 다음, 그 다음 인덱스에 '+' 해준다.
+//		if (i + 1 <= N) { table[i + 1] += table[i]; }
+//		if (i + 2 <= N) { table[i + 2] += table[i]; }
+//	}
+//	return table[N];
+//}
+//int main()
+//{
+//	std::cout << Fibonacci(50) << std::endl;
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int64_t Fibo(int N)
+//{
+//	if (N == 0) return 0;
+//
+//	std::vector<int64_t> table(N + 1);
+//	table[0] = 0;
+//	table[1] = 1;
+//
+//	for (int i = 0; i <= N; i++)
+//	{
+//		if (i + 1 <= N) table[i + 1] += table[i];
+//		if (i + 2 <= N) table[i + 2] += table[i];
+//	}
+//	return table[N];
 //}
