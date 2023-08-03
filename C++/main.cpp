@@ -191,6 +191,21 @@
 //	return h[N];
 //}
 
+//#include <iostream>
+//#include <map>
+//
+//using fib_history = std::map<int, int64_t>;
+//
+//int64_t Fibo(int N, fib_history& h)
+//{
+//	if (h.count(N) == 1) return h[N];
+//
+//	if (N <= 2) return 1;
+//
+//	h[N] = Fibo(N - 1, h) + Fibo(N - 2, h);
+//	return h[N];
+//}
+
 /* < 모눈 종이 > */
 
 /*
@@ -358,6 +373,26 @@
 //	return h[key];
 //}
 
+//#include <iostream>
+//#include <string>
+//#include <map>
+//
+//using way_history = std::map<std::string, int>;
+//
+//int FindWays(int m, int n, way_history& h)
+//{
+//	const std::string key = std::to_string(m) + ',' + std::to_string(n);
+//	const std::string rkey = std::to_string(n) + ',' + std::to_string(m);
+//	if (h.count(key) == 1) return h[key];
+//	if (h.count(rkey) == 1) return h[rkey];
+//
+//	if (m == 0 || n == 0) return 0;
+//	if (m == 1 || n == 1) return 1;
+//
+//	h[key] = FindWays(m - 1, n, h) + FindWays(m, n - 1, h);
+//	return h[key];
+//}
+
 /* < 정수 배열 > */
 
 /*
@@ -505,6 +540,32 @@
 //#include <iostream>
 //#include <vector>
 //#include <map>
+//
+//using accum_history = std::map<int, bool>;
+//
+//bool Accum(int sum, const std::vector<int>& numbers, accum_history& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//
+//	if (sum == 0) return true;
+//	if (sum < 0) return false;
+//
+//	for (auto e : numbers)
+//	{
+//		int remain = sum - e;
+//		if (Accum(remain, numbers, h))
+//		{
+//			h[sum] = true;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = false;
+//	return h[sum];
+//}
+
+//#include <iostream>
+//#include <map>
+//#include <vector>
 //
 //using accum_history = std::map<int, bool>;
 //
@@ -695,6 +756,35 @@
 //	h.clear();
 //}
 
+//#include <iostream>
+//#include <map>
+//#include <vector>
+//
+//using int_vec = std::vector<int>;
+//using how_accum = std::map<int, std::shared_ptr<int_vec>>;
+//
+//std::shared_ptr<int_vec> HowAccum(int sum, const int_vec& numbers, how_accum& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//	if (sum == 0) return std::make_shared<int_vec>();
+//	if (sum < 0) return nullptr;
+//
+//	int remain{};
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		auto ret = HowAccum(remain, numbers, h);
+//		if (ret != nullptr)
+//		{
+//			ret->push_back(e);
+//			h[sum] = ret;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = nullptr;
+//	return h[sum];
+//}
+
 /* ----- < 동적 프로그래밍( Dynamic Programming ) > ----- */
 
 
@@ -754,4 +844,72 @@
 //		if (i + 2 <= N) table[i + 2] += table[i];
 //	}
 //	return table[N];
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int64_t Fibo(int N)
+//{
+//	if (N == 0) return 0;
+//
+//	std::vector<int64_t> table(N + 1);
+//	table[0] = 0;
+//	table[1] = 1;
+//
+//	for (int i = 0; i <= N; i++)
+//	{
+//		if (i + 1 <= N) table[i + 1] += table[i];
+//		if (i + 2 <= N) table[i + 2] += table[i];
+//	}
+//	return table[N];
+//}
+
+/* < road trip > */
+
+//#include <iostream>
+//#include <vector>
+//
+//// M 과 N 을 입력받아 모눈 종이 형태를 그리기 위해서는 2차원 배열을 만들어야 한다.
+//// vector 클래스의 생성자는 기본적으로 2 개의 인자를 받을 수 있다. (10, 0) 이라고 하면 10개의 칸을 0이라는 값을 넣어 할당한다.
+//// (10, std::vector<int>(10)) 이라고 하면 10개의 칸을 std::vector<int> 타입의 값을 넣는데 이 값이 (10)인 것이다.
+//// 한 칸에, 배열이 값으로 저장되는 2차원 배열 형태가 만들어 진다.
+//// std::vector<std::vector<int>> table(M + 1, std::vector<int>(N + 1)); 을 풀이해보자면
+//// 동적 배열을 동적 배열 타입(int)으로 만들고 M + 1 칸을 할당하는데 각 칸마다 동적배열(int)이 배정되어 있다.
+//
+//int FindWays(int M, int N)
+//{																			// #1. M + 1, N + 1 개의 배열을 만든다.
+//	std::vector<std::vector<int>> table(M + 1, std::vector<int>(N + 1));	// #2. 기본 값으로 채운다.
+//	table[1][1] = 1;														// #3. base case 를 채운다.( [1][1] = 1 )
+//	for (int row = 0; row <= M; row++)										// #4. 영향을 주는 원소로 전파
+//	{
+//		for (int col = 0; col <= N; col++)
+//		{	// 자신의 아래쪽과 오른쪽에 자신의 값을 더한다.
+//			if (row + 1 <= M) { table[row + 1][col] += table[row][col]; }
+//			if (col + 1 <= N) { table[row][col + 1] += table[row][col]; }
+//		}
+//	}
+//	return table[M][N];
+//}
+//int main()
+//{
+//	std::cout << FindWays(20, 20) << std::endl;
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int FindWays(int m, int n)
+//{
+//	std::vector<std::vector<int>> table(m + 1, std::vector<int>(n + 1));
+//	table[1][1] = 1;
+//	for (int i = 0; i <= m; i++)
+//	{
+//		for (int j = 0; j <= n; j++)
+//		{
+//			if (i + 1 <= m) table[i + 1][j] += table[i][j];
+//			if (j + 1 <= n) table[i][j + 1] += table[i][j];
+//		}
+//	}
+//	return table[m][n];
 //}
