@@ -206,6 +206,21 @@
 //	return h[N];
 //}
 
+//#include <iostream>
+//#include <map>
+//
+//using fib_history = std::map<int, int64_t>;
+//
+//int64_t Fibo(int N, fib_history& h)
+//{
+//	if (h.count(N) == 1) return h[N];
+//
+//	if (N <= 2) return 1;
+//
+//	h[N] = Fibo(N - 1, h) + Fibo(N - 2, h);
+//	return h[N];
+//}
+
 /* < 모눈 종이 > */
 
 /*
@@ -370,6 +385,26 @@
 //	if (Floor == 1 || RoomNumber == 1) return 1;
 //
 //	h[key] = FindWays(Floor - 1, RoomNumber, h) + FindWays(Floor, RoomNumber - 1, h);
+//	return h[key];
+//}
+
+//#include <iostream>
+//#include <string>
+//#include <map>
+//
+//using way_history = std::map<std::string, int>;
+//
+//int FindWays(int m, int n, way_history& h)
+//{
+//	const std::string key = std::to_string(m) + ',' + std::to_string(n);
+//	const std::string rkey = std::to_string(n) + ',' + std::to_string(m);
+//	if (h.count(key) == 1) return h[key];
+//	if (h.count(rkey) == 1) return h[rkey];
+//
+//	if (m == 0 || n == 0) return 0;
+//	if (m == 1 || n == 1) return 1;
+//
+//	h[key] = FindWays(m - 1, n, h) + FindWays(m, n - 1, h);
 //	return h[key];
 //}
 
@@ -589,6 +624,32 @@
 //	return h[sum];
 //}
 
+//#include <iostream>
+//#include <vector>
+//#include <map>
+//
+//using accum_history = std::map<int, bool>;
+//
+//bool Accum(int sum, const std::vector<int>& numbers, accum_history& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//
+//	if (sum == 0) return true;
+//	if (sum < 0) return false;
+//
+//	for (auto e : numbers)
+//	{
+//		int remain = sum - e;
+//		if (Accum(remain, numbers, h))
+//		{
+//			h[sum] = true;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = false;
+//	return h[sum];
+//}
+
 /* < 정수 배열 > */
 
 /*
@@ -785,6 +846,36 @@
 //	return h[sum];
 //}
 
+//#include <iostream>
+//#include <vector>
+//#include <map>
+//
+//using int_vec = std::vector<int>;
+//using how_accum = std::map<int, std::shared_ptr<int_vec>>;
+//
+//std::shared_ptr<int_vec> HowAccum(int sum, const int_vec& numbers, how_accum& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//
+//	if (sum == 0) return std::make_shared<int_vec>();
+//	if (sum < 0) return nullptr;
+//
+//	int remain{};
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		auto ret = HowAccum(remain, numbers, h);
+//		if (ret != nullptr)
+//		{
+//			ret->push_back(e);
+//			h[sum] = ret;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = nullptr;
+//	return h[sum];
+//}
+
 /* ----- < 동적 프로그래밍( Dynamic Programming ) > ----- */
 
 
@@ -865,6 +956,23 @@
 //	return table[N];
 //}
 
+//#include <iostream>
+//#include <vector>
+//
+//int Fibo(int N)
+//{
+//	std::vector<int> table(N + 1);
+//	table[0] = 0;
+//	table[1] = 1;
+//
+//	for (int i = 0; i <= N; i++)
+//	{
+//		if (i + 1 <= N) table[i + 1] += table[i];
+//		if (i + 2 <= N) table[i + 2] += table[i];
+//	}
+//	return table[N];
+//}
+
 /* < road trip > */
 
 //#include <iostream>
@@ -912,4 +1020,74 @@
 //		}
 //	}
 //	return table[m][n];
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//int FindWays(int m, int n)
+//{
+//	std::vector<std::vector<int>> table(m + 1, std::vector<int>(n + 1));
+//	table[1][1] = 1;
+//
+//	for (int i = 0; i <= m; i++)
+//	{
+//		for (int j = 0; j <= n; j++)
+//		{
+//			if (i + 1 <= m) table[i + 1][j] += table[i][j];
+//			if (j + 1 <= n) table[i][j + 1] += table[i][j];
+//		}
+//	}
+//	return table[m][n];
+//}
+
+/* < can accum > */
+
+//#include <iostream>
+//#include <vector>
+//
+//// A 라는 값을 B 라는 집합으로 만들 수 있는지 없는지를 알아보는 함수이다.
+//// 때문에 bool 타입의 동적 배열을 만들고 B 집합의 값에 True 를 전파한다.
+//
+//bool CanAccumulate(int sum, const std::vector<int>& numbers)
+//{															// #1. sum + 1 개의 배열을 만든다.
+//	std::vector<bool> table(sum + 1, false);				// #2. 기본값으로 초기화 한다.
+//	table[0] = true;										// #3. base case 를 채운다.( true )
+//	for (int i = 0; i <= sum; i++)							// #4. 모든 원소를 순회하면서 전파한다.
+//	{	// 참일 때만 전파한다.
+//		if (table[i] == true)
+//		{	// numbers 의 원소를 하나씩 꺼내온다.
+//			for (auto e : numbers)
+//			{	// i + e 인덱스에 true 를 전파한다.
+//				if (i + e <= sum) { table[i + e] = true; }
+//			}
+//		}
+//	}
+//	return table[sum];
+//}
+//int main()
+//{
+//	std::cout << CanAccumulate(8, { 2,3,5 }) << std::endl;
+//	std::cout << CanAccumulate(8, { 5,6 }) << std::endl;
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//bool Accum(int sum, const std::vector<int>& numbers)
+//{
+//	std::vector<bool> table(sum + 1);
+//	table[0] = true;
+//
+//	for (int i = 0; i <= sum; i++)
+//	{
+//		if (table[i])
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum) table[i + e] = true;
+//			}
+//		}
+//	}
+//	return table[sum];
 //}
