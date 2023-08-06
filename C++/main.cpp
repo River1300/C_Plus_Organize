@@ -18,7 +18,7 @@
 	b. 1 을 만들 때 사용한 TestCase 를 저장해 두는 것이 좋다.
 */
 
-/* < 피보나치 수열 > */
+/* < 피보나치 수열 =========================================================================================================================> */
 
 /*
 < 서술 >
@@ -221,7 +221,7 @@
 //	return h[N];
 //}
 
-/* < 모눈 종이 > */
+/* < 모눈 종이 ===========================================================================================================================> */
 
 /*
 < 서술 >
@@ -428,7 +428,27 @@
 //	return h[key];
 //}
 
-/* < 정수 배열 > */
+//#include <iostream>
+//#include <map>
+//#include <string>
+//
+//using way = std::map<std::string, int>;
+//
+//int FindWays(int m, int n, way& h)
+//{
+//	const std::string key = std::to_string(m) + ',' + std::to_string(n);
+//	const std::string rkey = std::to_string(n) + ',' + std::to_string(m);
+//	if (h.count(key) == 1) return h[key];
+//	if (h.count(rkey) == 1) return h[rkey];
+//
+//	if (m == 0 || n == 0) return 0;
+//	if (m == 1 || n == 1) return 1;
+//
+//	h[key] = FindWays(m - 1, n, h) + FindWays(m, n - 1, h);
+//	return h[key];
+//}
+
+/* < 정수 배열 ==========================================================================================================================> */
 
 /*
 < 서술 > : 주어진 동전들로 720원을 만들기 위해서는 최소 몇 개의 동전을 사용해야 하나요.
@@ -650,7 +670,32 @@
 //	return h[sum];
 //}
 
-/* < 정수 배열 > */
+//#include <iostream>
+//#include <vector>
+//#include <map>
+//
+//using accum = std::map<int, bool>;
+//
+//bool Accum(int sum, const std::vector<int>& numbers, accum& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//	if (sum == 0) return true;
+//	if (sum < 0) return false;
+//
+//	for (auto e : numbers)
+//	{
+//		int remain = sum - e;
+//		if (Accum(remain, numbers, h))
+//		{
+//			h[sum] = true;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = false;
+//	return h[sum];
+//}
+
+/* < 정수 배열 ==========================================================================================================================> */
 
 /*
 < 서술 > : 주어진 동전들로 720원을 만들기 위해서는 최소 몇 개의 동전을 사용해야 하나요.
@@ -876,6 +921,36 @@
 //	return h[sum];
 //}
 
+//#include <iostream>
+//#include <vector>
+//#include <map>
+//
+//using int_vec = std::vector<int>;
+//using how_accum = std::map<int, std::shared_ptr<int_vec>>;
+//
+//std::shared_ptr<int_vec> HowAccum(int sum, const int_vec& numbers, how_accum& h)
+//{
+//	if (h.count(sum) == 1) return h[sum];
+//
+//	if (sum == 0) return std::shared_ptr<int_vec>();
+//	if (sum < 0) return nullptr;
+//
+//	int remain{};
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		auto ret = HowAccum(remain, numbers, h);
+//		if (ret != nullptr)
+//		{
+//			ret->push_back(e);
+//			h[sum] = ret;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = nullptr;
+//	return h[sum];
+//}
+
 /* ----- < 동적 프로그래밍( Dynamic Programming ) > ----- */
 
 
@@ -895,7 +970,7 @@
 	a. 다양한 테스트 필요( 비교 대상이 없으므로 )
 */
 
-/* < fib_table > */
+/* < fib_table =========================================================================================================================> */
 
 //#include <iostream>
 //#include <vector>
@@ -973,7 +1048,23 @@
 //	return table[N];
 //}
 
-/* < road trip > */
+//#include <iostream>
+//#include <vector>
+//
+//int Fibo(int N)
+//{
+//	std::vector<int> table(N + 1);
+//	table[0] = 0;
+//	table[1] = 1;
+//	for (int i = 0; i <= N; i++)
+//	{
+//		if (i + 1 <= N) table[i + 1] += table[i];
+//		if (i + 2 <= N) table[i + 2] += table[i];
+//	}
+//	return table[N];
+//}
+
+/* < road trip =========================================================================================================================> */
 
 //#include <iostream>
 //#include <vector>
@@ -1041,7 +1132,26 @@
 //	return table[m][n];
 //}
 
-/* < can accum > */
+//#include <iostream>
+//#include <vector>
+//
+//int FindWays(int m, int n)
+//{
+//	std::vector<std::vector<int>> table(m + 1, std::vector<int>(n + 1));
+//	table[0][0] = 0;
+//	table[1][1] = 1;
+//	for (int i = 0; i <= m; i++)
+//	{
+//		for (int j = 0; j <= n; j++)
+//		{
+//			if (i + 1 <= m) table[i + 1][j] += table[i][j];
+//			if (j + 1 <= n) table[i][j + 1] += table[i][j];
+//		}
+//	}
+//	return table[m][n];
+//}
+
+/* < can accum ======================================================================================================================> */
 
 //#include <iostream>
 //#include <vector>
@@ -1086,6 +1196,100 @@
 //			for (auto e : numbers)
 //			{
 //				if (i + e <= sum) table[i + e] = true;
+//			}
+//		}
+//	}
+//	return table[sum];
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//bool Accum(int sum, const std::vector<int>& numbers)
+//{
+//	std::vector<bool> table(sum + 1);
+//	table[0] = true;
+//
+//	for (int i = 0; i <= sum; i++)
+//	{
+//		if (table[i])
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum)
+//				{
+//					table[i + e] = true;
+//				}
+//			}
+//		}
+//	}
+//	return table[sum];
+//}
+
+/* < how accum ====================================================================================================================> */
+
+//#include <iostream>
+//#include <vector>
+//
+//// A 라는 값을 B 라는 집합으로 만들 수 있다면 어떤 값들로 만들 수 있는지 알려면
+//// 출력이 집합으로 이루어져야 한다.
+//// 이 때 A 라는 값으로 만들어지지 않는 집합 원소의 경우 출력해서는 않되는데 이를 위해 nullptr 을 활용할 것이다.
+//// 그러므로 출력되는 집합은 포인터 형식이고 축력할 집합이 서로 연결되어 있게 shared_ptr 을 활용한다.
+//
+//std::shared_ptr<std::vector<int>> HowAccumulate(int sum, const std::vector<int>& numbers)
+//{																					// #1. sum + 1 배열을 만든다.
+//	std::vector<std::shared_ptr<std::vector<int>>> table(sum + 1, nullptr);			// #2. 기본값을 채운다.( nullptr )
+//	table[0] = std::make_shared<std::vector<int>>(0);								// #3. base case 를 채운다.( 빈 집합 )
+//	for (int i = 0; i <= sum; i++)													// #4. 순회를 하며 영향을 주는 곳으로 전파한다.
+//	{
+//		if (table[i] != nullptr)
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum)
+//				{
+//// [i + e] 인덱스에 이미 할당된 메모리 공간이 있을 경우 아래에서 올라오는 [i] 인덱스와 값이 겹치는 상황이 발생한다.
+//// 그러므로 이미 할당된 메모리 공간은 지우고 올라온 인덱스 원소를 복사하여 새로운 메모리 공간을 할당한다.
+//// 이 때 주의할 점은 출력할 동적 배열의 각 원소는 스마트 포인터이기 때문에 역참조를 해야 정상적인 값의 복사가 이루어진다.
+//// 그리고 [i] 인덱스 원소가 복사된 [i + e] 에 e 를 값으로 추가해준다.
+//					table[i + e] = std::make_shared<std::vector<int>>(*table[i]);
+//					table[i + e]->push_back(e);
+//				}}}}
+//	return table[sum];
+//}
+//void Print(std::vector<int>* r)
+//{
+//	if (r == nullptr) { std::cout << "nullptr" << std::endl; }
+//	else
+//	{
+//		std::cout << "{";
+//		for (auto e : *r)
+//		{
+//			std::cout << e << ", ";
+//		}	std::cout << "}" << std::endl;
+//	}
+//}
+//int main()
+//{
+//	Print(HowAccumulate(8, { 2,3,5 }).get());
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//std::shared_ptr<std::vector<int>> HowAccum(int sum, const std::vector<int>& numbers)
+//{
+//	std::vector<std::shared_ptr<std::vector<int>>> table(sum + 1, nullptr);
+//	table[0] = std::make_shared<std::vector<int>>(0);
+//	for (int i = 0; i <= sum; i++)
+//	{
+//		if (table[i] != nullptr) {
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum) {
+//					table[i + e] = std::make_shared<std::vector<int>>(*table[i]);
+//					table[i + e]->push_back(e);
+//				}
 //			}
 //		}
 //	}
