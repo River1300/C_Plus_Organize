@@ -1064,6 +1064,22 @@
 //	return table[N];
 //}
 
+//#include <iostream>
+//#include <vector>
+//
+//int Fibo(int N)
+//{
+//	std::vector<int> table(N + 1);
+//	table[0] = 0;
+//	table[1] = 1;
+//	for (int i = 0; i <= N; i++)
+//	{
+//		if (i + 1 <= N) table[i + 1] += table[i];
+//		if (i + 2 <= N) table[i + 2] += table[i];
+//	}
+//	return table[N];
+//}
+
 /* < road trip =========================================================================================================================> */
 
 //#include <iostream>
@@ -1151,6 +1167,25 @@
 //	return table[m][n];
 //}
 
+//#include <iostream>
+//#include <vector>
+//
+//int FindWays(int m, int n)
+//{
+//	std::vector<std::vector<int>> table(m + 1, std::vector<int>(n + 1));
+//	table[0][0] = 0;
+//	table[1][1] = 1;
+//	for (int i = 0; i <= m; i++)
+//	{
+//		for (int j = 0; j <= n; j++)
+//		{
+//			if (i + 1 <= m) table[i + 1][j] += table[i][j];
+//			if (j + 1 <= n) table[i][j + 1] += table[i][j];
+//		}
+//	}
+//	table[m][n];
+//}
+
 /* < can accum ======================================================================================================================> */
 
 //#include <iostream>
@@ -1226,6 +1261,27 @@
 //	return table[sum];
 //}
 
+//#include <iostream>
+//#include <vector>
+//
+//bool Accum(int sum, const std::vector<int>& numbers)
+//{
+//	std::vector<bool> table(sum + 1);
+//	table[0] = true;
+//
+//	for (int i = 0; i <= sum; i++)
+//	{
+//		if (table[i])
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum) table[i + e] = true;
+//			}
+//		}
+//	}
+//	return table[sum];
+//}
+
 /* < how accum ====================================================================================================================> */
 
 //#include <iostream>
@@ -1289,6 +1345,102 @@
 //				if (i + e <= sum) {
 //					table[i + e] = std::make_shared<std::vector<int>>(*table[i]);
 //					table[i + e]->push_back(e);
+//				}
+//			}
+//		}
+//	}
+//	return table[sum];
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//std::shared_ptr<std::vector<int>> HowAccum(int sum, const std::vector<int>& numbers)
+//{
+//	std::vector<std::shared_ptr<std::vector<int>>> table(sum + 1, nullptr);
+//	table[0] = std::make_shared<std::vector<int>>(0);
+//	for (int i = 0; i <= sum; i++)
+//	{
+//		if (table[i] != nullptr)
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum)
+//				{
+//					table[i + e] = std::make_shared<std::vector<int>>(*table[i]);
+//					table[i + e]->push_back(e);
+//				}
+//			}
+//		}
+//	}
+//	return table[sum];
+//}
+
+/* < OptimizeAccumulate ==============================================================================================================> */
+
+//#include <iostream>
+//#include <vector>
+//
+//// how accum 방법에서 출력되는 집합을 원소가 적은 것으로 출력하게끔 해줄 것이다.
+//
+//std::shared_ptr<std::vector<int>> OptimizeAccumulate(int sum, const std::vector<int>& numbers)
+//{																					// #1. sum + 1개의 배열을 만든다.
+//	std::vector<std::shared_ptr<std::vector<int>>> table(sum + 1, nullptr);			// #2. 기본값으로 채운다.( nullptr )
+//	table[0] = std::make_shared<std::vector<int>>(0);								// #3. base case 를 채운다.( 빈 집합 )
+//	for (int i = 0; i <= sum; i++)													// #4. 순회하며 영향을 주는 곳으로 전파한다.
+//	{	// 널이 아닌 경우에만 전파한다.
+//		if (table[i] != nullptr)
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum)
+//				{
+//// [i + e]에 nullptr 이 있거나 [i] 랑 size 를 비교했을 때 [i + e]가 더 크다면 새롭게 동적 배열을 할당해 준다.
+//// 그런데 여기서 [i] 인덱스의 size 는 올라오면서 한 개가 추가된 예정이기 때문에 + 1을 하여 비교해야 한다.
+//					if (table[i + e] == nullptr || table[i + e]->size() > table[i]->size() + 1)
+//					{
+//						table[i + e] = std::make_shared<std::vector<int>>(*table[i]);
+//						table[i + e]->push_back(e);
+//					}}}}}
+//	return table[sum];
+//}
+//void Print(std::vector<int>* r)
+//{
+//	if (r == nullptr) { std::cout << "nullptr" << std::endl; }
+//	else
+//	{
+//		std::cout << "{";
+//		for (auto e : *r)
+//		{
+//			std::cout << e << ", ";
+//		}	std::cout << "}" << std::endl;
+//	}
+//}
+//int main()
+//{
+//	Print(OptimizeAccumulate(8, { 2,3,5 }).get());
+//}
+
+//#include <iostream>
+//#include <vector>
+//
+//std::shared_ptr<std::vector<int>> Optimize(int sum, const std::vector<int>& numbers)
+//{
+//	std::vector<std::shared_ptr<std::vector<int>>> table(sum + 1, nullptr);
+//	table[0] = std::make_shared<std::vector<int>>(0);
+//	for (int i = 0; i <= sum; i++)
+//	{
+//		if (table[i] != nullptr)
+//		{
+//			for (auto e : numbers)
+//			{
+//				if (i + e <= sum)
+//				{
+//					if (table[i + e] == nullptr || table[i + e]->size() > table[i]->size() + 1)
+//					{
+//						table[i + e] = std::make_shared<std::vector<int>>(*table[i]);
+//						table[i + e]->push_back(e);
+//					}
 //				}
 //			}
 //		}
