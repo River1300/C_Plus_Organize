@@ -294,3 +294,129 @@ string클래스의 length()함수와 substr함수를 이용해 문자열을 하나씩 맞추어 본다.
 //		{ "ld","hello","World","Hel","H","lo","Hello","He","ll","Wor","o" }) << '\n';
 //	std::cout << CanGenerate("Good", { "G","oo","d" }) << '\n';
 //}
+
+/* < 문자 조합 경우의 수 출력 > */
+
+/*
+[0]번 인덱스에 1을 넣고 자신의 값을 뒤로 전파한다.
+length() 함수를 활용하여 문자열의 길이를 인덱스로 바꾸어 표현하며 원소의 값을 추가해 준다.
+*/
+
+//#include <iostream>
+//#include <vector>
+//#include <string>
+//
+//int HowManyGenerate(const std::string target, const std::vector<std::string>& stringlist)
+//{
+//	std::vector<int> table(target.length() + 1, 0);	// 모든 배열을 0으로 초기화 해주고
+//	table[0] = 1;	// 시작만 1로 배정
+//
+//	for (unsigned int i = 0; i <= target.length(); i++)
+//	{
+//		if (table[i] > 0)
+//		{
+//			for (auto e : stringlist)
+//			{	// 선택한 문자열 e가 target의 앞에 위치해 있는지 확인
+//				if (target.substr(i, e.length()) == e)
+//				{
+//					if (i + e.length() <= target.length())
+//					{
+//						table[i + e.length()] += table[i];
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return table[target.length()];
+//}
+//
+//int main()
+//{
+//	std::cout << HowManyGenerate("World", { "W","o","r","l","d" }) << '\n';
+//	std::cout << HowManyGenerate("Hello", { "He","ll","o","Hell","Hel","l" }) << '\n';
+//}
+
+/* < 모든 문자 조합 출력 > */
+
+/*
+최소 단위의 출발 지점은 빈 집합으로 시작한다.
+집합을 담을 수 있는 집합을 만들고 큰 집합이 완성된 조합을 저장하고
+작은 집합은 target을 완성할 수 있는 문자열들을 저장한다.
+*/
+
+//#include <iostream>
+//#include <vector>
+//#include <list>
+//#include <string>
+//
+//using string_list = std::list<std::string>;
+//
+//string_list : {"He","ll","ow"}... 이와 같이 문자열을 모아두는 공간
+//	{
+//		{"He","ll","ow"},	// 큰 대가로 안에 있는 작은 대가로
+//		{"Hell","ow"},		// target을 완성할 수 있는 문자열이 저장된 공간
+//		{"Hel","low"}
+//	}
+//
+//
+//using result = std::list<string_list>;
+//
+//result : {"","",""},{""...},{""...}... 이와 같이 완성된 target들을 모아두는 공간
+//	{	큰 대가로
+//		{"He","ll","ow"},
+//		{"Hell","ow"},
+//		{"Hel","low"}
+//	}	아래 target 집합을 모으는 저장 공간
+//
+//
+//result FindGenerate(const std::string target, const string_list& stringlist)
+//{
+//	std::vector<result> table(target.length() + 1);
+//	// target문자열의 문자 하나당 배열 한 칸을 할당한다.
+//	// 단 [0]번 인덱스는 출발 지점이기 때문에 빈 배열을 할당한다.
+//	// result타입의 vector란 각 []인덱스 별로 큰 대가로와 작은 대가로를 갖고 있다는 뜻
+//
+//	table[0] = result{ {} };
+//
+//	for (unsigned int i = 0; i <= target.length(); i++)
+//	{	// table의 모든 인덱스를 순회할 vector<result>의 반복문
+//		for (auto e : stringlist)
+//		{	// stringlist(string_list)를 순회하며 target으로 만들어 지는지 확인
+//			if (target.substr(i, e.length()) == e)
+//			{
+//				if (i + e.length() <= target.length())
+//				{
+//					for (auto e2 : table[i])
+//					{	// table[i]란 vector에 저장되어 있는 result타입을 의미한다.
+//						// result는 큰 대가로로 내부에 작은 대가로 들이 있다.
+//						// e2는 이 작은 대가로들을 순회하며 e문자열을 저장해 준다.
+//						e2.push_back(e);
+//
+//						// 큰 대가로에 작은 대가로를 저장한다.
+//						table[i + e.length()].push_back(e2);
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return table[target.length()];
+//}
+//void Print(const result& r)
+//{
+//	std::cout << "[ \n";
+//	for (auto e1 : r)
+//	{
+//		std::cout << "\t[ ";
+//		for (auto e2 : e1)
+//		{
+//			std::cout << e2 << ", ";
+//		}
+//		std::cout << "],\n";
+//	}
+//	std::cout << " ]\n\n";
+//}
+//
+//int main()
+//{
+//	Print(FindGenerate("Hello", { "He","ll","o","Hell","llo" }));
+//}
