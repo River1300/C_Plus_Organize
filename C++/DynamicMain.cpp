@@ -420,3 +420,262 @@ length() 함수를 활용하여 문자열의 길이를 인덱스로 바꾸어 표현하며 원소의 값을 추
 //{
 //	Print(FindGenerate("Hello", { "He","ll","o","Hell","llo" }));
 //}
+
+/* ---------- < 피보나치 수열 > ---------- */
+
+//#include <iostream>	// 목표 : 입력된 수의 피보나치 수열을 출력
+//#include <map>
+//
+//int Fibonacci(int N)								// (브루트포스) 피보나치 수열 함수
+//{	// Base Case : 피보나치 수열의 첫 번째와 두 번째 값은 1이다.
+//	if (N <= 2) { return 1; }
+//	// Recursive Case : 현재 값 = 이전의 값 + 이전의 이전의 값
+//	return Fibonacci(N - 1) + Fibonacci(N - 2);
+//}
+//using fibo_map = std::map<int, int64_t>;		// key값 : 자릿 수, value값 : 합한 값
+//int64_t Dynamic_Fibo(int N, fibo_map& h)
+//{	// map h에 key값 N이 있는지 확인하고 있다면 h[N]으로 value값을 반환한다.
+//	if (h.count(N) == 1) { return h[N]; }
+//	if (N <= 2) { return 1; }
+//	// 계산한 값을 바로 반환하는 것이 아니라 map에 먼저 저장을 한다.
+//	h[N] = Dynamic_Fibo(N - 1, h) + Dynamic_Fibo(N - 2, h);
+//
+//	return h[N];
+//}
+//
+//
+//int main()
+//{
+//	std::cout << Fibonacci(15) << '\n';
+//	//std::cout << Fibonacci(50) << '\n'; 수 많은 재귀 호출로 인해 연산 속도가 굉장히 느리다.
+//
+//	fibo_map h;
+//	std::cout << Dynamic_Fibo(50, h) << '\n';
+//}
+
+/* ---------- < 경로 찾기 > ---------- */
+
+//#include <iostream>	// 목표 : 가로, 세로로 된 2차원 배열이 주어지면 왼쪽 상단에서 오른쪽 하단으로 가는 길을 출력
+//#include <map>
+//#include <string>
+//
+//int FindWays(int W, int H)				// (브루트포스) 길찾기
+//{	// Base Case : 가로, 세로 길이가 0일 경우 목적지로 가는 길은 없다.
+//	//		=> 가로, 세로 길이가 1일 경우 목적지로 가는 길은 오직 한 개 뿐이다.
+//	if (W == 0 || H == 0) { return 0; }
+//	if (W == 1 || H == 1) { return 1; }
+//	// Recursive Case : 가로를 한 칸씩 줄인 길과 세로를 한 칸씩 줄인 길을 합한다.
+//	return FindWays(W - 1, H) + FindWays(W, H - 1);
+//}
+//using road_map = std::map<std::string, int>;	// key값 : 가로, 세로 길이, value값 : 해당 길이의 길 수
+////		=> 가로, 세로 두 개의 정수를 하나의 key값으로 받기 위해 문자열을 활용한다.
+//int FindRoads(int W, int H, road_map& h)
+//{	// 먼저 key값을 문자열로 만들어 주고, 가로, 세로가 뒤집어진 rkey값도 만들어 준다.
+//	const std::string key = std::to_string(W) + "," + std::to_string(H);
+//	if (h.count(key) == 1) { return h[key]; }
+//	const std::string rkey = std::to_string(H) + "," + std::to_string(W);
+//	if (h.count(rkey) == 1) { return h[rkey]; }
+//
+//	if (W == 0 || H == 0) { return 0; }
+//	if (W == 1 || H == 1) { return 1; }
+//// 바로 반환하지 말고 먼저 map의 key값으로 저장한다.
+//	h[key] = FindRoads(W - 1, H, h) + FindRoads(W, H - 1, h);
+//
+//	return h[key];
+//}
+//
+//
+//int main()
+//{
+//	std::cout << FindWays(5, 5) << '\n';
+//	//std::cout << FindWays(30, 30) << '\n';	너무 많은 재귀 호출로 인해 연산이 느리다.
+//
+//	road_map h;
+//	std::cout << FindRoads(30, 30, h) << '\n';
+//}
+
+/* ---------- < 정수 조합 찾기 > ---------- */
+
+//#include <iostream>	// 목표 : 주어진 정수 배열을 합해서 N이라는 값을 만들 수 있는지 참, 거짓으로 출력
+//#include <vector>
+//#include <map>
+//// 정수 배열을 리터럴로 전달될 예정이기 때문에 const를 붙인다.
+//// 그리고 재귀 호출을 통해 배열이 계속 복사되는 것을 방지하기 위해 참조형을 붙인다.
+//bool CanAccumulate(int sum, const std::vector<int>& numbers)	// (브루트포스) 조합 찾기
+//{	// Base Case : N이라는 값에서 정수 배열을 하나씩 빼줄 예정이다.
+//	//		=> 그러므로 N이 0이 된다는 것은 정수 배열을 통한 연산으로 해당 값이 만들어진다는 뜻
+//	//		=> 0보다 작아진다면 정수 배열을 통한 연산으로 해당 값을 만들지 못한다는 뜻
+//	if (sum == 0) { return true; }
+//	if (sum < 0) { return false; }
+//
+//	int remain{};			// N이라는 값은 고정되면 않된다.
+//	//		=> 재귀 호출될 때마다 정수 배열과 하나씩 뺄쎔을 진행하여 남은 값을 전달해야 한다.
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		// Recursive Case : true나 false가 나올때 까지 재귀 호출을 한다.
+//		if (CanAccumulate(remain, numbers) == true)
+//		{
+//			return true;
+//		}
+//	}
+//	return false;
+//}
+//using coin_map = std::map<int, bool>;	// key값 : 연산할 sum, value값 : 참, 거짓
+//bool CanCoin(int sum, const std::vector<int>& numbers, coin_map& h)
+//{	// 재귀 호출을 하다가 이전에 나왔던 sum값이 또 나온다면 저장된 값을 반환
+//	if (h.count(sum) == 1) { return h[sum]; }
+//	if (sum == 0) { return true; }
+//	if (sum < 0) { return false; }
+//
+//	int remain{};
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		if (CanCoin(remain, numbers, h) == true)
+//		{	// 바로 리던하지 말고 먼저 key값으로 저장
+//			h[sum] = true;
+//			return h[sum];
+//		}
+//	}
+//	h[sum] = false;
+//	return h[sum];
+//}
+//
+//
+//int main()
+//{
+//	std::cout << CanAccumulate(7, { 5,3,4,7 }) << '\n';
+//	std::cout << CanAccumulate(15, { 7,3,9,2 }) << '\n';
+//
+//	coin_map h;
+//	std::cout << CanCoin(900, { 7,14 }, h) << '\n';
+//}
+
+/* ---------- < 정수 조합 출력 > ---------- */
+
+//#include <iostream>	// 목표 : N이라는 값을 만들기 위한 정수 배열을 출력
+//#include <vector>
+//#include <map>
+//
+//using int_vector = std::vector<int>;
+//using accum_history = std::map<int, std::shared_ptr<int_vector>>;
+//// shared_ptr : 정답을 출력하려면 배열 자체를 출력해야만 한다.
+////	=> 이때 재귀 호출을 하는 과정에서 이전 함수에서 저장된 배열의 값에 연재 함수에서 연산한
+////		=> 값을 추가해야 한다. 재귀 호출을 할 때마다 배열을 만들 경우 많은 메모리가 사용되고
+////		=> 이러한 낭비를 줄이기 위해 포인터를 활용하는 것이 좋다.
+////		=> 특히 여러개의 포인터가 하나의 메모리 공간을 가리킬 수 있는 shared_ptr을 사용하는 것이 효율적이다.
+////	=> 또한 정답이 나오지 않을 경우 빈 배열 공간을 출력해야 하는데,
+////		=> 이때 nullptr을 출력해 주면 된다.
+//
+//std::shared_ptr<int_vector> HowAccumulate(int sum,
+//	const int_vector& numbers, std::shared_ptr<accum_history> h)
+//{	// h는 map을 shared_ptr로 받는다. 그래야 map의 많은 복사를 맊고 하나의 메모리 공간만 활용할 수 있다.
+//	if (h->count(sum) == 1) { return (*h)[sum]; }	// h는 주소값을 갖는 포인터이기 때문에 map의 key,value값을 꺼내려면 역참조가 필요하다.
+//	if (sum == 0) { return std::make_shared<int_vector>(); }	// 재귀로 리턴해가며 배열 값을 채워 넣을 예정
+//	if (sum < 0) { return nullptr; }
+//
+//	int remain{};
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		auto ret = HowAccumulate(remain, numbers, h);
+//
+//		if (ret != nullptr)	// 값이 0으로 떨어저 배열 공간을 받아 올라온 경우
+//		{	// 마지막 값부터 차례로 배열에 넣고
+//			ret->push_back(e);
+//			(*h)[sum] = ret;	// 그 배열을 가리킨다.
+//			return (*h)[sum];	// 가지치기 하며 내려왔던 길을 거슬로 올라간다.
+//		}
+//	}
+//	(*h)[sum] = nullptr;
+//	return nullptr;
+//}
+//void Print(int_vector* r)
+//{
+//	std::cout << "[ ";
+//	if (r != nullptr)
+//	{	// 출력하는 것은 포인터이기 때문에 역참조가 필요하다.
+//		for (auto e : *r)
+//		{
+//			std::cout << e << " ";
+//		}
+//	}
+//	std::cout << "]\n";
+//}
+//
+//
+//int main()
+//{	// 매개 변수로 보낼 인자를 make_shared로 만들어 main함수에서 한 개의 메모리 공간을 확보하고
+//	//	=> 이 메모리 공간을 여러 재귀 호출에서 사용한다.
+//	Print(HowAccumulate(7, { 5,3,4,7 }, std::make_shared<accum_history>()).get());
+//	Print(HowAccumulate(7, { 1,4 }, std::make_shared<accum_history>()).get());
+//	Print(HowAccumulate(900, { 7,14 }, std::make_shared<accum_history>()).get());
+//}
+
+/* ---------- < 최소 크기 정수 조합 출력 > ---------- */
+
+//#include <iostream>		// 목표 : N을 만들 수 있는 정수 조합 중 가장 크기(size())가 작은 조합을 출력한다.
+//#include <vector>
+//#include <map>			// 합을 구할 수 있느냐?(Decision) : 정수 조합 찾기
+//						// 어떻게 합을 구했느냐?(Combination) : 정수 조합 출력
+//						// 가장 짧은 배열은?(Optimization) : 최소 크기 정수 조합 출력
+//
+//using int_vector = std::vector<int>;
+//using accum_history = std::map<int, std::shared_ptr<int_vector>>;
+//
+//std::shared_ptr<int_vector> OptimizeAccumulate(int sum,
+//	const int_vector& numbers, std::shared_ptr<accum_history> h)
+//{
+//	if (h->count(sum) == 1) { return (*h)[sum]; }
+//	if (sum == 0) { return std::make_shared<int_vector>(); }
+//	if (sum < 0) { return nullptr; }
+//
+//	int remain{};
+//	std::shared_ptr<int_vector> optimize = nullptr;
+//// optimaize변수 : int_vector타입을 가리키는 포인터, 하나의 메모리 공간을 공유
+////		=> 목표인 가장 크기가 작은 조합을 찾으려면 N을 만들 수 있는 조합들의 크기를 비교해야 한다.
+////		=> 반복문 밖에 optimaize변수를 만들어 두고 N을 만들 수 있는 조합들을 비교한다.
+////		=> 그리고 작은 크기의 조합을 저장한다.
+//
+//	for (auto e : numbers)
+//	{
+//		remain = sum - e;
+//		auto ret = OptimizeAccumulate(remain, numbers, h);
+//
+//		if (ret != nullptr)		// ret은 N을 만들 수 있는 조합을 갖고 있다.
+//		{
+//			std::shared_ptr<int_vector> v = std::make_shared<int_vector>();
+//			v->resize(ret->size());
+//			std::copy(ret->begin(), ret->end(), v->begin());
+//// v변수 : make_shared로 기존 메모리 공간과 분리된 다른 공간을 할당받는다.
+////		=> 방금 맊 가지치기를 하고 돌아온 ret을 고스란히 copy한다.
+//
+//			v->push_back(e);
+//			if (optimize == nullptr || v->size() < optimize->size())
+//			{
+//// 기존 조합을 저장하고 있던 optimize와 새로운 조합을 저장한 v의 사이즈를 비교한다.
+//				optimize = v;
+//			}
+//		}
+//	}
+//	(*h)[sum] = optimize;
+//	return (*h)[sum];
+//}
+//void Print(int_vector* r)
+//{
+//	std::cout << "[ ";
+//	if (r != nullptr)
+//	{
+//		for (auto e : *r) { std::cout << e << " "; }
+//	}
+//	std::cout << "]\n";
+//}
+//
+//
+//int main()
+//{
+//	Print(OptimizeAccumulate(7, { 1,4 }, std::make_shared<accum_history>()).get());
+//	Print(OptimizeAccumulate(900, { 7,14 }, std::make_shared<accum_history>()).get());
+//	Print(OptimizeAccumulate(1750, { 10,50,100,500,1000 }, std::make_shared<accum_history>()).get());
+//}
