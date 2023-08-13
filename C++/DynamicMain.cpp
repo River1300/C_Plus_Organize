@@ -679,3 +679,203 @@ length() 함수를 활용하여 문자열의 길이를 인덱스로 바꾸어 표현하며 원소의 값을 추
 //	Print(OptimizeAccumulate(900, { 7,14 }, std::make_shared<accum_history>()).get());
 //	Print(OptimizeAccumulate(1750, { 10,50,100,500,1000 }, std::make_shared<accum_history>()).get());
 //}
+
+/* ---------- < 문자 조합 찾기 > ---------- */
+
+//#include <iostream>		// 목표 : target문자열을 주어진 문자열 조합으로 만들 수 있는지 참/거짓으로 출력한다.
+//#include <string>
+//#include <vector>
+//#include <map>
+//
+//bool CanGenerate(std::string target, const std::vector<std::string>& stringlist)
+//{	// 문자도 정수와 마찬가지로 조합을 하나씩 빼면서 성공 여부를 판단할 것이다.
+//	// 그러므로 가지치기 마지막에 빈 문자열이 남는다면 그 조합은 성공이라고 판단할 수 있다.
+//	// Base Case
+//	if (target == "") { return true; }
+//
+//	// Recursive Case : target에 stringlist중 한 개를 빼고 나머지로 재귀 호출
+//	for (auto e : stringlist)
+//	{	// string클래스의 find()함수는 해당 문자가 처음 등장한 인덱스를 반환한다.
+//		if (target.find(e) == 0)
+//		{
+//			const std::string subs = target.substr(e.length());
+//// subs변수 : 뺄 문자열(e)이 가장 앞에 있다면 그 문자열을 빼고 나머지 문자열을 subs에 저장
+////		=> string클래스의 substr()함수는 지정된 인덱스 영역의 문자열을 반환한다.
+//
+//			if (CanGenerate(subs, stringlist)) { return true; }
+//		}
+//	}
+//	return false;
+//}
+//using gen_history = std::map<std::string, bool>;
+//bool Generation(std::string target, const std::vector<std::string>& stringlist,
+//	gen_history& h)
+//{
+//	if (h.count(target) == 1) { return h[target]; }
+//	if (target == "") { return true; }
+//
+//	for (auto e : stringlist)
+//	{
+//		if (target.find(e) == 0)
+//		{
+//			const std::string subs = target.substr(e.length());
+//			if (Generation(subs, stringlist, h))
+//			{
+//				h[target] = true;
+//				return h[target];
+//			}
+//		}
+//	}
+//	h[target] = false;
+//	return h[target];
+//}
+//
+//int main()
+//{
+//	std::cout << CanGenerate("abcdef", { "ab","abc","cd","def","abcd" });
+//
+//	gen_history h;
+//	std::cout << Generation("HelloWorld", { "Hell","Wor","oW","ld","Hello","World","or" }, h);
+//}
+
+/* ---------- < 문자 조합 경우의 수 > ---------- */
+
+//#include <iostream>		// 목표 : target을 만들 수 있는 문자열 조합의 수를 출력한다.
+//#include <string>
+//#include <vector>
+//#include <map>
+//
+//int CanGenerate(std::string target, const std::vector<std::string>& stringlist)
+//{	// Base Case : 빈 문자열이 남으면 1을 반환한다.
+//	if (target == "") { return 1; }
+//
+//	int count{};
+//	for (auto e : stringlist)
+//	{	// Recursive Case : 문자열을 하나씩 빼가며 재귀 호출
+//		if (target.find(e) == 0)
+//		{
+//			const std::string subs = target.substr(e.length());
+//			count += CanGenerate(subs, stringlist);
+//		}
+//	}
+//	return count;
+//}
+//using gen_history = std::map<std::string, int>;
+//int HowManyGenerate(std::string target, const std::vector<std::string>& stringlist,
+//	gen_history& h)
+//{
+//	if (h.count(target) == 1) { return h[target]; }
+//	if (target == "") { return 1; }
+//
+//	int count{};
+//	for (auto e : stringlist)
+//	{
+//		if (target.find(e) == 0)
+//		{
+//			const std::string subs = target.substr(e.length());
+//			count += HowManyGenerate(subs, stringlist, h);
+//		}
+//	}
+//	h[target] = count;
+//	return count;
+//}
+//
+//int main()
+//{
+//	std::cout << CanGenerate("abcdef", { "ab","abc","cd","def","abcd","cdef" });
+//
+//	gen_history h;
+//	std::cout << HowManyGenerate("ZooZooClub",
+//		{ "Zoo","Club","Zo","oo","Z","o","C","ub","Cl","ZooZ","H","World","lu","d","llo","b" }, h);
+//}
+
+/* ---------- < 문자 조합 출력 > ---------- */
+
+//#include <iostream>		// 목표 : target이 완선되는 모든 문자 조합을 출력한다.
+//#include <string>
+//#include <list>
+//#include <vector>
+//#include <map>
+//
+//using result = std::list<std::list<std::string>>;
+//// 안쪽 list : std::string타입을 저장할 수 있는 컨테이너 공간, 즉 문자 조합을 모을 공간
+//// 바깥쪽 list : string을 저장한 list를 모아둔 컨테이너, 즉 완성된 문자 조합을 모을 공간
+//
+//result FindGenerate(std::string target, const std::vector<std::string>& stringlist)
+//{	// 가지치기 맨 마지막에는 빈 공간을 내어준다.
+//	if (target == "") { return result{ {} }; }
+//
+//	result r;
+//	for (auto e : stringlist)
+//	{
+//		if (target.find(e) == 0)
+//		{
+//			const std::string subs = target.substr(e.length());
+//			auto ret = FindGenerate(subs, stringlist);
+//// ret은 재귀호출에서 반환된 result타입의 { {"ㅁ","ㅁㅁ",...},{"ㅇ","ㅇㅇ",...},... } 컨테이너다.
+////		=> 즉 완성 가능성이 있는 문자 조합들(list)을 모아둔 list이다.
+//
+//			for (auto e2 : ret)
+//			{
+//				e2.push_front(e);	// e2는 안쪽 list들을 순회 한다.
+//				r.push_front(e2);	// r은 바깥쪽 list에 e2(안쪽 list 한 개)를 추가한다.
+//// push_back으로 문자 조합을 넣을 경우 재귀 호출이 반환되는 규칙으로 인해 거꾸로 저장된다.
+//// 그러므로 push_front를 사용하고 push_front를 사용하기 위해 Vector가 아닌 List컨테이너를 사용한다.
+//			}
+//		}
+//	}
+//	return r;
+//}
+//void Print(const result& r)
+//{
+//	std::cout << "{ \n";
+//	for (auto e1 : r)
+//	{
+//		std::cout << "\t[ ";
+//		for (auto e2 : e1)
+//		{
+//			std::cout << e2 << ", ";
+//		}
+//		std::cout << "], \n";
+//	}
+//	std::cout << " }\n";
+//}
+//using gen_history = std::map<std::string, result>;	
+//// 현재까지 완성된 target을 key값으로 하고 list<list>를 value값으로 한다.
+//
+//result Generation(std::string target, const std::vector<std::string>& stringlist,
+//	gen_history& h)
+//{
+//	if (h.count(target) == 1) { return h[target]; }
+//	if (target == "") { return result{ {} }; }
+//
+//	result r;
+//
+//	for (auto e : stringlist)
+//	{
+//		if (target.find(e) == 0)
+//		{
+//			const std::string subs = target.substr(e.length());
+//			auto ret = Generation(subs, stringlist, h);
+//
+//			for (auto e2 : ret)
+//			{
+//				e2.push_front(e);
+//				r.push_front(e2);
+//			}
+//		}
+//	}
+//	h[target] = r;
+//	return h[target];
+//}
+//
+//
+//int main()
+//{
+//	Print(FindGenerate("GirlsGeneration",
+//		{ "G","tion","zoo","ne","irls","oop","ir","ls","Gen","enera,","ot","ra","e","n" }));
+//
+//	gen_history h;
+//	Print(Generation("GirlsGeneration",
+//		{ "G","tion","zoo","ne","irls","oop","ir","ls","Gen","enera,","ot","ra","e","n" }, h));
+//}
