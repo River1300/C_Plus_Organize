@@ -307,3 +307,313 @@
 //		e.Print();
 //	}
 //}
+
+/* ----- < 파일 입출력 > ----- */
+
+
+
+/* --- < ofstream > --- */
+
+//#include <iostream>
+//#include <fstream>
+//#include <sstream>
+//#include <vector>
+//
+//class Monster
+//{
+//private:
+//	std::string mName;
+//	int mLevel;
+//	int mHp;
+//	int mMp;
+//
+//public:
+//	Monster() : mName{}, mLevel{}, mHp{}, mMp{}{}
+//	Monster(std::string name, int level, int hp, int mp) :
+//		mName{ name }, mLevel{ level }, mHp{ hp }, mMp{ mp }{}
+//
+//public:
+//	void Print()
+//	{
+//		std::cout << mName << ", " << mLevel << ", " << mHp << ", " << mMp << std::endl;
+//	}
+//
+//public:
+//	friend std::ifstream& operator >>(std::ifstream& input, Monster& monster);
+//	friend std::ofstream& operator <<(std::ofstream& input, Monster& monster);
+//};
+//
+//std::ifstream& operator >>(std::ifstream& input, Monster& monster)
+//{
+//	std::string token;
+//	try {
+//		std::getline(input, token, ',');
+//		monster.mName = token;
+//		std::getline(input, token, ',');
+//		monster.mLevel = std::stoi(token);
+//		std::getline(input, token, ',');
+//		monster.mHp = std::stoi(token);
+//		std::getline(input, token);
+//		monster.mMp = std::stoi(token);
+//	}
+//	catch (std::exception e) {
+//		std::cout << "형식이 잘못되었습니다 : " << e.what() << std::endl;
+//	}
+//	return input;
+//}
+//std::ofstream& operator <<(std::ofstream& output, Monster& monster)
+//{
+//	try {
+//		output << monster.mName << "," << monster.mLevel << "," 
+//			<< monster.mHp << "," << monster.mMp << std::endl;
+//	}
+//	catch (std::exception e) {
+//		std::cout << "데이터를 저장할 때 문제가 발생했습니다 : " << e.what() << std::endl;
+//	}
+//	return output;
+//}
+//
+//bool LoadFile(const char* filename, std::vector<Monster>& monsters)
+//{
+//	std::ifstream ifs;
+//	ifs.exceptions(std::ifstream::badbit);
+//	try {
+//		ifs.open(filename);
+//		std::string buffer;
+//		std::getline(ifs, buffer);
+//		while (!ifs.eof())
+//		{
+//			if (ifs.peek() == EOF) { break; }
+//			Monster monster;
+//			ifs >> monster;
+//			monsters.push_back(monster);
+//		}
+//		ifs.close();
+//	}
+//	catch (std::exception e) {
+//		std::cout << "문제발생" << e.what() << std::endl;
+//		ifs.close();
+//		return false;
+//	}
+//	return true;
+//}
+//bool WriteFile(const char* filename, std::vector<Monster>& monsters)
+//{
+//	std::ofstream ofs;
+//	ofs.exceptions(std::ofstream::badbit);
+//	try {
+//		ofs.open(filename);
+//		ofs << "--- MONSTER DATA ---" << std::endl;
+//		for (auto e : monsters) { ofs << e; }
+//		ofs.close();
+//	}
+//	catch (std::exception e) {
+//		std::cout << "파일 저장 도중 에러 발생 : " << e.what() << std::endl;
+//		ofs.close();
+//		return false;
+//	}
+//	return true;
+//}
+//
+//int main()
+//{
+//	std::vector<Monster> monsters;
+//	LoadFile("Data/SimpleData.txt", monsters);
+//	for (auto e : monsters) { e.Print(); }
+//	WriteFile("Data/SimpleData2.txt", monsters);
+//}
+
+/* < binary > */
+
+/*
+< binary data > : 컴퓨터가 기록하는 형태( 0, 1 )로 저장한 데이터
+	#. 줄바꿈, 콤마 등의 명확한 구분이 없어서 전체를 읽기 전까지는 어디서 끝나는지 모른다. ( 0d, 0a( .. ) 를 통해 줄바꿈을 알 수는 있음 )
+	#. 때문에 지금 현재 데이터가 몇개가 저장되어있는지 정보를 입력해 놓는 것이 좋다.
+	#. 또 문자열을 저장할 때는 몇 글자의 문자열인지도 저장해야 한다.
+	#. 자료구조를 구분할 수 있는 정보가추가적으로 필요( 줄바꿈, 쉼표 )
+
+< CPU > : 연산을 담당하는 부품
+	#. Big-Endian : 왼쪽에서 부터 오른쪽으로 저장( 비교할 때 최적화 )
+		=> 리눅스
+	#. Little-Endian : 오른쪽에서 부터 왼쪽으로 저장( 연산 최적화 )
+		=> Window, Intel, AMD
+
+< POD( Plain Old Data ) > : 표준 타입( int, float ... )
+	#. 구조체( 기본생성자를 가진 클래스 + 다형성 X )
+*/
+
+//#include <iostream>
+//#include <fstream>
+//#include <sstream>
+//#include <vector>
+//
+//class Monster
+//{
+//private:
+//	std::string mName;
+//	int mLevel;
+//	int mHp;
+//	int mMp;
+//
+//public:
+//	Monster() : mName{}, mLevel{}, mHp{}, mMp{}{}
+//	Monster(std::string name, int level, int hp, int mp) :
+//		mName{ name }, mLevel{ level }, mHp{ hp }, mMp{ mp }{}
+//
+//public:
+//	friend std::ofstream& operator <<(std::ofstream& output, Monster& monster);
+//};
+//struct Header
+//{	// #. binary data 를 저장하기 위해서는 해당 vector 에 몇개의 원소가 있는지도 같이 저장해야 한다.
+//	int version{ 1 };	// #. 파일의 정보가 바뀔 수 있기 때문에 파일 버전도 저장한다.
+//	int itemCount{};	// #. 몇 개의 원소가 있는지
+//};
+//
+//std::ofstream& operator <<(std::ofstream& output, Monster& monster)
+//{
+//	try {	// #. 몬스터의 이름은 문자열이기 때문에 몇 글자인지 저장해 준다.
+//		int nameLength = static_cast<int>(monster.mName.size());
+//// #. 먼저 몬스터 이름의 글자 수를 저장해 준다.
+//		output.write(reinterpret_cast<char*>(&nameLength), sizeof(int));
+//// #. mName 은 std::string 이기 때문에 POD 형식의 배열로 받기 위해 c_str() 함수를 이용해 char* 로 바꾸어 준다.
+//		output.write(monster.mName.c_str(), nameLength);
+//		output.write(reinterpret_cast<char*>(&monster.mLevel), sizeof(int));
+//		output.write(reinterpret_cast<char*>(&monster.mHp), sizeof(int));
+//		output.write(reinterpret_cast<char*>(&monster.mMp), sizeof(int));
+//	}
+//	catch (std::exception e) {
+//		std::cout << "데이터를 저장할 때 문제가 발생했습니다 : " << e.what() << std::endl;
+//	}
+//	return output;
+//}
+//
+//bool WriteBinary(const char* filename, std::vector<Monster>& monsters)
+//{
+//	std::ofstream ostream;
+//	ostream.exceptions(std::ofstream::badbit | std::ofstream::failbit);
+//	try {	// #. 파일 열기의 기본 옵션은 텍스트 버전이기 때문에 open_mode 를 바이너리 방식으로 지정해 준다.
+//		ostream.open(filename, std::ifstream::binary);
+//		// #. h 라는 이름의 구조체에 버전과 원소 갯수를 입력한다.
+//		Header h{ 1,static_cast<int>(monsters.size()) };
+//// #. write() : 통체로 파일에 정보를 보낸다.
+//// #. (&h) 구조체의 주소를 받아와서 포인터로 전달한다.
+//// #. Header 의 크기만큼 한 번에 저장한다.
+//		ostream.write(reinterpret_cast<char*>(&h), sizeof(Header));
+//		for (auto e : monsters) { ostream << e; }
+//		ostream.close();
+//	}
+//	catch (std::exception e) {
+//		std::cout << "저장 중에 에러 : " << e.what() << std::endl;
+//		ostream.close();
+//		return false;
+//	}
+//	return true;
+//}
+//
+//int main()
+//{
+//	std::vector<Monster> monsters{
+//		{"Jelly",1,1,1},
+//		{"Wolf",5,5,5},
+//		{"Demon",10,10,10}
+//	};
+//	WriteBinary("Data/SimpleData.bin", monsters);
+//}
+
+/* < Document Object Model > */
+
+/*
+< DOM >
+	< W3C( WWW Consortium ) >
+	< HTML >
+	< XML( eXtensible Markup Language ) >
+		#. 선언
+			=> 헤더( 머릿말 ) : <? ~ ?>
+				=> <?xml version="1.0" encoding="UTF-8"?>
+		#. 태그
+			=> < ~ >
+			=> 시작 : <section>
+			=> 종료 : </section>
+			=> 빈태그 : <section />
+		#. 원소
+			=> 시작태그부터 종료태그 사이의 내용
+			=> <print> Hello, World </print>
+		#. 속성
+			=> 이름 = 값
+			=> 태그 내부에 존재하는 정보
+				=> <img src="wallpaper.png"> </img>
+
+< JAVE >
+	< JSOM( Jave Script Object Notation ) >
+*/
+
+/* --- < 정규 표현식( Regular Expression ) > --- */
+
+//#include <iostream>
+//#include <fstream>
+//#include <string>
+//#include <regex>
+//#include <vector>
+//
+//class Sprite
+//{
+//public:
+//	std::string n;
+//	int x;
+//	int y;
+//	int w;
+//	int h;
+//};
+//
+//void LoadXML(const char* filename, std::vector<Sprite>& sprites)
+//{
+//	std::ifstream file(filename, std::ifstream::binary);
+//	std::string line;
+//	std::regex pattern("\"([^ \"]*)\"");	// #. 정규 표현식으로 문자열을 구분하여 읽을 예정
+//
+//	while (!file.eof())
+//	{
+//		std::getline(file, line);	// 한 줄씩 읽어 온다.
+//// #. 찾은 문자열의 인덱스를 저장해 둔다.
+//		auto result = line.find("<sprite");	// #. find() 문자열이 들어있는지 찾아 본다.
+//		if (result != std::string::npos)	// #. < std::string::npos > : result 가 <sprite 문자열을 못 찾았을 경우 // 근대 != 이기 때문에 찾았을 경우
+//		{	// #. 정규 표현식의 결과를 반복자로 만들 수 있는 클래스
+//			// #. 시작부터 끝까지 검색해서 정규 표현식에 만족하는 문자열을 가리킨다.
+//			std::sregex_iterator current(line.begin(), line.end(), pattern);
+//			std::sregex_iterator end;	// #. default 는 가장 끝을 가리킨다.
+//			int index{};
+//			Sprite sprite;
+//
+//			while(current != end)
+//			{	// 반복자를 역참조하고 이 후에 배열의 원소를 가져온다.
+//				std::string token = (*current)[1];
+//				switch (index)
+//				{
+//				case 0:
+//					sprite.n = token;
+//					break;
+//				case 1:
+//					sprite.x = std::stoi(token);
+//					break;
+//				case 2:
+//					sprite.y = std::stoi(token);
+//					break;
+//				case 3:
+//					sprite.w = std::stoi(token);
+//					break;
+//				case 4:
+//					sprite.h = std::stoi(token);
+//					break;
+//				}
+//				index++;
+//				current++;	// 반복자 개념이기 때문에 ++ 연산이 가능하다.
+//			}
+//			sprites.push_back(sprite);
+//		}
+//	}
+//}
+//int main()
+//{
+//	std::vector<Sprite> sprites;
+//	LoadXML("Data/mydata.xml", sprites);
+//}
