@@ -617,3 +617,236 @@
 //	std::vector<Sprite> sprites;
 //	LoadXML("Data/mydata.xml", sprites);
 //}
+
+/* --- < TinyXML2 > --- */
+
+/*
+< XMLDocument >		: XML ÆÄÀÏ
+< XMLDeclaration >	: XML ¼±¾ð
+< XMLElement >		: ÅÂ±×
+*/
+
+//#include <iostream>
+//#include "tinyxml2.h"
+//#include "monster.h"
+//
+//using namespace tinyxml2;
+//
+//bool SaveToXML(const char* filename, const std::vector<Monster>& monsters)
+//{
+//	XMLDocument d;
+//
+//	XMLDeclaration* decl = d.NewDeclaration(R"("xml version="1.0" encoding="EUC - KR")");
+//	d.LinkEndChild(decl);
+//
+//	auto pRoot = d.NewElement("monsters");
+//	for (auto e : monsters)
+//	{
+//		auto pMonsterNode = d.NewElement("monster");
+//		pMonsterNode->SetAttribute("name", e.GetName().c_str());
+//
+//		auto pStatusNode = d.NewElement("status");
+//		pStatusNode->SetAttribute("level", e.GetStatus().mLevel);
+//		pStatusNode->SetAttribute("hp", e.GetStatus().mHP);
+//		pStatusNode->SetAttribute("mp", e.GetStatus().mMP);
+//		pMonsterNode->LinkEndChild(pStatusNode);
+//
+//		auto pItemsNode = d.NewElement("items");
+//		for (auto item : e.GetDropItems())
+//		{
+//			auto pItemNode = d.NewElement("item");
+//			pItemNode->SetAttribute("name", item.mName.c_str());
+//			pItemNode->SetAttribute("gold", item.mGold);
+//			pItemsNode->LinkEndChild(pItemNode);
+//		}
+//		pMonsterNode->LinkEndChild(pItemsNode);
+//		pRoot->LinkEndChild(pMonsterNode);
+//	}
+//	d.LinkEndChild(pRoot);
+//	d.SaveFile(filename);
+//	return true;
+//}
+//bool LoadFromXML(const char* filename, std::vector<Monster>& monsters)
+//{
+//	XMLDocument d;
+//	if (d.LoadFile(filename) != XML_SUCCESS)
+//	{
+//		return false;
+//	}
+//
+//	auto pRootNode = d.FirstChildElement("monsters");
+//	for (auto pMonsterNode = pRootNode->FirstChildElement(); pMonsterNode;
+//		pMonsterNode = pMonsterNode->NextSiblingElement())
+//	{
+//		Monster monster;
+//		monster.SetName(pMonsterNode->Attribute("name"));
+//
+//		auto pStatusNode = pMonsterNode->FirstChildElement("status");
+//		Status status;
+//		status.mLevel = pStatusNode->IntAttribute("level");
+//		status.mLevel = pStatusNode->IntAttribute("hp");
+//		status.mLevel = pStatusNode->IntAttribute("mp");
+//		monster.SetStatus(status);
+//
+//		auto pItemsNode = pMonsterNode->FirstChildElement("items");
+//		for (auto pItemNode = pItemsNode->FirstChildElement(); pItemNode;
+//			pItemNode = pItemNode->NextSiblingElement())
+//		{
+//			Item item;
+//			item.mName = pItemNode->Attribute("name");
+//			item.mGold = pItemNode->IntAttribute("gold");
+//			monster.AddDropItem(item);
+//		}
+//		monsters.push_back(monster);
+//	}
+//	return true;
+//}
+//
+//
+//int main()
+//{
+//	std::vector<Monster> monsters;
+//
+//	Monster monster;
+//	monster.SetName("½½¶óÀÓ");
+//	monster.SetStatus(Status{ 1,1,1 });
+//	monster.AddDropItem(Item{ "²öÀûÇÑ Á©¸®",1 });
+//
+//	monsters.push_back(monster);
+//
+//	monster.GetDropItems().clear();
+//	monster.SetName("´Á´ë");
+//	monster.SetStatus(Status{ 5,5,5 });
+//	monster.AddDropItem(Item{ "¹ßÅé",5 });
+//	monster.AddDropItem(Item{ "°¡Á×",10 });
+//
+//	monsters.push_back(monster);
+//
+//	monster.GetDropItems().clear();
+//	monster.SetName("¾Ç¸¶");
+//	monster.SetStatus(Status{ 10,10,10 });
+//	monster.AddDropItem(Item{ "³¯°³",10 });
+//	monster.AddDropItem(Item{ "¼ÕÅé",20 });
+//
+//	monsters.push_back(monster);
+//
+//	SaveToXML("Data/myxml.xml", monsters);
+//
+//	monsters.clear();
+//	LoadFromXML("Data/myxml.xml", monsters);
+//}
+
+/* --- < RAPIDJSON > --- */
+
+//#include <iostream>
+//#include <fstream>
+//#include <rapidjson\document.h>
+//#include <rapidjson\prettywriter.h>
+//#include "monster.h"
+//
+//using namespace rapidjson;
+//
+//bool SaveToJSON(const char* filename, std::vector<Monster>& monsters)
+//{
+//	StringBuffer sb;
+//	PrettyWriter<StringBuffer> writer(sb);
+//
+//	writer.StartObject();
+//
+//	writer.Key("monsters");
+//
+//	writer.StartArray();
+//
+//	for (auto monster : monsters)
+//	{
+//		writer.StartObject();
+//		{
+//			writer.Key("name");
+//			writer.String(monster.GetName().c_str());
+//
+//			writer.Key("status");
+//			writer.StartObject();
+//			{
+//				writer.Key("level"); writer.Int(monster.GetStatus().mLevel);
+//				writer.Key("hp");	 writer.Int(monster.GetStatus().mHP);
+//				writer.Key("mp");	 writer.Int(monster.GetStatus().mMP);
+//			}
+//			writer.EndObject();
+//
+//			writer.Key("items");
+//			writer.StartArray();
+//			{
+//				for (auto item : monster.GetDropItems())
+//				{
+//					writer.StartObject();
+//					{
+//						writer.Key("name"); writer.String(item.mName.c_str());
+//						writer.Key("gold"); writer.Int(item.mGold);
+//					}
+//					writer.EndObject();
+//				}
+//			}
+//			writer.EndArray();
+//		}
+//		writer.EndObject();
+//	}
+//
+//	writer.EndArray();
+//
+//	writer.EndObject();
+//
+//	std::ofstream ofs;
+//	ofs.exceptions(std::ofstream::badbit | std::ofstream::failbit);
+//
+//	try {
+//		ofs.open(filename);
+//
+//		ofs << sb.GetString();
+//
+//		ofs.close();
+//	}
+//	catch (std::exception e) {
+//		std::cout << "JSON ÀúÀå Áß¿¡ ¹®Á¦ ¸»»ý : " << e.what() << std::endl;
+//		ofs.close();
+//		return false;
+//	}
+//
+//	return true;
+//}
+//bool LoadFromJSON(const char* filename, std::vector<Monster>& monsters)
+//{
+//	return true;
+//}
+//
+//int main()
+//{
+//	std::vector<Monster> monsters;
+//
+//	Monster monster;
+//	monster.SetName("½½¶óÀÓ");
+//	monster.SetStatus(Status{ 1,1,1 });
+//	monster.AddDropItem(Item{ "²öÀûÇÑ Á©¸®",1 });
+//
+//	monsters.push_back(monster);
+//
+//	monster.GetDropItems().clear();
+//	monster.SetName("´Á´ë");
+//	monster.SetStatus(Status{ 5,5,5 });
+//	monster.AddDropItem(Item{ "¹ßÅé",5 });
+//	monster.AddDropItem(Item{ "°¡Á×",10 });
+//
+//	monsters.push_back(monster);
+//
+//	monster.GetDropItems().clear();
+//	monster.SetName("¾Ç¸¶");
+//	monster.SetStatus(Status{ 10,10,10 });
+//	monster.AddDropItem(Item{ "³¯°³",10 });
+//	monster.AddDropItem(Item{ "¼ÕÅé",20 });
+//
+//	monsters.push_back(monster);
+//
+//	SaveToJSON("Data/monsters.json", monsters);
+//
+//	monsters.clear();
+//	LoadFromJSON("Data/monsters.json", monsters);
+//}
